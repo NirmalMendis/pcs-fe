@@ -1,13 +1,20 @@
-import * as yup from "yup";
-import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
-
-const schema = yup.object({
-  email: yup.string(),
-});
+import { Box, Button, Stack, TextField } from "@mui/material";
 
 const LoginForm = () => {
-  const { register } = useCustomHookForm(schema);
-  return <div>LoginForm</div>;
+  return (
+    <Box>
+      <h1>Login</h1>
+      <form noValidate>
+        <Stack spacing={2} width={400}>
+          <TextField label="Email" type="email" />
+          <TextField label="Password" type="password" />
+          <Button type="submit" variant="contained" color="primary">
+            Login
+          </Button>
+        </Stack>
+      </form>
+    </Box>
+  );
 };
 
 export default LoginForm;
