@@ -8,6 +8,8 @@ export const useCustomHookForm = <T extends yup.AnyObjectSchema>(
 ): UseFormReturn<yup.Asserts<T>> => {
   const customUseForm = useForm<T>({
     resolver: yupResolver(schema),
+    reValidateMode: props?.reValidateMode || "onChange",
+    mode: props?.mode || "onBlur",
     ...props,
   });
 

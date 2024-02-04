@@ -1,25 +1,25 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { InferType } from "yup";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
-import loginSchema from "./login-schema";
+import forgotPwdSchema from "./forgot-password-schema";
 
-type LoginSchemaType = typeof loginSchema;
-type LoginFormValues = InferType<LoginSchemaType>;
+type ForgotPwdSchemaType = typeof forgotPwdSchema;
+type ForgotPwdValues = InferType<ForgotPwdSchemaType>;
 
-const LoginForm = () => {
+const ForgotPwdForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
-  } = useCustomHookForm<LoginSchemaType>(loginSchema);
+    formState: { errors, isValid },
+  } = useCustomHookForm<ForgotPwdSchemaType>(forgotPwdSchema);
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = (data: ForgotPwdValues) => {
     // eslint-disable-next-line no-console
     console.log(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Stack spacing={2} width={400}>
         <TextField
           label="Email"
@@ -28,24 +28,18 @@ const LoginForm = () => {
           error={!!errors.email}
           helperText={errors.email?.message}
         />
-        <TextField
-          label="Password"
-          type="password"
-          {...register("password")}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
           disabled={!isValid}
         >
-          Login
+          Submit
         </Button>
       </Stack>
     </form>
   );
 };
 
-export default LoginForm;
+export default ForgotPwdForm;
