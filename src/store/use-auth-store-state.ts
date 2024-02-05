@@ -1,26 +1,44 @@
+import { useNavigate } from "react-router-dom";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import STORAGE_KEYS from "../constants/auth-constants";
+import User from "../shared/types/user";
 import createSelectors from "./create-selectors";
 
 export interface AuthState {
-  user?: {
-    //Update with User type from API
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
+  user?: User;
   accessToken?: string;
   refreshToken?: string;
+  isAuthenticed: boolean;
 }
 
-export const initialAuthState: AuthState = {};
+export interface ExtendedAuthState extends AuthState {
+  setAuthState: (payload: AuthState) => void;
+  signIn: () => void;
+}
 
-const useAuthStoreState = create<AuthState>()(
+export const initialAuthState: AuthState = {
+  isAuthenticed: false,
+};
+
+const useAuthStoreState = create<ExtendedAuthState>()(
   devtools(
-    persist(() => initialAuthState, {
-      name: STORAGE_KEYS.AUTH,
-    })
+    persist(
+      (set) => ({
+        ...initialAuthState,
+        setAuthState: (payload: AuthState) => {
+          return set(payload);
+        },
+        signIn: () => {
+          const navigate = useNavigate();
+          navigate("/register");
+        },
+      }),
+      {
+        name: STORAGE_KEYS.AUTH,
+        storage: createJSONStorage(() => sessionStorage),
+      }
+    )
   )
 );
 
