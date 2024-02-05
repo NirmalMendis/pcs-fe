@@ -4,6 +4,8 @@ const Login = () => {
   return (
     <div>
       <LoginForm />
+      {/* <ForgotPwdForm />
+      <SetNewPasswordForm /> */}
     </div>
   );
 };
