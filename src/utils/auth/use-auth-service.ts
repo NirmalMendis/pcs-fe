@@ -1,11 +1,17 @@
 import usePostLogin from "../../api/auth/use-post-login";
+import usePostLogout from "../../api/auth/use-post-logout";
 import ROUTE_PATHS from "../../constants/route-paths";
-import useAuthStore from "../../store/use-auth-store-state";
+import useAuthStore, {
+  initialAuthState,
+} from "../../store/use-auth-store-state";
 import ENV_CONFIGS from "../get-env-config";
 
 const useAuthService = () => {
-  const { mutate: mutatePostLogin, isPending: isLoading } = usePostLogin();
+  const { mutate: mutatePostLogin, isPending: isLoadingLogin } = usePostLogin();
+  const { mutate: mutatePostLogout, isPending: isLoadingLogout } =
+    usePostLogout();
   const setAuthState = useAuthStore((state) => state.setAuthState);
+  const user = useAuthStore((state) => state.user);
 
   const signIn = ({ email, password }: { email: string; password: string }) => {
     mutatePostLogin(
@@ -29,9 +35,27 @@ const useAuthService = () => {
     );
   };
 
+  const signOut = () => {
+    mutatePostLogout(
+      {},
+      {
+        onSettled() {
+          setAuthState(initialAuthState);
+          window.location.href = `${ENV_CONFIGS.FE_BASE_URL}/${ROUTE_PATHS.LOGIN}`;
+        },
+      }
+    );
+  };
+
+  const getBasicUserInfo = () => {
+    return user;
+  };
+
   return {
     signIn,
-    isLoading,
+    getBasicUserInfo,
+    isLoading: isLoadingLogin || isLoadingLogout,
+    signOut,
   };
 };
 

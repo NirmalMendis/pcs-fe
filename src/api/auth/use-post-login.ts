@@ -25,6 +25,7 @@ const usePostLogin = (): UseMutationResult<
       apiService.postRequest<LoginResponse>({
         path: AUTH_API.LOGIN,
         body: payload,
+        includeAccessToken: false,
       }),
   });
 };

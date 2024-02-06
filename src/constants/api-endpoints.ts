@@ -3,6 +3,7 @@ export const USER_ENPOINT = "user";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
+  LOGOUT: `${AUTH_ENDPOINT}/logout`,
 };
 
 export const USER_API = {

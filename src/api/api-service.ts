@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import queryString from "query-string";
 import useAuthStore from "../store/use-auth-store-state";
 import ENV_CONFIGS from "../utils/get-env-config";
@@ -9,6 +9,8 @@ export interface GetConfig {
   queryParams?: object;
   includeAccessToken?: boolean;
   signal?: AbortSignal;
+  method?: "get" | "post" | "patch" | "delete";
+  body?: object;
 }
 
 export interface PostPatchDeleteConfig {
@@ -33,7 +35,7 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   const jwt = useAuthStore.getState().accessToken;
 
-  if (jwt && config.includeAccessToken)
+  if (config.includeAccessToken)
     config.headers["Authorization"] = `Bearer ${jwt}`;
   return config;
 });
@@ -53,17 +55,37 @@ const generateURL = (path: string, queryParams?: object): string => {
   return path + params;
 };
 
+const executeRequest = async <T>({
+  path,
+  includeAccessToken,
+  queryParams,
+  signal,
+  method,
+  body,
+}: GetConfig): Promise<T> => {
+  return axiosInstance.request({
+    method: method,
+    url: generateURL(path, queryParams),
+    data: body,
+    signal,
+    validateStatus: null,
+    includeAccessToken,
+  });
+};
+
 const getRequest = async <T>({
   path,
   includeAccessToken = true,
   queryParams,
   signal,
 }: GetConfig): Promise<T> => {
-  const requestConfig: AxiosRequestConfig = {
-    signal,
+  return executeRequest({
+    path,
     includeAccessToken,
-  };
-  return axiosInstance.get(generateURL(path, queryParams), requestConfig);
+    queryParams,
+    signal,
+    method: "get",
+  });
 };
 
 const postRequest = async <T>({
@@ -73,12 +95,14 @@ const postRequest = async <T>({
   queryParams,
   signal,
 }: PostPatchDeleteConfig): Promise<T> => {
-  const requestConfig: AxiosRequestConfig = {
-    signal,
+  return executeRequest({
+    path,
     includeAccessToken,
-    data: body,
-  };
-  return axiosInstance.post(generateURL(path, queryParams), requestConfig);
+    queryParams,
+    signal,
+    method: "post",
+    body,
+  });
 };
 
 const patchRequest = async <T>({
@@ -88,12 +112,14 @@ const patchRequest = async <T>({
   queryParams,
   signal,
 }: PostPatchDeleteConfig): Promise<T> => {
-  const requestConfig: AxiosRequestConfig = {
-    signal,
+  return executeRequest({
+    path,
     includeAccessToken,
-    data: body,
-  };
-  return axiosInstance.patch(generateURL(path, queryParams), requestConfig);
+    queryParams,
+    signal,
+    method: "patch",
+    body,
+  });
 };
 
 const deleteRequest = async <T>({
@@ -103,12 +129,14 @@ const deleteRequest = async <T>({
   queryParams,
   signal,
 }: PostPatchDeleteConfig): Promise<T> => {
-  const requestConfig: AxiosRequestConfig = {
-    signal,
+  return executeRequest({
+    path,
     includeAccessToken,
-    data: body,
-  };
-  return axiosInstance.delete(generateURL(path, queryParams), requestConfig);
+    queryParams,
+    signal,
+    method: "delete",
+    body,
+  });
 };
 
 export const apiService = {

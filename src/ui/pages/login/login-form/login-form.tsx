@@ -1,6 +1,8 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { InferType } from "yup";
+import Backdrop from "../../../../shared/components/backdrop";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
+import useAuthService from "../../../../utils/auth/use-auth-service";
 import loginSchema from "./login-schema";
 
 type LoginSchemaType = typeof loginSchema;
@@ -13,9 +15,10 @@ const LoginForm = () => {
     formState: { isValid, errors },
   } = useCustomHookForm<LoginSchemaType>(loginSchema);
 
+  const { signIn, isLoading } = useAuthService();
   const onSubmit = (data: LoginFormValues) => {
     // eslint-disable-next-line no-console
-    console.log(data);
+    signIn(data);
   };
 
   return (
@@ -44,6 +47,7 @@ const LoginForm = () => {
           Login
         </Button>
       </Stack>
+      <Backdrop open={isLoading} />
     </form>
   );
 };

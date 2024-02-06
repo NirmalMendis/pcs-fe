@@ -1,10 +1,8 @@
-import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./app";
 import reportWebVitals from "./reportWebVitals";
-import Routes from "./routes/routes";
-import theme from "./theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,9 +12,7 @@ const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <Routes />
-      </ThemeProvider>
+      <App />
     </QueryClientProvider>
   </React.StrictMode>
 );

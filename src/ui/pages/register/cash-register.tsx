@@ -1,5 +1,3 @@
-import React from "react";
-
 const CashRegister = () => {
   return <div>CashRegister</div>;
 };
