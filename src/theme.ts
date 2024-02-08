@@ -67,7 +67,7 @@ export const commonTheme: ThemeOptions = {
     MuiTextField: {
       defaultProps: {
         size: "small",
-        variant: "standard",
+        variant: "outlined",
       },
     },
     MuiSvgIcon: {
@@ -77,7 +77,7 @@ export const commonTheme: ThemeOptions = {
     },
     MuiTypography: {
       defaultProps: {
-        fontSize: "12px",
+        fontSize: 12,
       },
     },
   },
@@ -95,14 +95,11 @@ export const commonTheme: ThemeOptions = {
     ].join(","),
     h6: {
       fontWeight: "bold",
-      color: "#444e57",
     },
     h5: {
       fontWeight: "bold",
-      color: "#444e57",
     },
     h4: {
-      color: "#444e57",
       textTransform: "uppercase",
     },
     body1: {

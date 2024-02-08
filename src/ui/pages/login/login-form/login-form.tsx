@@ -1,4 +1,6 @@
-import { Button, Stack, TextField } from "@mui/material";
+import KeyIcon from "@mui/icons-material/Key";
+import PersonIcon from "@mui/icons-material/Person";
+import { Button, InputAdornment, Stack, TextField } from "@mui/material";
 import { InferType } from "yup";
 import Backdrop from "../../../../shared/components/backdrop";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
@@ -23,13 +25,20 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2} width={400}>
+      <Stack spacing={2}>
         <TextField
           label="Email"
           type="email"
           {...register("email")}
           error={!!errors.email}
           helperText={errors.email?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <PersonIcon />
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           label="Password"
@@ -37,13 +46,15 @@ const LoginForm = () => {
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <KeyIcon color="warning" />
+              </InputAdornment>
+            ),
+          }}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={!isValid}
-        >
+        <Button type="submit" color="primary" disabled={!isValid}>
           Login
         </Button>
       </Stack>
