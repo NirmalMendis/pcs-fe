@@ -28,6 +28,7 @@ const Main = styled("main")(({ theme }) => ({
   padding: 0,
   margin: 0,
   minHeight: "100vh",
+  backgroundColor: theme.palette.ternary.main,
   overflowX: "hidden",
   paddingLeft: `calc(${
     theme.breakpoints.down("sm") ? theme.spacing(0) : theme.spacing(7)

@@ -47,7 +47,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           },
           ternary: {
             light: "#b2ebf2",
-            main: "#ffffff",
+            main: "#f5f5f5",
             dark: "#829baf",
             contrastText: "#000",
           },
@@ -68,6 +68,7 @@ export const commonTheme: ThemeOptions = {
       defaultProps: {
         size: "small",
         variant: "outlined",
+        fullWidth: true,
       },
     },
     MuiSvgIcon: {
@@ -75,14 +76,19 @@ export const commonTheme: ThemeOptions = {
         color: "primary",
       },
     },
-    MuiTypography: {
+    MuiFormControl: {
       defaultProps: {
-        fontSize: 12,
+        size: "small",
+      },
+    },
+    MuiInputBase: {
+      defaultProps: {
+        size: "small",
       },
     },
   },
   typography: {
-    fontSize: 12,
+    fontSize: 11,
     fontFamily: [
       "Segoe UI Symbol",
       "Segoe UI Emoji",

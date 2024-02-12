@@ -1,5 +1,9 @@
+import { MetaDataEnum } from "./string-constants";
+
 export const AUTH_ENDPOINT = "auth";
 export const USER_ENPOINT = "user";
+export const METADATA_ENDPOINT = "metadata";
+export const BRANCH_ENPOINT = "branch";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
@@ -7,5 +11,13 @@ export const AUTH_API = {
 };
 
 export const USER_API = {
-  LOGIN: (id: number) => `${USER_ENPOINT}/${id}`,
+  GET_USER: (id: number) => `${USER_ENPOINT}/${id}`,
+};
+
+export const METADATA_API = {
+  GET_METADATA: (type: MetaDataEnum) => `${METADATA_ENDPOINT}/${type}`,
+};
+
+export const BRANCH_API = {
+  GET_ALL_BRANCHES: `${BRANCH_ENPOINT}/`,
 };

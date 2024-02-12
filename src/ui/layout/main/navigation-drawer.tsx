@@ -1,3 +1,4 @@
+import DiamondIcon from "@mui/icons-material/Diamond";
 import HomeIcon from "@mui/icons-material/Home";
 import { Divider, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
@@ -70,6 +71,11 @@ const NavigationDrawer = () => {
       <nav>
         <List>
           <DrawerListItem to="/" text="Home" icon={<HomeIcon />} />
+          <DrawerListItem
+            to="/pawn-ticket"
+            text="Pawn Ticket"
+            icon={<DiamondIcon />}
+          />
         </List>
       </nav>
     </Drawer>

@@ -1,5 +1,9 @@
 const ROUTE_PATHS = {
-  REGISTER: "register",
+  PAWN_TICKET: {
+    BASE: "pawn-ticket",
+    ALL: "all",
+    UPDATE: "update",
+  },
   LOGIN: "login",
 };
 export default ROUTE_PATHS;

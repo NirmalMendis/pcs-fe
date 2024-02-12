@@ -9,7 +9,7 @@ const App = () => {
   const [mode] = useState<PaletteMode>("light");
 
   const theme = useMemo(
-    () => responsiveFontSizes(createTheme(getDesignTokens(mode), commonTheme)),
+    () => responsiveFontSizes(createTheme(commonTheme, getDesignTokens(mode))),
     [mode]
   );
 

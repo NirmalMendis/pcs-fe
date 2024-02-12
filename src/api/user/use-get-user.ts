@@ -27,7 +27,7 @@ const useGetUser = (
     queryKey: [GET_USER, data.id],
     queryFn: ({ signal }) =>
       apiService.getRequest<GetUserResponse>({
-        path: USER_API.LOGIN(data.id),
+        path: USER_API.GET_USER(data.id),
         signal,
       }),
     enabled: enabled ?? true,
