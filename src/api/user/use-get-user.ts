@@ -1,23 +1,14 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { USER_API } from "../../constants/api-endpoints";
 import { GET_USER } from "../../constants/query-leys";
+import User from "../../shared/types/user";
 import { apiService } from "../api-service";
 
 export interface GetUserRequest {
   id: number;
 }
 
-export interface GetUserResponse {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  mobileNo: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  branchId: number;
-}
+export type GetUserResponse = User;
 
 const useGetUser = (
   data: GetUserRequest,

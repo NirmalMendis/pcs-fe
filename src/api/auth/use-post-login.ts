@@ -11,7 +11,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   accessToken: string;
-  user: User;
+  user: Pick<User, "id" | "email" | "firstName" | "lastName">;
 }
 
 const usePostLogin = (): UseMutationResult<

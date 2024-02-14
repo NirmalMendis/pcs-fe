@@ -12,7 +12,10 @@ const createPawnTicketSchema = yup.object({
     .required("Please enter the interest rate.")
     .typeError("Please enter a number value"),
   status: yup.string().required("Please select a status"),
-  customerId: yup.number().required("Please select or register the customer"),
+  customerId: yup
+    .number()
+    .required("Please select or register the customer")
+    .typeError("Please select or register the customer"),
 });
 
 export default createPawnTicketSchema;

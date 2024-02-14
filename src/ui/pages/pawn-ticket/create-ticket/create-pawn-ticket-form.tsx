@@ -1,4 +1,7 @@
+import SearchIcon from "@mui/icons-material/Search";
 import {
+  Button,
+  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -6,15 +9,20 @@ import {
   LinearProgress,
   MenuItem,
   Select,
+  Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import useMetaData from "../../../../api/meta-data/use-get-metadata";
 import { MetaDataEnum } from "../../../../constants/string-constants";
+import ModalDrawer from "../../../../shared/components/modal-drawer";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
+import CreateCustomerForm from "../../customer/create-customer-form";
+import SearchCustomer from "../../customer/search-customer";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
 import { ActiveStepContext } from "./create-ticket";
 import StepperBtns from "./stepper-btns";
@@ -34,7 +42,7 @@ const CreatePawnTicketForm = () => {
     useMetaData<Array<string>>({
       type: MetaDataEnum.PAWN_TICKETS_STATUS,
     });
-
+  const [openCustomerModal, setOpenCustomerModal] = useState(false);
   const { handleNext } = useContext(ActiveStepContext);
 
   const onSubmit = (data: CreatePawnTicketFormValues) => {
@@ -43,10 +51,36 @@ const CreatePawnTicketForm = () => {
     if (handleNext) handleNext();
   };
 
+  const handleOpenGuestSearch = () => {
+    setOpenCustomerModal(true);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container rowSpacing={3} columnSpacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
+          <TextField
+            label="Customer Id"
+            {...register("customerId")}
+            placeholder="Click search to select or add Guest"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{
+              readOnly: true,
+              endAdornment: (
+                <Button
+                  onClick={handleOpenGuestSearch}
+                  startIcon={<SearchIcon color="secondary" />}
+                  sx={{ pl: 2, pr: 2 }}
+                >
+                  Search
+                </Button>
+              ),
+            }}
+            error={!!errors.customerId}
+            helperText={errors.customerId?.message}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
           <Controller
             control={control}
             name="pawnDate"
@@ -72,7 +106,7 @@ const CreatePawnTicketForm = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Controller
             control={control}
             name="dueDate"
@@ -98,7 +132,7 @@ const CreatePawnTicketForm = () => {
             }}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <TextField
             label="Principal amount"
             type="number"
@@ -107,7 +141,7 @@ const CreatePawnTicketForm = () => {
             helperText={errors.principalAmount?.message}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <TextField
             label="Interest rate"
             type="number"
@@ -116,7 +150,7 @@ const CreatePawnTicketForm = () => {
             helperText={errors.interestRate?.message}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <FormControl fullWidth>
             <InputLabel>Status</InputLabel>
             <Select
@@ -140,6 +174,23 @@ const CreatePawnTicketForm = () => {
           <StepperBtns disableAction={!isValid} />
         </Grid>
       </Grid>
+      <ModalDrawer
+        open={openCustomerModal}
+        handleModalClose={setOpenCustomerModal}
+        anchor="right"
+        PaperProps={{ sx: { width: { xs: "100%", md: "75%", lg: "50%" } } }}
+      >
+        <Stack sx={{ p: 2 }} spacing={3}>
+          <SearchCustomer />
+          <Divider />
+          <Stack spacing={2}>
+            <Typography variant="h6" textAlign={"center"}>
+              New Customer ? Register Customer
+            </Typography>
+            <CreateCustomerForm />
+          </Stack>
+        </Stack>
+      </ModalDrawer>
     </form>
   );
 };

@@ -6,7 +6,7 @@ import User from "../shared/types/user";
 import createSelectors from "./create-selectors";
 
 export interface AuthState {
-  user?: User;
+  user?: Pick<User, "id" | "email" | "firstName" | "lastName">;
   accessToken?: string;
   refreshToken?: string;
   isAuthenticed: boolean;

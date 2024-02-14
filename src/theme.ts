@@ -48,7 +48,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           ternary: {
             light: "#b2ebf2",
             main: "#f5f5f5",
-            dark: "#829baf",
+            dark: "#a7bac9",
             contrastText: "#000",
           },
         }

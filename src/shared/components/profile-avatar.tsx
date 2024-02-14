@@ -41,7 +41,9 @@ function stringAvatar(
       height: sizeObj.height,
       textTransform: "capitalize",
     },
-    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    children: `${name.split(" ")[0][0]}${
+      name.split(" ").length > 1 ? name.split(" ")[1][0] : ""
+    }`,
   };
 }
 

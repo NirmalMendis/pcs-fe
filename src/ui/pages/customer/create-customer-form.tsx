@@ -20,11 +20,7 @@ import createCustomerSchema from "./create-customer-schema";
 type CreateCustomerSchemaType = typeof createCustomerSchema;
 type CreateCustomerFormValues = InferType<CreateCustomerSchemaType>;
 
-export interface CreateCustomerFormProps {
-  actionType: "default" | "stepper";
-}
-
-const CreateCustomerForm: FC<CreateCustomerFormProps> = ({ actionType }) => {
+const CreateCustomerForm = () => {
   const {
     register,
     handleSubmit,
@@ -39,23 +35,6 @@ const CreateCustomerForm: FC<CreateCustomerFormProps> = ({ actionType }) => {
     // eslint-disable-next-line no-console
     console.log(data);
     if (handleNext) handleNext();
-  };
-
-  const renderActions = () => {
-    switch (actionType) {
-      case "default":
-        return (
-          <Grid item xs={12} display={"flex"} justifyContent={"end"}>
-            <Button type="submit">Register</Button>
-          </Grid>
-        );
-      case "stepper":
-        return (
-          <Grid item xs={12} key={"stepper-action"}>
-            <StepperBtns disableAction={!isValid} />
-          </Grid>
-        );
-    }
   };
 
   return (
@@ -162,7 +141,9 @@ const CreateCustomerForm: FC<CreateCustomerFormProps> = ({ actionType }) => {
             helperText={errors.postalCode?.message}
           />
         </Grid>
-        {renderActions()}
+        <Grid item xs={12} display={"flex"} justifyContent={"end"}>
+          <Button type="submit">Register</Button>
+        </Grid>
       </Grid>
     </form>
   );

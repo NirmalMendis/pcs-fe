@@ -5,7 +5,6 @@ import {
   Fade,
   Grid,
   IconButton,
-  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -26,7 +25,7 @@ const AllPawnTickets = () => {
   return (
     <Grid container sx={{ p: 1 }}>
       <Grid item xs={12}>
-        <Slide in={showCreateTicket} direction="up" mountOnEnter unmountOnExit>
+        <Fade in={showCreateTicket} mountOnEnter unmountOnExit>
           <Box>
             <Box display="flex" sx={{ justifyContent: "end" }}>
               <IconButton onClick={handleHideCreateTicket}>
@@ -35,7 +34,7 @@ const AllPawnTickets = () => {
             </Box>
             <CreateTicket />
           </Box>
-        </Slide>
+        </Fade>
       </Grid>
       <Grid item xs={12}>
         <Fade

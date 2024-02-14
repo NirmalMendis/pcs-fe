@@ -3,3 +3,5 @@ export const HTTP_STATUS_CODES = {
 };
 
 export const DRAWER_WIDTH = 230;
+
+export const TYPING_TIMEOUT_FOR_SEARCH = 1000;

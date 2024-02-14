@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { createContext, useState } from "react";
 import PageTitleCard from "../../../../shared/components/page-title-card";
-import CreateCustomerForm from "../../customer/create-customer-form";
 import CreatePawnTicketForm from "./create-pawn-ticket-form";
 
 interface ActiveStepContextProps {
@@ -24,11 +23,7 @@ export const ActiveStepContext = createContext<ActiveStepContextProps>({
   activeStep: 0,
 });
 
-export const createTicketSteps = [
-  "Register/Select Customer",
-  "Create Pawn Ticket",
-  "Add items",
-];
+export const createTicketSteps = ["Create Pawn Ticket", "Add items"];
 
 const CreateTicket = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -50,12 +45,10 @@ const CreateTicket = () => {
       case 0:
         return (
           <Stack spacing={4}>
-            <Typography variant="h6">Register/Search Customer</Typography>
-            <CreateCustomerForm actionType="stepper" />
+            <Typography variant="h6">Enter Pawn Ticket Details</Typography>
+            <CreatePawnTicketForm />
           </Stack>
         );
-      case 1:
-        return <CreatePawnTicketForm />;
     }
   };
 
