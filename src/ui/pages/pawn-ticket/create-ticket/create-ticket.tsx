@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import { createContext, useState } from "react";
 import PageTitleCard from "../../../../shared/components/page-title-card";
-import CreatePawnTicketForm from "./create-pawn-ticket-form";
+import CreatePawnTicketForm, {
+  CreatePawnTicketFormValues,
+} from "./create-pawn-ticket-form";
 
 interface ActiveStepContextProps {
   activeStep: number;
@@ -19,14 +21,42 @@ interface ActiveStepContextProps {
   handleBack?: () => void;
 }
 
+interface CreateTicketContext {
+  createPawnTicketFormData?: Partial<
+    CreatePawnTicketFormValues & {
+      customerName: string;
+    }
+  >;
+  setCreatePawnTicketFormData: React.Dispatch<
+    React.SetStateAction<
+      Partial<
+        CreatePawnTicketFormValues & {
+          customerName: string;
+        }
+      >
+    >
+  >;
+}
+
+export const createTicketSteps = ["Create Pawn Ticket", "Add items"];
+
 export const ActiveStepContext = createContext<ActiveStepContextProps>({
   activeStep: 0,
 });
 
-export const createTicketSteps = ["Create Pawn Ticket", "Add items"];
+export const CreateTicketContext = createContext<CreateTicketContext>({
+  setCreatePawnTicketFormData: () => null,
+});
 
 const CreateTicket = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [createPawnTicketFormData, setCreatePawnTicketFormData] = useState<
+    Partial<
+      CreatePawnTicketFormValues & {
+        customerName: string;
+      }
+    >
+  >({});
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -89,7 +119,14 @@ const CreateTicket = () => {
               <ActiveStepContext.Provider
                 value={{ activeStep, handleNext, handleBack }}
               >
-                {renderStepperContent()}
+                <CreateTicketContext.Provider
+                  value={{
+                    createPawnTicketFormData,
+                    setCreatePawnTicketFormData,
+                  }}
+                >
+                  {renderStepperContent()}
+                </CreateTicketContext.Provider>
               </ActiveStepContext.Provider>
             </>
           )}

@@ -53,7 +53,7 @@ const MainLayout = () => {
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <CssBaseline />
-      <AppBar variant="outlined" position="fixed" open={open}>
+      <AppBar position="fixed" open={open}>
         <Toolbar
           style={{
             maxHeight: "40px",

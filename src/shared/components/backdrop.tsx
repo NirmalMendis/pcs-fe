@@ -7,7 +7,7 @@ export type BackdropProps = BackdropOwnProps;
 const Backdrop: FC<BackdropProps> = ({ open }) => {
   return (
     <MuiBackdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 3 }}
       open={open}
     >
       <CircularProgress color="inherit" />

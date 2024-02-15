@@ -9,36 +9,36 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { FC, useContext } from "react";
+import { FC } from "react";
+import { UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
 import useGetAllBranches from "../../../api/branch/use-get-all-branches";
 import { useCustomHookForm } from "../../../shared/hooks/use-custom-form";
-import { ActiveStepContext } from "../pawn-ticket/create-ticket/create-ticket";
-import StepperBtns from "../pawn-ticket/create-ticket/stepper-btns";
 import createCustomerSchema from "./create-customer-schema";
 
 type CreateCustomerSchemaType = typeof createCustomerSchema;
-type CreateCustomerFormValues = InferType<CreateCustomerSchemaType>;
+export type CreateCustomerFormValues = InferType<CreateCustomerSchemaType>;
 
-const CreateCustomerForm = () => {
+export interface CRUCustomerForm {
+  onSubmit: (
+    data: CreateCustomerFormValues,
+    reset: UseFormReset<CreateCustomerFormValues>
+  ) => void;
+}
+
+const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
     formState: { isValid, errors },
+    reset,
   } = useCustomHookForm<CreateCustomerSchemaType>(createCustomerSchema);
 
   const { data: allBranchData, isFetching: isFetchingAllBranchData } =
     useGetAllBranches();
-  const { handleNext } = useContext(ActiveStepContext);
-
-  const onSubmit = (data: CreateCustomerFormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
-    if (handleNext) handleNext();
-  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit((data) => onSubmit(data, reset))}>
       <Grid container rowSpacing={3} columnSpacing={2}>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
@@ -142,11 +142,13 @@ const CreateCustomerForm = () => {
           />
         </Grid>
         <Grid item xs={12} display={"flex"} justifyContent={"end"}>
-          <Button type="submit">Register</Button>
+          <Button type="submit" disabled={!isValid}>
+            Register
+          </Button>
         </Grid>
       </Grid>
     </form>
   );
 };
 
-export default CreateCustomerForm;
+export default CRUCustomerForm;

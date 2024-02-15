@@ -25,4 +25,5 @@ export const BRANCH_API = {
 
 export const CUSTOMER_API = {
   GET_SEARCH_CUSTOMER: `${CUSTOMER_ENPOINT}/search`,
+  POST_CREATE_CUSTOMER: `${CUSTOMER_ENPOINT}`,
 };

@@ -1,5 +1,6 @@
 import { PaletteMode, createTheme } from "@mui/material";
 import { ThemeProvider, responsiveFontSizes } from "@mui/material/styles";
+import { SnackbarProvider } from "notistack";
 import { useMemo, useState } from "react";
 import Routes from "./routes/routes";
 import { commonTheme, getDesignTokens } from "./theme";
@@ -15,7 +16,9 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes />
+      <SnackbarProvider maxSnack={3}>
+        <Routes />
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

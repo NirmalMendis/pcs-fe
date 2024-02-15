@@ -2,7 +2,7 @@ import UpdateIcon from "@mui/icons-material/Update";
 import ViewCompactIcon from "@mui/icons-material/ViewCompact";
 import TabLayout from "../../../shared/components/tab-layout";
 
-const PawnTicket = () => {
+const PawnTicketLayout = () => {
   const tabs = [
     {
       title: "All Pawn Tickets",
@@ -19,4 +19,4 @@ const PawnTicket = () => {
   return <TabLayout tabs={tabs} />;
 };
 
-export default PawnTicket;
+export default PawnTicketLayout;

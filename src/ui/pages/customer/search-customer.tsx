@@ -12,13 +12,18 @@ import {
   Typography,
 } from "@mui/material";
 import { debounce } from "lodash";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import useGetSearchCustomers from "../../../api/customer/use-get-search-customers";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../constants/generic-constants";
 import ProfileAvatar from "../../../shared/components/profile-avatar";
 
-const SearchCustomer = () => {
+export interface SearchCustomerProps {
+  handleSelectCustomer: (customerId: number, name: string) => void;
+}
+
+const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
   const [searchQuery, setSearchQuery] = useState("");
+
   const {
     data,
     refetch,
@@ -85,6 +90,7 @@ const SearchCustomer = () => {
                   borderRadius: "10px",
                   mb: 1,
                 }}
+                onClick={() => handleSelectCustomer(customer.id, customer.name)}
               >
                 {!!customer.name && (
                   <ListItemAvatar>
