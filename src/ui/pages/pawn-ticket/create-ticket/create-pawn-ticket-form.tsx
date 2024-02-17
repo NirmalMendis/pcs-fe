@@ -17,6 +17,7 @@ import { InferType } from "yup";
 import useMetaData from "../../../../api/meta-data/use-get-metadata";
 import { MetaDataEnum } from "../../../../constants/string-constants";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
+import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
 import { ActiveStepContext, CreateTicketContext } from "./create-ticket";
 import SearchRegisterCustomerModal from "./search-register-customer-modal";
@@ -37,10 +38,11 @@ const CreatePawnTicketForm = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    formState: { isValid, errors, touchedFields },
   } = useCustomHookForm<CreatePawnTicketSchemaType>(createPawnTicketSchema, {
     defaultValues: createPawnTicketFormData,
   });
+  const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
   const { data: PawnTicketStatuses, isFetching: isFetchingPawnTicketStatuses } =
     useMetaData<Array<string>>({
@@ -69,7 +71,7 @@ const CreatePawnTicketForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Grid container rowSpacing={3} columnSpacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <TextField
@@ -89,9 +91,9 @@ const CreatePawnTicketForm = () => {
                   </Button>
                 ),
               }}
-              error={!!errors.customerId}
+              error={!!getSingleFieldError("customerId")}
               helperText={
-                errors.customerId?.message ||
+                getSingleFieldError("customerId")?.message ||
                 "Click search to select or register customer"
               }
             />
@@ -108,8 +110,8 @@ const CreatePawnTicketForm = () => {
                     slotProps={{
                       textField: {
                         size: "small",
-                        error: !!errors.pawnDate,
-                        helperText: errors.pawnDate?.message,
+                        error: !!getSingleFieldError("pawnDate"),
+                        helperText: getSingleFieldError("pawnDate")?.message,
                       },
                     }}
                     disableFuture
@@ -135,8 +137,8 @@ const CreatePawnTicketForm = () => {
                     slotProps={{
                       textField: {
                         size: "small",
-                        error: !!errors.dueDate,
-                        helperText: errors.dueDate?.message,
+                        error: !!getSingleFieldError("dueDate"),
+                        helperText: getSingleFieldError("dueDate")?.message,
                       },
                     }}
                     disablePast
@@ -155,8 +157,8 @@ const CreatePawnTicketForm = () => {
               label="Principal amount"
               type="number"
               {...register("principalAmount")}
-              error={!!errors.principalAmount}
-              helperText={errors.principalAmount?.message}
+              error={!!getSingleFieldError("principalAmount")}
+              helperText={getSingleFieldError("principalAmount")?.message}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
@@ -164,8 +166,8 @@ const CreatePawnTicketForm = () => {
               label="Interest rate"
               type="number"
               {...register("interestRate")}
-              error={!!errors.interestRate}
-              helperText={errors.interestRate?.message}
+              error={!!getSingleFieldError("interestRate")}
+              helperText={getSingleFieldError("interestRate")?.message}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
@@ -174,7 +176,7 @@ const CreatePawnTicketForm = () => {
               <Select
                 label="Status"
                 {...register("status")}
-                error={!!errors.status}
+                error={!!getSingleFieldError("status")}
               >
                 {PawnTicketStatuses?.map((type) => (
                   <MenuItem value={type} key={type}>
@@ -182,14 +184,16 @@ const CreatePawnTicketForm = () => {
                   </MenuItem>
                 ))}
               </Select>
-              {errors.status && (
-                <FormHelperText error>{errors.status.message}</FormHelperText>
+              {getSingleFieldError("status") && (
+                <FormHelperText error>
+                  {getSingleFieldError("status")?.message}
+                </FormHelperText>
               )}
               {isFetchingPawnTicketStatuses && <LinearProgress />}
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <StepperBtns disableAction={!isValid} />
+            <StepperBtns disableAction={!isValid} type="submit" />
           </Grid>
         </Grid>
       </form>

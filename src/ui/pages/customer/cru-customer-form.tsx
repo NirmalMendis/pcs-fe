@@ -14,15 +14,16 @@ import { UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
 import useGetAllBranches from "../../../api/branch/use-get-all-branches";
 import { useCustomHookForm } from "../../../shared/hooks/use-custom-form";
-import createCustomerSchema from "./create-customer-schema";
+import useSingleFieldError from "../../../shared/hooks/use-single-field-error";
+import cruCustomerSchema from "./cru-customer-schema";
 
-type CreateCustomerSchemaType = typeof createCustomerSchema;
-export type CreateCustomerFormValues = InferType<CreateCustomerSchemaType>;
+type CRUCustomerSchemaType = typeof cruCustomerSchema;
+export type CRUCustomerFormValues = InferType<CRUCustomerSchemaType>;
 
 export interface CRUCustomerForm {
   onSubmit: (
-    data: CreateCustomerFormValues,
-    reset: UseFormReset<CreateCustomerFormValues>
+    data: CRUCustomerFormValues,
+    reset: UseFormReset<CRUCustomerFormValues>
   ) => void;
 }
 
@@ -30,12 +31,14 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid, errors, touchedFields },
     reset,
-  } = useCustomHookForm<CreateCustomerSchemaType>(createCustomerSchema);
+  } = useCustomHookForm<CRUCustomerSchemaType>(cruCustomerSchema);
 
   const { data: allBranchData, isFetching: isFetchingAllBranchData } =
     useGetAllBranches();
+
+  const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data, reset))}>
@@ -44,24 +47,24 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
           <TextField
             label="NIC number"
             {...register("nicNo")}
-            error={!!errors.nicNo}
-            helperText={errors.nicNo?.message}
+            error={!!getSingleFieldError("nicNo")}
+            helperText={getSingleFieldError("nicNo")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="First name"
             {...register("firstName")}
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
+            error={!!getSingleFieldError("firstName")}
+            helperText={getSingleFieldError("firstName")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="Last name"
             {...register("lastName")}
-            error={!!errors.lastName}
-            helperText={errors.lastName?.message}
+            error={!!getSingleFieldError("lastName")}
+            helperText={getSingleFieldError("lastName")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -69,16 +72,16 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             label="Email"
             type="email"
             {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={!!getSingleFieldError("email")}
+            helperText={getSingleFieldError("email")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="Mobile number"
             {...register("mobileNo")}
-            error={!!errors.mobileNo}
-            helperText={errors.mobileNo?.message}
+            error={!!getSingleFieldError("mobileNo")}
+            helperText={getSingleFieldError("mobileNo")?.message}
           />
         </Grid>
         <Grid item xs={4}>
@@ -87,7 +90,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             <Select
               label="Branch"
               {...register("branchId")}
-              error={!!errors.branchId}
+              error={!!getSingleFieldError("branchId")}
             >
               {allBranchData?.map((branch) => (
                 <MenuItem value={branch.id} key={branch.id}>
@@ -95,8 +98,10 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
                 </MenuItem>
               ))}
             </Select>
-            {errors.branchId && (
-              <FormHelperText error>{errors.branchId.message}</FormHelperText>
+            {getSingleFieldError("branchId") && (
+              <FormHelperText error>
+                {getSingleFieldError("branchId")?.message}
+              </FormHelperText>
             )}
             {isFetchingAllBranchData && <LinearProgress />}
           </FormControl>
@@ -105,40 +110,40 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
           <TextField
             label="Address Line 1"
             {...register("addressLine1")}
-            error={!!errors.addressLine1}
-            helperText={errors.addressLine1?.message}
+            error={!!getSingleFieldError("addressLine1")}
+            helperText={getSingleFieldError("addressLine1")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="Address Line 2"
             {...register("addressLine2")}
-            error={!!errors.addressLine2}
-            helperText={errors.addressLine2?.message}
+            error={!!getSingleFieldError("addressLine2")}
+            helperText={getSingleFieldError("addressLine2")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="Address Line 3"
             {...register("addressLine3")}
-            error={!!errors.addressLine3}
-            helperText={errors.addressLine3?.message}
+            error={!!getSingleFieldError("addressLine3")}
+            helperText={getSingleFieldError("addressLine3")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="City"
             {...register("city")}
-            error={!!errors.city}
-            helperText={errors.city?.message}
+            error={!!getSingleFieldError("city")}
+            helperText={getSingleFieldError("city")?.message}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField
             label="Postal code"
             {...register("postalCode")}
-            error={!!errors.postalCode}
-            helperText={errors.postalCode?.message}
+            error={!!getSingleFieldError("postalCode")}
+            helperText={getSingleFieldError("postalCode")?.message}
           />
         </Grid>
         <Grid item xs={12} display={"flex"} justifyContent={"end"}>

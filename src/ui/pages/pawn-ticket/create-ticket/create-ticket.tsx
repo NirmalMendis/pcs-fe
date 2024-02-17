@@ -9,8 +9,15 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { createContext, useState } from "react";
+import { useSnackbar } from "notistack";
+import { Dispatch, SetStateAction, createContext, useState } from "react";
+import usePostCreatePawnTicket, {
+  PostCreatePawnTicketRequest,
+} from "../../../../api/pawn-ticket/use-post-create-pawn-ticket";
+import { DEFAULT_BRANCH_ID } from "../../../../constants/generic-constants";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import AddItems from "./add-item/add-items";
+import { CRUItemFormValues } from "./add-item/cru-item-form";
 import CreatePawnTicketForm, {
   CreatePawnTicketFormValues,
 } from "./create-pawn-ticket-form";
@@ -21,21 +28,22 @@ interface ActiveStepContextProps {
   handleBack?: () => void;
 }
 
+export interface TicketFormItem extends CRUItemFormValues {
+  isSubmitted: boolean;
+  uiId: number;
+}
+
+export interface TicketFormData extends CreatePawnTicketFormValues {
+  customerName: string;
+}
+
 interface CreateTicketContext {
-  createPawnTicketFormData?: Partial<
-    CreatePawnTicketFormValues & {
-      customerName: string;
-    }
+  createPawnTicketFormData?: Partial<TicketFormData>;
+  setCreatePawnTicketFormData: Dispatch<
+    SetStateAction<Partial<TicketFormData>>
   >;
-  setCreatePawnTicketFormData: React.Dispatch<
-    React.SetStateAction<
-      Partial<
-        CreatePawnTicketFormValues & {
-          customerName: string;
-        }
-      >
-    >
-  >;
+  items?: Array<TicketFormItem>;
+  setItems: Dispatch<SetStateAction<Array<TicketFormItem>>>;
 }
 
 export const createTicketSteps = ["Create Pawn Ticket", "Add items"];
@@ -46,17 +54,30 @@ export const ActiveStepContext = createContext<ActiveStepContextProps>({
 
 export const CreateTicketContext = createContext<CreateTicketContext>({
   setCreatePawnTicketFormData: () => null,
+  setItems: () => null,
 });
+
+export const emptyItem: CRUItemFormValues & {
+  isSubmitted: boolean;
+  uiId: number;
+} = {
+  appraisedValue: 0,
+  caratage: 0,
+  description: "",
+  pawningAmount: 0,
+  weight: 0,
+  isSubmitted: false,
+  uiId: 0,
+};
 
 const CreateTicket = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [createPawnTicketFormData, setCreatePawnTicketFormData] = useState<
-    Partial<
-      CreatePawnTicketFormValues & {
-        customerName: string;
-      }
-    >
+    Partial<TicketFormData>
   >({});
+  const [items, setItems] = useState<Array<TicketFormItem>>([emptyItem]);
+  const { mutate } = usePostCreatePawnTicket();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -70,14 +91,42 @@ const CreateTicket = () => {
     setActiveStep(0);
   };
 
+  const handleCreatePawnTicket = () => {
+    if (items && createPawnTicketFormData)
+      mutate(
+        {
+          payload: {
+            ...(createPawnTicketFormData as PostCreatePawnTicketRequest),
+            branchId: DEFAULT_BRANCH_ID,
+            items: items,
+          },
+        },
+        {
+          onSuccess: (data) => {
+            enqueueSnackbar(`Pawn ticket with id ${data.id} has been saved.`, {
+              variant: "success",
+            });
+            if (handleNext) handleNext();
+          },
+        }
+      );
+  };
+
   const renderStepperContent = () => {
     switch (activeStep) {
       case 0:
         return (
-          <Stack spacing={4}>
+          <>
             <Typography variant="h6">Enter Pawn Ticket Details</Typography>
             <CreatePawnTicketForm />
-          </Stack>
+          </>
+        );
+      case 1:
+        return (
+          <>
+            <Typography variant="h6">Add Items</Typography>
+            <AddItems handleCreatePawnTicket={handleCreatePawnTicket} />
+          </>
         );
     }
   };
@@ -123,9 +172,11 @@ const CreateTicket = () => {
                   value={{
                     createPawnTicketFormData,
                     setCreatePawnTicketFormData,
+                    items,
+                    setItems,
                   }}
                 >
-                  {renderStepperContent()}
+                  <Stack spacing={4}>{renderStepperContent()}</Stack>
                 </CreateTicketContext.Provider>
               </ActiveStepContext.Provider>
             </>

@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const createCustomerSchema = yup.object({
+const cruCustomerSchema = yup.object({
   nicNo: yup.string().required("Please enter customer NIC number"),
   firstName: yup.string().required("Please enter first name"),
   lastName: yup.string().required("Please enter last name"),
@@ -17,4 +17,4 @@ const createCustomerSchema = yup.object({
   branchId: yup.number().required("Please select the branch"),
 });
 
-export default createCustomerSchema;
+export default cruCustomerSchema;

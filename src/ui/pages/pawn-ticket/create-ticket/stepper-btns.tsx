@@ -3,11 +3,16 @@ import React, { FC, useContext } from "react";
 import { ActiveStepContext, createTicketSteps } from "./create-ticket";
 
 export interface StepperBtnsProps {
-  handleAction?: () => boolean;
+  handleAction?: () => void;
   disableAction?: boolean;
+  type?: "button" | "reset" | "submit" | undefined;
 }
 
-const StepperBtns: FC<StepperBtnsProps> = ({ handleAction, disableAction }) => {
+const StepperBtns: FC<StepperBtnsProps> = ({
+  handleAction,
+  disableAction,
+  type,
+}) => {
   const { activeStep, handleBack } = useContext(ActiveStepContext);
 
   return (
@@ -21,7 +26,7 @@ const StepperBtns: FC<StepperBtnsProps> = ({ handleAction, disableAction }) => {
         Back
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
-      <Button onClick={handleAction} type="submit" disabled={disableAction}>
+      <Button onClick={handleAction} type={type} disabled={disableAction}>
         {activeStep === createTicketSteps.length - 1 ? "Finish" : "Next"}
       </Button>
     </Box>

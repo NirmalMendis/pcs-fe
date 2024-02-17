@@ -83,7 +83,7 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
                 key={customer.id}
                 sx={{
                   cursor: "pointer",
-                  backgroundColor: "ternary.main",
+                  backgroundColor: "secondary.light",
                   ":hover": { backgroundColor: "ternary.dark" },
                   pt: 0.5,
                   pb: 0.5,

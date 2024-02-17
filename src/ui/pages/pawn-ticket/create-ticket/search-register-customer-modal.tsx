@@ -6,7 +6,7 @@ import usePostCreateCustomer from "../../../../api/customer/use-post-create-cust
 import Backdrop from "../../../../shared/components/backdrop";
 import ModalDrawer from "../../../../shared/components/modal-drawer";
 import CRUCustomerForm, {
-  CreateCustomerFormValues,
+  CRUCustomerFormValues,
 } from "../../customer/cru-customer-form";
 import SearchCustomer from "../../customer/search-customer";
 import { CreateTicketContext } from "./create-ticket";
@@ -41,8 +41,8 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   };
 
   const handleRegisterCustomer = (
-    data: CreateCustomerFormValues,
-    reset: UseFormReset<CreateCustomerFormValues>
+    data: CRUCustomerFormValues,
+    reset: UseFormReset<CRUCustomerFormValues>
   ) => {
     mutatePostCreateCustomer(
       {
