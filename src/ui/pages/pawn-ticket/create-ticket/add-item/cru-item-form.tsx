@@ -3,6 +3,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Button, Grid, Stack, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { InferType } from "yup";
+import NumberField from "../../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../../shared/hooks/use-single-field-error";
 import cruItemSchema from "./cru-item-schema";
@@ -71,21 +72,21 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <TextField
+          <NumberField
             label="Caratage"
             {...register("caratage", {
               valueAsNumber: true,
             })}
-            type="number"
+            customSuffix="K"
             error={!!getSingleFieldError("caratage")}
             helperText={getSingleFieldError("caratage")?.message}
             disabled={disableFields}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <TextField
+          <NumberField
             label="Appraised Value"
-            type="number"
+            customPrefix="Rs."
             {...register("appraisedValue")}
             error={!!getSingleFieldError("appraisedValue")}
             helperText={getSingleFieldError("appraisedValue")?.message}
@@ -93,9 +94,9 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <TextField
+          <NumberField
             label="Pawning Amount"
-            type="number"
+            customPrefix="Rs."
             {...register("pawningAmount")}
             error={!!getSingleFieldError("pawningAmount")}
             helperText={getSingleFieldError("pawningAmount")?.message}
@@ -103,9 +104,9 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <TextField
+          <NumberField
             label="Weight (g)"
-            type="number"
+            customSuffix="g"
             {...register("weight")}
             error={!!getSingleFieldError("weight")}
             helperText={getSingleFieldError("weight")?.message}

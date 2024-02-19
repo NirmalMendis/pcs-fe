@@ -70,11 +70,15 @@ const NavigationDrawer = () => {
       <Divider />
       <nav>
         <List>
-          <DrawerListItem to="/" text="Home" icon={<HomeIcon />} />
+          <DrawerListItem
+            to="/"
+            text="Home"
+            icon={<HomeIcon color="primary" />}
+          />
           <DrawerListItem
             to="/pawn-ticket"
             text="Pawn Ticket"
-            icon={<DiamondIcon />}
+            icon={<DiamondIcon color="primary" />}
           />
         </List>
       </nav>

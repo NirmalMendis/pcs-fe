@@ -5,7 +5,7 @@ import TabLayout from "../../../shared/components/tab-layout";
 const PawnTicketLayout = () => {
   const tabs = [
     {
-      title: "All Pawn Tickets",
+      title: "Pawn Ticket",
       icon: <ViewCompactIcon />,
       to: "/pawn-ticket/all",
     },

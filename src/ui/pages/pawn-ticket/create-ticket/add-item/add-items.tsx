@@ -59,7 +59,7 @@ const CRUItems: FC<CRUITems> = ({ handleCreatePawnTicket }) => {
           sx={{
             p: 2,
             borderColor: "secondary.dark",
-            backgroundColor: "secondary.light",
+            backgroundColor: "primary.light",
           }}
           ref={
             items.findIndex((arrayItem) => arrayItem.uiId === item.uiId) ===

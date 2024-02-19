@@ -16,6 +16,7 @@ import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import useMetaData from "../../../../api/meta-data/use-get-metadata";
 import { MetaDataEnum } from "../../../../constants/string-constants";
+import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
@@ -61,6 +62,8 @@ const CreatePawnTicketForm = () => {
   const setCustomerId = (customerId: number) => {
     setValue("customerId", customerId, {
       shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
     });
   };
 
@@ -153,18 +156,20 @@ const CreatePawnTicketForm = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <TextField
+            <NumberField
               label="Principal amount"
-              type="number"
-              {...register("principalAmount")}
+              {...register("principalAmount", {
+                valueAsNumber: true,
+              })}
+              customPrefix="Rs."
               error={!!getSingleFieldError("principalAmount")}
               helperText={getSingleFieldError("principalAmount")?.message}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <TextField
-              label="Interest rate"
-              type="number"
+            <NumberField
+              label="Interest rate (%)"
+              customSuffix="%"
               {...register("interestRate")}
               error={!!getSingleFieldError("interestRate")}
               helperText={getSingleFieldError("interestRate")?.message}
