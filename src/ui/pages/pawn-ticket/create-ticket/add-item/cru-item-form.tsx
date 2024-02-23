@@ -2,6 +2,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button, Grid, Stack, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import NumberField from "../../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../../shared/hooks/use-custom-form";
@@ -23,6 +24,7 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
     formState: { isValid, errors, isSubmitted, submitCount, touchedFields },
     reset,
     setValue,
+    control,
   } = useCustomHookForm<CRUItemSchemaType>(cruItemSchema, {
     defaultValues: item,
   });
@@ -72,45 +74,95 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <NumberField
-            label="Caratage"
-            {...register("caratage", {
-              valueAsNumber: true,
-            })}
-            customSuffix="K"
-            error={!!getSingleFieldError("caratage")}
-            helperText={getSingleFieldError("caratage")?.message}
-            disabled={disableFields}
+          <Controller
+            control={control}
+            name="caratage"
+            render={({ field }) => {
+              return (
+                <NumberField
+                  label="Caratage"
+                  customSuffix="K"
+                  required
+                  error={!!getSingleFieldError("caratage")}
+                  helperText={getSingleFieldError("caratage")?.message}
+                  disabled={disableFields}
+                  value={field.value}
+                  inputRef={field.ref}
+                  onChange={(date) => {
+                    field.onChange(date);
+                  }}
+                />
+              );
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <NumberField
-            label="Appraised Value"
-            customPrefix="Rs."
-            {...register("appraisedValue")}
-            error={!!getSingleFieldError("appraisedValue")}
-            helperText={getSingleFieldError("appraisedValue")?.message}
-            disabled={disableFields}
+          <Controller
+            control={control}
+            name="appraisedValue"
+            render={({ field }) => {
+              return (
+                <NumberField
+                  label="Appraised Value"
+                  customPrefix="Rs."
+                  required
+                  error={!!getSingleFieldError("appraisedValue")}
+                  helperText={getSingleFieldError("appraisedValue")?.message}
+                  disabled={disableFields}
+                  value={field.value}
+                  inputRef={field.ref}
+                  onChange={(date) => {
+                    field.onChange(date);
+                  }}
+                />
+              );
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <NumberField
-            label="Pawning Amount"
-            customPrefix="Rs."
-            {...register("pawningAmount")}
-            error={!!getSingleFieldError("pawningAmount")}
-            helperText={getSingleFieldError("pawningAmount")?.message}
-            disabled={disableFields}
+          <Controller
+            control={control}
+            name="pawningAmount"
+            render={({ field }) => {
+              return (
+                <NumberField
+                  label="Pawning Amount"
+                  customPrefix="Rs."
+                  required
+                  error={!!getSingleFieldError("pawningAmount")}
+                  helperText={getSingleFieldError("pawningAmount")?.message}
+                  disabled={disableFields}
+                  value={field.value}
+                  inputRef={field.ref}
+                  onChange={(date) => {
+                    field.onChange(date);
+                  }}
+                />
+              );
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
-          <NumberField
-            label="Weight (g)"
-            customSuffix="g"
-            {...register("weight")}
-            error={!!getSingleFieldError("weight")}
-            helperText={getSingleFieldError("weight")?.message}
-            disabled={disableFields}
+          <Controller
+            control={control}
+            name="weight"
+            render={({ field }) => {
+              return (
+                <NumberField
+                  label="Weight (g)"
+                  customSuffix="g"
+                  required
+                  error={!!getSingleFieldError("weight")}
+                  helperText={getSingleFieldError("weight")?.message}
+                  disabled={disableFields}
+                  value={field.value}
+                  inputRef={field.ref}
+                  onChange={(date) => {
+                    field.onChange(date);
+                  }}
+                />
+              );
+            }}
           />
         </Grid>
         <Grid item xs={12} display={"flex"} justifyContent={"end"}>

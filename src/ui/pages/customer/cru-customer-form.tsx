@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { FC } from "react";
-import { UseFormReset } from "react-hook-form";
+import { Controller, UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
 import useGetAllBranches from "../../../api/branch/use-get-all-branches";
 import { useCustomHookForm } from "../../../shared/hooks/use-custom-form";
@@ -33,6 +33,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
     handleSubmit,
     formState: { isValid, errors, touchedFields },
     reset,
+    control,
   } = useCustomHookForm<CRUCustomerSchemaType>(cruCustomerSchema);
 
   const { data: allBranchData, isFetching: isFetchingAllBranchData } =
@@ -85,26 +86,34 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
           />
         </Grid>
         <Grid item xs={4}>
-          <FormControl fullWidth>
-            <InputLabel>Branch</InputLabel>
-            <Select
-              label="Branch"
-              {...register("branchId")}
-              error={!!getSingleFieldError("branchId")}
-            >
-              {allBranchData?.map((branch) => (
-                <MenuItem value={branch.id} key={branch.id}>
-                  {`${branch.name} - ${branch.city}`}
-                </MenuItem>
-              ))}
-            </Select>
-            {getSingleFieldError("branchId") && (
-              <FormHelperText error>
-                {getSingleFieldError("branchId")?.message}
-              </FormHelperText>
-            )}
-            {isFetchingAllBranchData && <LinearProgress />}
-          </FormControl>
+          <Controller
+            control={control}
+            name="branchId"
+            render={({ field }) => {
+              return (
+                <FormControl fullWidth>
+                  <InputLabel>Branch</InputLabel>
+                  <Select
+                    label="Branch"
+                    {...field}
+                    error={!!getSingleFieldError("branchId")}
+                  >
+                    {allBranchData?.map((branch) => (
+                      <MenuItem value={branch.id} key={branch.id}>
+                        {`${branch.name} - ${branch.city}`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {getSingleFieldError("branchId") && (
+                    <FormHelperText error>
+                      {getSingleFieldError("branchId")?.message}
+                    </FormHelperText>
+                  )}
+                  {isFetchingAllBranchData && <LinearProgress />}
+                </FormControl>
+              );
+            }}
+          />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
           <TextField

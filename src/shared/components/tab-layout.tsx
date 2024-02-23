@@ -36,12 +36,10 @@ function a11yProps(index: number) {
 
 const StyledTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== "fullWidth",
-})(({ theme }) =>
-  theme.unstable_sx({
-    height: "40px",
-    minHeight: "10px",
-  })
-);
+})(() => ({
+  height: "30px",
+  minHeight: "10px",
+}));
 
 export default function TabLayout({ tabs, leftComponent }: TabLayoutProps) {
   const location = useLocation();

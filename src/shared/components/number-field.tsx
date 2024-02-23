@@ -53,6 +53,7 @@ const NumericFormatCustom = React.forwardRef<NumericFormatProps, CustomProps>(
   }
 );
 
+//Always use a controller when using hook form
 type NumberFieldProps = {
   customPrefix?: string;
   customSuffix?: string;

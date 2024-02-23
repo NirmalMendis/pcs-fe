@@ -6,8 +6,9 @@ const createPawnTicketSchema = yup.object({
   principalAmount: yup
     .number()
     .positive("Number must be positive")
-    .required("Please enter the principal amount.")
-    .typeError("Please enter a number value"),
+    .typeError("Please enter a number value")
+    .nullable()
+    .transform((_, val) => (val ? Number(val) : null)),
   interestRate: yup
     .number()
     .positive("Number must be positive")

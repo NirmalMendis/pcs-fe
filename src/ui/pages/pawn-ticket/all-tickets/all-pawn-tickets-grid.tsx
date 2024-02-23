@@ -23,7 +23,7 @@ const AllPawnTicketsDrid = () => {
       headerName: "Customer",
       width: 150,
       renderCell: (params) => {
-        params.value = params.value?.name;
+        if (params.value?.name) params.value = params.value?.name;
         return renderCellExpand(params);
       },
     },

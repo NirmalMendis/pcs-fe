@@ -34,15 +34,15 @@ export const getDesignTokens = (mode: PaletteMode) => ({
     ...(mode === "light"
       ? {
           primary: {
-            light: "#f5fbff",
-            main: "#0063b1",
-            dark: "#002884",
+            light: "#f5fbff", //top tab layout, drawer
+            main: "#0063b1", //top app bar, icons
+            dark: "#8b8994", //lower tabs selected text
             contrastText: "#fff",
           },
           secondary: {
             light: "#e8e9f0",
             main: "#ffffff",
-            dark: "#829baf",
+            dark: "#829baf", //lower tabs unselected text
             contrastText: "#000",
           },
           ternary: {

@@ -12,6 +12,7 @@ import MainLayout from "../ui/layout/main/main-layout";
 import Login from "../ui/pages/login/login";
 import AllPawnTickets from "../ui/pages/pawn-ticket/all-tickets/all-pawn-tickets";
 import PawnTicketLayout from "../ui/pages/pawn-ticket/pawn-ticket-layout";
+import UpdateTicket from "../ui/pages/pawn-ticket/update-ticket/update-ticket";
 
 const Routes = () => {
   const auth = useAuthStore((state) => state.isAuthenticed);
@@ -26,6 +27,10 @@ const Routes = () => {
         <Route
           path={ROUTE_PATHS.PAWN_TICKET.ALL}
           element={<AllPawnTickets />}
+        />
+        <Route
+          path={ROUTE_PATHS.PAWN_TICKET.UPDATE}
+          element={<UpdateTicket />}
         />
       </Route>
       {/* Update with unauthorized page */}

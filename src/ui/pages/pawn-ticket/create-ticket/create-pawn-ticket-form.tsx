@@ -35,7 +35,6 @@ const CreatePawnTicketForm = () => {
   const { handleNext } = useContext(ActiveStepContext);
 
   const {
-    register,
     control,
     handleSubmit,
     setValue,
@@ -51,7 +50,11 @@ const CreatePawnTicketForm = () => {
     });
 
   const onSubmit = (data: CreatePawnTicketFormValues) => {
-    if (setCreatePawnTicketFormData) setCreatePawnTicketFormData(data);
+    if (setCreatePawnTicketFormData)
+      setCreatePawnTicketFormData((prev) => ({
+        ...prev,
+        ...data,
+      }));
     if (handleNext) handleNext();
   };
 
@@ -80,6 +83,7 @@ const CreatePawnTicketForm = () => {
             <TextField
               label="Customer"
               placeholder="Customer"
+              required
               value={customerLabel}
               InputLabelProps={{ shrink: true }}
               InputProps={{
@@ -115,14 +119,13 @@ const CreatePawnTicketForm = () => {
                         size: "small",
                         error: !!getSingleFieldError("pawnDate"),
                         helperText: getSingleFieldError("pawnDate")?.message,
+                        required: true,
                       },
                     }}
                     disableFuture
                     value={field.value}
                     inputRef={field.ref}
-                    onChange={(date) => {
-                      field.onChange(date);
-                    }}
+                    onChange={field.onChange}
                   />
                 );
               }}
@@ -142,66 +145,99 @@ const CreatePawnTicketForm = () => {
                         size: "small",
                         error: !!getSingleFieldError("dueDate"),
                         helperText: getSingleFieldError("dueDate")?.message,
+                        required: true,
                       },
                     }}
                     disablePast
                     value={field.value}
                     inputRef={field.ref}
-                    onChange={(date) => {
-                      field.onChange(date);
-                    }}
+                    onChange={field.onChange}
                   />
                 );
               }}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <NumberField
-              label="Principal amount"
-              {...register("principalAmount", {
-                valueAsNumber: true,
-              })}
-              customPrefix="Rs."
-              error={!!getSingleFieldError("principalAmount")}
-              helperText={getSingleFieldError("principalAmount")?.message}
+            <Controller
+              control={control}
+              name="principalAmount"
+              render={({ field }) => {
+                return (
+                  <NumberField
+                    label="Principal amount"
+                    customPrefix="Rs."
+                    required
+                    error={!!getSingleFieldError("principalAmount")}
+                    helperText={getSingleFieldError("principalAmount")?.message}
+                    {...field}
+                  />
+                );
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <NumberField
-              label="Interest rate (%)"
-              customSuffix="%"
-              {...register("interestRate")}
-              error={!!getSingleFieldError("interestRate")}
-              helperText={getSingleFieldError("interestRate")?.message}
+            <Controller
+              control={control}
+              name="interestRate"
+              rules={{ required: true }}
+              render={({ field }) => {
+                return (
+                  <NumberField
+                    label="Interest rate (%)"
+                    customSuffix="%"
+                    required
+                    error={!!getSingleFieldError("interestRate")}
+                    helperText={getSingleFieldError("interestRate")?.message}
+                    {...field}
+                  />
+                );
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Status</InputLabel>
-              <Select
-                label="Status"
-                {...register("status")}
-                error={!!getSingleFieldError("status")}
-              >
-                {PawnTicketStatuses?.map((type) => (
-                  <MenuItem value={type} key={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </Select>
-              {getSingleFieldError("status") && (
-                <FormHelperText error>
-                  {getSingleFieldError("status")?.message}
-                </FormHelperText>
-              )}
-              {isFetchingPawnTicketStatuses && <LinearProgress />}
-            </FormControl>
-          </Grid>
+          {!!PawnTicketStatuses?.length && (
+            <Grid item xs={12} sm={6} md={4}>
+              <Controller
+                control={control}
+                name="status"
+                render={({ field }) => {
+                  return (
+                    <FormControl fullWidth>
+                      <InputLabel>Status</InputLabel>
+                      <Select
+                        label="Status"
+                        {...field}
+                        error={!!getSingleFieldError("status")}
+                        required
+                        slotProps={{
+                          input: {
+                            required: true,
+                          },
+                        }}
+                      >
+                        {PawnTicketStatuses?.map((type) => (
+                          <MenuItem value={type} key={type}>
+                            {type}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {getSingleFieldError("status") && (
+                        <FormHelperText error>
+                          {getSingleFieldError("status")?.message}
+                        </FormHelperText>
+                      )}
+                      {isFetchingPawnTicketStatuses && <LinearProgress />}
+                    </FormControl>
+                  );
+                }}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <StepperBtns disableAction={!isValid} type="submit" />
           </Grid>
         </Grid>
       </form>
+      {/* Keep this Modal out of the form to prevent above form submission when inner form submits */}
       <SearchRegisterCustomerModal
         openCustomerModal={openCustomerModal}
         setOpenCustomerModal={setOpenCustomerModal}
