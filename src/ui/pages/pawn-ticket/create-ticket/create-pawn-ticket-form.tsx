@@ -233,7 +233,12 @@ const CreatePawnTicketForm = () => {
             </Grid>
           )}
           <Grid item xs={12}>
-            <StepperBtns disableAction={!isValid} type="submit" />
+            <StepperBtns
+              actionButtonProps={{
+                disabled: !isValid,
+                type: "submit",
+              }}
+            />
           </Grid>
         </Grid>
       </form>

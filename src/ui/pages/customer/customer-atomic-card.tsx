@@ -7,11 +7,20 @@ import DataCard from "../../../shared/components/data-card";
 export interface CustomerAtomicCardProps {
   name?: string;
   email?: string;
+  darken?: boolean;
 }
 
-const CustomerAtomicCard: FC<CustomerAtomicCardProps> = ({ name, email }) => {
+const CustomerAtomicCard: FC<CustomerAtomicCardProps> = ({
+  name,
+  email,
+  darken,
+}) => {
   return (
-    <DataCard backgroundImg={CustomerIcon} highlightBackground={!name}>
+    <DataCard
+      backgroundImg={CustomerIcon}
+      highlightBackground={!name}
+      darken={darken}
+    >
       <Stack direction="column" spacing={2}>
         <Typography
           variant="subdued"

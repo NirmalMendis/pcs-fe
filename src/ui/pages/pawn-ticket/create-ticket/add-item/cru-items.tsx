@@ -1,19 +1,20 @@
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
-import { FC, useContext, useEffect, useRef } from "react";
-import { CreateTicketContext, emptyItem } from "../create-ticket";
+import { useContext, useEffect, useRef } from "react";
+import {
+  ActiveStepContext,
+  CreateTicketContext,
+  emptyItem,
+} from "../create-ticket";
 import StepperBtns from "../stepper-btns";
 import CRUItemForm, { CRUItemFormValues } from "./cru-item-form";
 
-export interface CRUITems {
-  handleCreatePawnTicket: () => void;
-}
-
-const CRUItems: FC<CRUITems> = ({ handleCreatePawnTicket }) => {
+const CRUItems = () => {
   const { items, setItems } = useContext(CreateTicketContext);
   const newItemRef = useRef<HTMLDivElement>(null); // Ref for the newly added item
   const prevItemCount = useRef<number>(1);
+  const { handleNext } = useContext(ActiveStepContext);
 
   const atLeastOneIemIsSubmitted = !!items?.find((item) => item.isSubmitted);
 
@@ -100,9 +101,11 @@ const CRUItems: FC<CRUITems> = ({ handleCreatePawnTicket }) => {
         Add item
       </Button>
       <StepperBtns
-        disableAction={!atLeastOneIemIsSubmitted}
-        type="button"
-        handleAction={handleCreatePawnTicket}
+        actionButtonProps={{
+          disabled: !atLeastOneIemIsSubmitted,
+          type: "button",
+          onClick: handleNext,
+        }}
       />
     </Stack>
   );

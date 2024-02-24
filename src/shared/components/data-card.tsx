@@ -3,20 +3,26 @@ import { Paper, styled } from "@mui/material";
 type DataCardProps = {
   highlightBackground?: boolean;
   backgroundImg?: string;
+  darken?: boolean;
 };
 
 const DataCard = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== "highlightBackground" && prop !== "backgroundImg",
-})<DataCardProps>(({ theme, highlightBackground, backgroundImg }) => ({
+})<DataCardProps>(({ theme, highlightBackground, backgroundImg, darken }) => ({
   padding: "15px",
   boxShadow: "none",
   border: "1px solid",
-  borderColor: theme.palette.secondary.main,
+  borderColor: darken
+    ? theme.palette.ternary.main
+    : theme.palette.secondary.main,
   height: "100%",
   position: "relative",
   minHeight: "120px",
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: darken
+    ? theme.palette.ternary.main
+    : theme.palette.secondary.main,
+  overflow: "auto",
   "&::before": {
     content: '""',
     position: "absolute",

@@ -1,8 +1,9 @@
 import { Grid } from "@mui/material";
 import { FC } from "react";
-import { PawnTicket } from "../../../../shared/types/pawn-ticket";
-import CustomerAtomicCard from "../../customer/customer-atomic-card";
+import { PawnTicket } from "../../../../../shared/types/pawn-ticket";
+import CustomerAtomicCard from "../../../customer/customer-atomic-card";
 import TicketDatesCard from "./ticket-dates";
+import TicketMonetaryValues from "./ticket-monetary-values";
 
 export interface TicketGeneralTabProps {
   pawnTicketData?: PawnTicket;
@@ -21,6 +22,12 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
         <TicketDatesCard
           dueDate={pawnTicketData?.dueDate}
           pawnDate={pawnTicketData?.pawnDate}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <TicketMonetaryValues
+          principalAmount={pawnTicketData?.principalAmount}
+          interestRate={pawnTicketData?.interestRate}
         />
       </Grid>
     </Grid>

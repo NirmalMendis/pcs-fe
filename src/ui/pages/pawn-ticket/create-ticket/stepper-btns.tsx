@@ -1,17 +1,15 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, ButtonProps } from "@mui/material";
 import React, { FC, useContext } from "react";
 import { ActiveStepContext, createTicketSteps } from "./create-ticket";
 
 export interface StepperBtnsProps {
-  handleAction?: () => void;
-  disableAction?: boolean;
-  type?: "button" | "reset" | "submit" | undefined;
+  finalActionName?: string;
+  actionButtonProps?: ButtonProps;
 }
 
 const StepperBtns: FC<StepperBtnsProps> = ({
-  handleAction,
-  disableAction,
-  type,
+  finalActionName = "Finish",
+  actionButtonProps,
 }) => {
   const { activeStep, handleBack } = useContext(ActiveStepContext);
 
@@ -26,8 +24,8 @@ const StepperBtns: FC<StepperBtnsProps> = ({
         Back
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
-      <Button onClick={handleAction} type={type} disabled={disableAction}>
-        {activeStep === createTicketSteps.length - 1 ? "Finish" : "Next"}
+      <Button {...actionButtonProps}>
+        {activeStep === createTicketSteps.length - 1 ? finalActionName : "Next"}
       </Button>
     </Box>
   );

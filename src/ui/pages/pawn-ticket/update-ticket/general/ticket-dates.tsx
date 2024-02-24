@@ -1,28 +1,34 @@
 import { Stack, Typography } from "@mui/material";
 import { differenceInMonths, format } from "date-fns";
 import { FC } from "react";
-import TicketDatesIcon from "../../../../assets/svg/ticket-dates.svg";
-import { DD_MM_YYY_FORMAT } from "../../../../constants/generic-constants";
-import DataCard from "../../../../shared/components/data-card";
+import TicketDatesIcon from "../../../../../assets/svg/ticket-dates.svg";
+import { DD_MM_YYY_FORMAT } from "../../../../../constants/generic-constants";
+import DataCard from "../../../../../shared/components/data-card";
 
 export interface CustomerAtomicCardProps {
   pawnDate?: Date;
   dueDate?: Date;
+  darken?: boolean;
 }
 
 const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
   pawnDate,
   dueDate,
+  darken,
 }) => {
   return (
-    <DataCard backgroundImg={TicketDatesIcon} highlightBackground={!pawnDate}>
+    <DataCard
+      backgroundImg={TicketDatesIcon}
+      highlightBackground={!pawnDate}
+      darken={darken}
+    >
       <Stack direction="column" spacing={2}>
         <Typography
           variant="subdued"
           textTransform={"uppercase"}
           fontWeight="bold"
         >
-          Ticket Dates
+          Dates
         </Typography>
         {pawnDate && dueDate && (
           <Stack direction="row" spacing={1} justifyContent="space-between">

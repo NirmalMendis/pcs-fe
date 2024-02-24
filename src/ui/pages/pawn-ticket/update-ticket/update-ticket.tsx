@@ -7,7 +7,8 @@ import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
-import TicketGeneralTab from "./ticket-general-tab";
+import TicketGeneralTab from "./general/ticket-general-tab";
+import TicketItemsTab from "./items/ticket-items";
 
 const TABS = {
   GENERAL: {
@@ -113,6 +114,19 @@ const UpdateTicket = () => {
           >
             <Box>
               <TicketGeneralTab pawnTicketData={data} />
+            </Box>
+          </Zoom>
+        </Box>
+        <Box>
+          <Zoom
+            in={true}
+            mountOnEnter
+            unmountOnExit
+            // style={{ transitionDelay: !showEditForm ? "400ms" : "0ms" }}
+            timeout={500}
+          >
+            <Box>
+              <TicketItemsTab items={data?.items} />
             </Box>
           </Zoom>
         </Box>

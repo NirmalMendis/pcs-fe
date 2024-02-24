@@ -15,9 +15,11 @@ import usePostCreatePawnTicket, {
   PostCreatePawnTicketRequest,
 } from "../../../../api/pawn-ticket/use-post-create-pawn-ticket";
 import { DEFAULT_BRANCH_ID } from "../../../../constants/generic-constants";
+import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
-import AddItems from "./add-item/add-items";
 import { CRUItemFormValues } from "./add-item/cru-item-form";
+import CRUItems from "./add-item/cru-items";
+import ConfirmTicket from "./confirm-ticket";
 import CreatePawnTicketForm, {
   CreatePawnTicketFormValues,
 } from "./create-pawn-ticket-form";
@@ -46,7 +48,11 @@ interface CreateTicketContext {
   setItems: Dispatch<SetStateAction<Array<TicketFormItem>>>;
 }
 
-export const createTicketSteps = ["Create Pawn Ticket", "Add items"];
+export const createTicketSteps = [
+  "Create Pawn Ticket",
+  "Add items",
+  "Confirm Pawn Ticket",
+];
 
 export const ActiveStepContext = createContext<ActiveStepContextProps>({
   activeStep: 0,
@@ -76,7 +82,10 @@ const CreateTicket = () => {
     Partial<TicketFormData>
   >({});
   const [items, setItems] = useState<Array<TicketFormItem>>([emptyItem]);
-  const { mutate } = usePostCreatePawnTicket();
+  const {
+    mutate: mutatePostCreatePawnTicket,
+    isPending: isPendingPostCreatePawnTicket,
+  } = usePostCreatePawnTicket();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
@@ -93,7 +102,7 @@ const CreateTicket = () => {
 
   const handleCreatePawnTicket = () => {
     if (items && createPawnTicketFormData)
-      mutate(
+      mutatePostCreatePawnTicket(
         {
           payload: {
             ...(createPawnTicketFormData as PostCreatePawnTicketRequest),
@@ -125,7 +134,14 @@ const CreateTicket = () => {
         return (
           <>
             <Typography variant="h6">Add Items</Typography>
-            <AddItems handleCreatePawnTicket={handleCreatePawnTicket} />
+            <CRUItems />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <Typography variant="h6">Confirm Pawn Ticket Details</Typography>
+            <ConfirmTicket handleCreatePawnTicket={handleCreatePawnTicket} />
           </>
         );
     }
@@ -183,6 +199,7 @@ const CreateTicket = () => {
           )}
         </Stack>
       </Grid>
+      <Backdrop open={isPendingPostCreatePawnTicket} />
     </Grid>
   );
 };
