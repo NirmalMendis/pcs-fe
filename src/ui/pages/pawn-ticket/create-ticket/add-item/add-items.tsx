@@ -1,7 +1,8 @@
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import ConfirmationDialog from "../../../../../shared/components/confirmation-dialog";
 import {
   ActiveStepContext,
   CreateTicketContext,
@@ -10,11 +11,12 @@ import {
 import StepperBtns from "../stepper-btns";
 import CRUItemForm, { CRUItemFormValues } from "./cru-item-form";
 
-const CRUItems = () => {
+const AddItems = () => {
   const { items, setItems } = useContext(CreateTicketContext);
   const newItemRef = useRef<HTMLDivElement>(null); // Ref for the newly added item
   const prevItemCount = useRef<number>(1);
   const { handleNext } = useContext(ActiveStepContext);
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 
   const atLeastOneIemIsSubmitted = !!items?.find((item) => item.isSubmitted);
 
@@ -38,6 +40,20 @@ const CRUItems = () => {
 
   const handleRemoveItem = (uiId: number) => {
     setItems((prev) => prev.filter((item) => item.uiId !== uiId));
+  };
+
+  const handleConfirmContinue = () => {
+    setItems((prev) => prev.filter((item) => item.isSubmitted));
+    if (handleNext) handleNext();
+  };
+
+  const handleNextClick = () => {
+    const unsubmittedItem = items?.find((item) => !item.isSubmitted);
+    if (unsubmittedItem) {
+      setOpenConfirmationDialog(true);
+    } else {
+      if (handleNext) handleNext();
+    }
   };
 
   useEffect(() => {
@@ -104,11 +120,22 @@ const CRUItems = () => {
         actionButtonProps={{
           disabled: !atLeastOneIemIsSubmitted,
           type: "button",
-          onClick: handleNext,
+          onClick: handleNextClick,
         }}
+      />
+      <ConfirmationDialog
+        open={openConfirmationDialog}
+        title="Do you wish to continue?"
+        content={
+          "There are unsubmitted items which will be cleared if you continue. Are you sure to continue?"
+        }
+        cancelActionTitle="Cancel"
+        confirmActionTitle="Continue"
+        handleClose={setOpenConfirmationDialog}
+        confirmAction={handleConfirmContinue}
       />
     </Stack>
   );
 };
 
-export default CRUItems;
+export default AddItems;

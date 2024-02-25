@@ -17,8 +17,8 @@ import usePostCreatePawnTicket, {
 import { DEFAULT_BRANCH_ID } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import AddItems from "./add-item/add-items";
 import { CRUItemFormValues } from "./add-item/cru-item-form";
-import CRUItems from "./add-item/cru-items";
 import ConfirmTicket from "./confirm-ticket";
 import CreatePawnTicketForm, {
   CreatePawnTicketFormValues,
@@ -134,7 +134,7 @@ const CreateTicket = () => {
         return (
           <>
             <Typography variant="h6">Add Items</Typography>
-            <CRUItems />
+            <AddItems />
           </>
         );
       case 2:
