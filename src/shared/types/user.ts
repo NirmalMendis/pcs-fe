@@ -1,3 +1,5 @@
+import Branch from "./branch";
+
 interface User {
   id: number;
   email: string;
@@ -7,7 +9,9 @@ interface User {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  branchId: number;
+  activeBranchId: number;
+  activeBranch: Branch;
+  branches: Array<Branch>;
 }
 
 export default User;

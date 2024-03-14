@@ -14,6 +14,7 @@ export const AUTH_API = {
 
 export const USER_API = {
   GET_USER: (id: number) => `${USER_ENPOINT}/${id}`,
+  PATCH_USER_ACTIVE_BRANCH: `${USER_ENPOINT}/active-branch`,
 };
 
 export const METADATA_API = {
@@ -35,4 +36,6 @@ export const PAWN_TICKET_API = {
   GET_ALL_PAWN_TICEKTS: `${PAWN_TICKET_ENDPOINT}/`,
   GET_PAWN_TICKET_BY_ID: (id: number) => `${PAWN_TICKET_ENDPOINT}/${id}`,
   GET_CALCULATE_MONTHLY_INTEREST: `${PAWN_TICKET_ENDPOINT}/calculate-monthly-interest`,
+  GET_TICKET_INVOICE: (id: number) =>
+    `${PAWN_TICKET_ENDPOINT}/${id}/ticket-invoice`,
 };

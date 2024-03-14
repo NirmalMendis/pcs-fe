@@ -36,7 +36,9 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => handleClose(false)}>{cancelActionTitle}</Button>
+        <Button onClick={() => handleClose(false)} color="inherit">
+          {cancelActionTitle}
+        </Button>
         <Button onClick={confirmAction} autoFocus>
           {confirmActionTitle}
         </Button>

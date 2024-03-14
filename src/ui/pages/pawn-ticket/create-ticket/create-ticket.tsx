@@ -14,7 +14,6 @@ import { Dispatch, SetStateAction, createContext, useState } from "react";
 import usePostCreatePawnTicket, {
   PostCreatePawnTicketRequest,
 } from "../../../../api/pawn-ticket/use-post-create-pawn-ticket";
-import { DEFAULT_BRANCH_ID } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import AddItems from "./add-item/add-items";
@@ -106,7 +105,6 @@ const CreateTicket = () => {
         {
           payload: {
             ...(createPawnTicketFormData as PostCreatePawnTicketRequest),
-            branchId: DEFAULT_BRANCH_ID,
             items: items,
           },
         },

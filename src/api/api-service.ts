@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
+import { ResponseType } from "axios";
 import queryString from "query-string";
 import useAuthStore from "../store/use-auth-store-state";
 import ENV_CONFIGS from "../utils/get-env-config";
@@ -11,6 +12,7 @@ export interface GetConfig {
   signal?: AbortSignal;
   method?: "get" | "post" | "patch" | "delete";
   body?: object;
+  responseType?: ResponseType;
 }
 
 export interface PostPatchDeleteConfig {
@@ -42,7 +44,10 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    return response.data.data;
+    if (response.data.data) return response.data.data;
+    else if (response.headers["content-type"] === "application/pdf") {
+      return response.data;
+    }
   },
   async function (error) {
     return Promise.reject(error);
@@ -62,6 +67,7 @@ const executeRequest = async <T>({
   signal,
   method,
   body,
+  responseType,
 }: GetConfig): Promise<T> => {
   return axiosInstance.request({
     method: method,
@@ -70,6 +76,7 @@ const executeRequest = async <T>({
     signal,
     validateStatus: null,
     includeAccessToken,
+    responseType: responseType,
   });
 };
 
@@ -78,6 +85,7 @@ const getRequest = async <T>({
   includeAccessToken = true,
   queryParams,
   signal,
+  responseType,
 }: GetConfig): Promise<T> => {
   return executeRequest({
     path,
@@ -85,6 +93,7 @@ const getRequest = async <T>({
     queryParams,
     signal,
     method: "get",
+    responseType,
   });
 };
 

@@ -4,6 +4,9 @@ import {
   Box,
   CssBaseline,
   IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   Stack,
   Toolbar,
   Typography,
@@ -11,6 +14,10 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 import { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
+import useGetUser from "../../../api/user/use-get-user";
+import usePatchUserActiveBranch from "../../../api/user/use-patch-user-active-branch";
+import Backdrop from "../../../shared/components/backdrop";
+import useAuthStore from "../../../store/use-auth-store-state";
 import AppBar from "./app-bar";
 import AppBarProfile from "./app-bar-profile";
 import NavigationDrawer from "./navigation-drawer";
@@ -41,6 +48,19 @@ const Main = styled("main")(({ theme }) => ({
 const MainLayout = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const user = useAuthStore((state) => state.user);
+
+  const { data: currentUser, refetch } = useGetUser(
+    {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: user!.id!,
+    },
+    user?.id !== undefined
+  );
+  const {
+    mutate: mutatePatchUserActiveBranch,
+    isPending: isPendingPatchUserActiveBranch,
+  } = usePatchUserActiveBranch();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -48,6 +68,22 @@ const MainLayout = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const onChangeActiveBranch = (event: SelectChangeEvent<number>) => {
+    if (event.target.value)
+      mutatePatchUserActiveBranch(
+        {
+          payload: {
+            activeBranchId: +event.target.value,
+          },
+        },
+        {
+          onSuccess: () => {
+            refetch();
+          },
+        }
+      );
   };
 
   return (
@@ -83,7 +119,36 @@ const MainLayout = () => {
           >
             Pawning Center System
           </Typography>
-          <Stack direction="row" sx={{ ml: "auto" }} spacing={1}>
+          <Stack
+            direction="row"
+            display={"flex"}
+            sx={{ ml: "auto" }}
+            alignItems={"center"}
+            spacing={1}
+          >
+            {currentUser ? (
+              <Select
+                value={currentUser?.activeBranchId}
+                onChange={onChangeActiveBranch}
+                variant="standard"
+                size="small"
+                sx={{
+                  minHeight: "10px",
+                  height: "20px",
+                  color: "secondary.light",
+                  "::before": {
+                    borderColor: "white !important",
+                  },
+                }}
+                IconComponent={() => null}
+              >
+                {currentUser?.branches?.map((branch) => (
+                  <MenuItem value={branch.id} key={branch.id}>
+                    {branch.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            ) : null}
             <AppBarProfile />
           </Stack>
         </Toolbar>
@@ -99,6 +164,7 @@ const MainLayout = () => {
           <Outlet />
         </Box>
       </Main>
+      <Backdrop open={isPendingPatchUserActiveBranch} />
     </Box>
   );
 };
