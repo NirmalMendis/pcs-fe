@@ -12,12 +12,12 @@ import cruItemSchema from "./cru-item-schema";
 type CRUItemSchemaType = typeof cruItemSchema;
 export type CRUItemFormValues = InferType<CRUItemSchemaType>;
 
-export interface CRUCustomerForm {
+export interface CRUItemFormProps {
   onSubmit: (data: CRUItemFormValues) => void;
   item?: CRUItemFormValues;
 }
 
-const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
+const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
   const {
     register,
     handleSubmit,
@@ -103,7 +103,7 @@ const CRUItemForm: FC<CRUCustomerForm> = ({ onSubmit, item }) => {
             render={({ field }) => {
               return (
                 <NumberField
-                  label="Appraised Value"
+                  label="Appraised Value (Market value)"
                   customPrefix="Rs."
                   required
                   error={!!getSingleFieldError("appraisedValue")}

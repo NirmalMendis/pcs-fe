@@ -10,6 +10,7 @@ export const PAWN_TICKET_ENDPOINT = "pawn-ticket";
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
   LOGOUT: `${AUTH_ENDPOINT}/logout`,
+  REFRESH: `${AUTH_ENDPOINT}/refresh`,
 };
 
 export const USER_API = {

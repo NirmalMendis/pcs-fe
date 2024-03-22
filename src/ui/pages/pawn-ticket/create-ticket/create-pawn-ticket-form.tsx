@@ -1,21 +1,9 @@
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  LinearProgress,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
-import useMetaData from "../../../../api/meta-data/use-get-metadata";
-import { MetaDataEnum } from "../../../../constants/string-constants";
 import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
@@ -29,7 +17,7 @@ export type CreatePawnTicketFormValues = InferType<CreatePawnTicketSchemaType>;
 
 // eslint-disable-next-line react/display-name
 const CreatePawnTicketForm = () => {
-  const { createPawnTicketFormData, setCreatePawnTicketFormData } =
+  const { createPawnTicketFormData, setCreatePawnTicketFormData, items } =
     useContext(CreateTicketContext);
   const [openCustomerModal, setOpenCustomerModal] = useState(false);
   const { handleNext } = useContext(ActiveStepContext);
@@ -43,11 +31,6 @@ const CreatePawnTicketForm = () => {
     defaultValues: createPawnTicketFormData,
   });
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
-
-  const { data: PawnTicketStatuses, isFetching: isFetchingPawnTicketStatuses } =
-    useMetaData<Array<string>>({
-      type: MetaDataEnum.PAWN_TICKETS_STATUS,
-    });
 
   const onSubmit = (data: CreatePawnTicketFormValues) => {
     if (setCreatePawnTicketFormData)
@@ -74,6 +57,17 @@ const CreatePawnTicketForm = () => {
     createPawnTicketFormData?.customerId !== undefined
       ? `${createPawnTicketFormData?.customerId} - ${createPawnTicketFormData?.customerName}`
       : undefined;
+
+  useEffect(() => {
+    const calculatedPrincipalAmount = items
+      ?.map((item) => item.pawningAmount)
+      ?.reduce((acc, curr) => acc + curr, 0);
+    setValue("principalAmount", calculatedPrincipalAmount, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+  }, []);
 
   return (
     <>
@@ -166,9 +160,27 @@ const CreatePawnTicketForm = () => {
                   <NumberField
                     label="Principal amount"
                     customPrefix="Rs."
+                    {...field}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                );
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Controller
+              control={control}
+              name="serviceCharge"
+              render={({ field }) => {
+                return (
+                  <NumberField
+                    label="Service Charge"
+                    customPrefix="Rs."
                     required
-                    error={!!getSingleFieldError("principalAmount")}
-                    helperText={getSingleFieldError("principalAmount")?.message}
+                    error={!!getSingleFieldError("serviceCharge")}
+                    helperText={getSingleFieldError("serviceCharge")?.message}
                     {...field}
                   />
                 );
@@ -194,44 +206,6 @@ const CreatePawnTicketForm = () => {
               }}
             />
           </Grid>
-          {!!PawnTicketStatuses?.length && (
-            <Grid item xs={12} sm={6} md={4}>
-              <Controller
-                control={control}
-                name="status"
-                render={({ field }) => {
-                  return (
-                    <FormControl fullWidth>
-                      <InputLabel>Status</InputLabel>
-                      <Select
-                        label="Status"
-                        {...field}
-                        error={!!getSingleFieldError("status")}
-                        required
-                        slotProps={{
-                          input: {
-                            required: true,
-                          },
-                        }}
-                      >
-                        {PawnTicketStatuses?.map((type) => (
-                          <MenuItem value={type} key={type}>
-                            {type}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {getSingleFieldError("status") && (
-                        <FormHelperText error>
-                          {getSingleFieldError("status")?.message}
-                        </FormHelperText>
-                      )}
-                      {isFetchingPawnTicketStatuses && <LinearProgress />}
-                    </FormControl>
-                  );
-                }}
-              />
-            </Grid>
-          )}
           <Grid item xs={12}>
             <StepperBtns
               actionButtonProps={{

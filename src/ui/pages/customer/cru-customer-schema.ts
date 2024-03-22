@@ -14,7 +14,6 @@ const cruCustomerSchema = yup.object({
   addressLine3: yup.string(),
   city: yup.string().required("Please enter city"),
   postalCode: yup.string(),
-  branchId: yup.number().required("Please select the branch"),
 });
 
 export default cruCustomerSchema;

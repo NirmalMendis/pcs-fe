@@ -48,8 +48,8 @@ interface CreateTicketContext {
 }
 
 export const createTicketSteps = [
-  "Create Pawn Ticket",
   "Add items",
+  "Enter Pawn Ticket Details",
   "Confirm Pawn Ticket",
 ];
 
@@ -79,7 +79,9 @@ const CreateTicket = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [createPawnTicketFormData, setCreatePawnTicketFormData] = useState<
     Partial<TicketFormData>
-  >({});
+  >({
+    pawnDate: new Date(),
+  });
   const [items, setItems] = useState<Array<TicketFormItem>>([emptyItem]);
   const {
     mutate: mutatePostCreatePawnTicket,
@@ -100,11 +102,15 @@ const CreateTicket = () => {
   };
 
   const handleCreatePawnTicket = () => {
-    if (items && createPawnTicketFormData)
+    if (items && createPawnTicketFormData) {
+      const createPawnTicketFormDataExcludingPrincpal = {
+        ...createPawnTicketFormData,
+      };
+      delete createPawnTicketFormDataExcludingPrincpal.principalAmount;
       mutatePostCreatePawnTicket(
         {
           payload: {
-            ...(createPawnTicketFormData as PostCreatePawnTicketRequest),
+            ...(createPawnTicketFormDataExcludingPrincpal as PostCreatePawnTicketRequest),
             items: items,
           },
         },
@@ -117,6 +123,7 @@ const CreateTicket = () => {
           },
         }
       );
+    }
   };
 
   const renderStepperContent = () => {
@@ -124,15 +131,15 @@ const CreateTicket = () => {
       case 0:
         return (
           <>
-            <Typography variant="h6">Enter Pawn Ticket Details</Typography>
-            <CreatePawnTicketForm />
+            <Typography variant="h6">Add Items to Ticket</Typography>
+            <AddItems />
           </>
         );
       case 1:
         return (
           <>
-            <Typography variant="h6">Add Items</Typography>
-            <AddItems />
+            <Typography variant="h6">Enter Pawn Ticket Details</Typography>
+            <CreatePawnTicketForm />
           </>
         );
       case 2:

@@ -1,18 +1,7 @@
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  LinearProgress,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { FC } from "react";
-import { Controller, UseFormReset } from "react-hook-form";
+import { UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
-import useGetAllBranches from "../../../api/branch/use-get-all-branches";
 import { useCustomHookForm } from "../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../shared/hooks/use-single-field-error";
 import cruCustomerSchema from "./cru-customer-schema";
@@ -20,24 +9,20 @@ import cruCustomerSchema from "./cru-customer-schema";
 type CRUCustomerSchemaType = typeof cruCustomerSchema;
 export type CRUCustomerFormValues = InferType<CRUCustomerSchemaType>;
 
-export interface CRUCustomerForm {
+export interface CRUCustomerFormProps {
   onSubmit: (
     data: CRUCustomerFormValues,
     reset: UseFormReset<CRUCustomerFormValues>
   ) => void;
 }
 
-const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
+const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
     formState: { isValid, errors, touchedFields },
     reset,
-    control,
   } = useCustomHookForm<CRUCustomerSchemaType>(cruCustomerSchema);
-
-  const { data: allBranchData, isFetching: isFetchingAllBranchData } =
-    useGetAllBranches();
 
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
@@ -50,6 +35,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("nicNo")}
             error={!!getSingleFieldError("nicNo")}
             helperText={getSingleFieldError("nicNo")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -58,6 +44,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("firstName")}
             error={!!getSingleFieldError("firstName")}
             helperText={getSingleFieldError("firstName")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -66,6 +53,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("lastName")}
             error={!!getSingleFieldError("lastName")}
             helperText={getSingleFieldError("lastName")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -75,6 +63,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("email")}
             error={!!getSingleFieldError("email")}
             helperText={getSingleFieldError("email")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -83,36 +72,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("mobileNo")}
             error={!!getSingleFieldError("mobileNo")}
             helperText={getSingleFieldError("mobileNo")?.message}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Controller
-            control={control}
-            name="branchId"
-            render={({ field }) => {
-              return (
-                <FormControl fullWidth>
-                  <InputLabel>Branch</InputLabel>
-                  <Select
-                    label="Branch"
-                    {...field}
-                    error={!!getSingleFieldError("branchId")}
-                  >
-                    {allBranchData?.map((branch) => (
-                      <MenuItem value={branch.id} key={branch.id}>
-                        {`${branch.name} - ${branch.city}`}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {getSingleFieldError("branchId") && (
-                    <FormHelperText error>
-                      {getSingleFieldError("branchId")?.message}
-                    </FormHelperText>
-                  )}
-                  {isFetchingAllBranchData && <LinearProgress />}
-                </FormControl>
-              );
-            }}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -121,6 +81,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("addressLine1")}
             error={!!getSingleFieldError("addressLine1")}
             helperText={getSingleFieldError("addressLine1")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
@@ -145,6 +106,7 @@ const CRUCustomerForm: FC<CRUCustomerForm> = ({ onSubmit }) => {
             {...register("city")}
             error={!!getSingleFieldError("city")}
             helperText={getSingleFieldError("city")?.message}
+            required
           />
         </Grid>
         <Grid item xs={12} sm={3} md={4}>
