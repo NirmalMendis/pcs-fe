@@ -33,7 +33,7 @@ const StyledTableCell = styled(TableCell, {
     fontWeight: "bold",
   },
   [`&.${tableCellClasses.body}`]: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "inherit",
   },
 }));
 
@@ -43,6 +43,7 @@ const GenericTable: FC<TableProps> = ({ columns, data }) => {
       <Table
         aria-label="generic table"
         sx={{ borderCollapse: "separate", borderSpacing: "0px 10px" }}
+        size="small"
       >
         <TableHead>
           <TableRow>

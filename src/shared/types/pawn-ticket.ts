@@ -7,9 +7,11 @@ export interface PawnTicket {
   status: string;
   interestRate: number;
   principalAmount: number;
+  serviceCharge: number;
   dueDate: Date;
   pawnDate: Date;
   branchId: number;
   items: Array<Item>;
   customer: Customer;
+  invoiceId?: number;
 }

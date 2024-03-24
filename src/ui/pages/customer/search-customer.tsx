@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { debounce } from "lodash";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import useGetSearchCustomers from "../../../api/customer/use-get-search-customers";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../constants/generic-constants";
 import ProfileAvatar from "../../../shared/components/profile-avatar";
@@ -23,6 +23,7 @@ export interface SearchCustomerProps {
 
 const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const {
     data,
@@ -53,12 +54,21 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
     };
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
   return (
     <Stack spacing={2}>
       <Typography variant="h6">Search Customer</Typography>
       <TextField
         label="Search by ID, name, email etc."
         onChange={handleInput}
+        inputProps={{
+          ref: searchInputRef,
+        }}
       />
       <Box display={"flex"} justifyContent={"end"}>
         <Button

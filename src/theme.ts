@@ -1,4 +1,9 @@
-import { PaletteMode, ThemeOptions } from "@mui/material";
+import {
+  PaletteMode,
+  ThemeOptions,
+  alpha,
+  getContrastRatio,
+} from "@mui/material";
 
 declare module "@mui/material/styles" {
   interface TypographyVariants {
@@ -21,12 +26,24 @@ declare module "@mui/material/Typography" {
 declare module "@mui/material/styles" {
   interface Palette {
     ternary: Palette["primary"];
+    violet: Palette["primary"];
   }
 
   interface PaletteOptions {
     ternary?: PaletteOptions["primary"];
+    violet?: PaletteOptions["primary"];
   }
 }
+
+declare module "@mui/material" {
+  interface ButtonPropsColorOverrides {
+    violet: true;
+    ternary: true;
+  }
+}
+
+const violetBase = "#5403a6";
+const violetMain = alpha(violetBase, 0.8);
 
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -47,9 +64,16 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           },
           ternary: {
             light: "#b2ebf2",
-            main: "#f5f5f5",
+            main: "#f6f8fa", // app background + DataCard background
             dark: "#a7bac9",
             contrastText: "#000",
+          },
+          violet: {
+            main: violetMain,
+            light: alpha(violetBase, 0.5),
+            dark: alpha(violetBase, 0.9),
+            contrastText:
+              getContrastRatio(violetMain, "#fff") > 4.5 ? "#fff" : "#111",
           },
         }
       : {}),
@@ -84,6 +108,17 @@ export const commonTheme: ThemeOptions = {
     MuiInputBase: {
       defaultProps: {
         size: "small",
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        "*": {
+          "scrollbar-width": "thin",
+        },
+        "*::-webkit-scrollbar": {
+          width: "4px",
+          height: "4px",
+        },
       },
     },
   },

@@ -1,11 +1,11 @@
-import { Stack, Typography } from "@mui/material";
+import { PaperOwnProps, Stack, Typography } from "@mui/material";
 import { differenceInMonths, format } from "date-fns";
 import { FC } from "react";
 import TicketDatesIcon from "../../../../../assets/svg/ticket-dates.svg";
 import { DD_MM_YYY_FORMAT } from "../../../../../constants/generic-constants";
 import DataCard from "../../../../../shared/components/data-card";
 
-export interface CustomerAtomicCardProps {
+export interface CustomerAtomicCardProps extends PaperOwnProps {
   pawnDate?: Date;
   dueDate?: Date;
   darken?: boolean;
@@ -15,12 +15,14 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
   pawnDate,
   dueDate,
   darken,
+  ...props
 }) => {
   return (
     <DataCard
       backgroundImg={TicketDatesIcon}
       highlightBackground={!pawnDate}
       darken={darken}
+      {...props}
     >
       <Stack direction="column" spacing={2}>
         <Typography
@@ -70,7 +72,7 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
                 color={"primary"}
                 //   color={`${revisedChanges.numberOfNights ? "red" : "primary"}`}
               >
-                {differenceInMonths(pawnDate, dueDate)}
+                {differenceInMonths(dueDate, pawnDate)}
               </Typography>
             </Stack>
           </Stack>

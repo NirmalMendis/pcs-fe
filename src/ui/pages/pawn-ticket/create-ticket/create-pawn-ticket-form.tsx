@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Grid, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import NumberField from "../../../../shared/components/number-field";
@@ -15,8 +15,13 @@ import StepperBtns from "./stepper-btns";
 type CreatePawnTicketSchemaType = typeof createPawnTicketSchema;
 export type CreatePawnTicketFormValues = InferType<CreatePawnTicketSchemaType>;
 
+export interface CreatePawnTicketFormProps {
+  generateDraftInvoice: () => void;
+}
 // eslint-disable-next-line react/display-name
-const CreatePawnTicketForm = () => {
+const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
+  generateDraftInvoice,
+}) => {
   const { createPawnTicketFormData, setCreatePawnTicketFormData, items } =
     useContext(CreateTicketContext);
   const [openCustomerModal, setOpenCustomerModal] = useState(false);
@@ -38,6 +43,7 @@ const CreatePawnTicketForm = () => {
         ...prev,
         ...data,
       }));
+    generateDraftInvoice();
     if (handleNext) handleNext();
   };
 
@@ -67,7 +73,7 @@ const CreatePawnTicketForm = () => {
       shouldTouch: true,
       shouldValidate: true,
     });
-  }, []);
+  }, [items, setValue]);
 
   return (
     <>

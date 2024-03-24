@@ -1,10 +1,10 @@
-import { Stack, Typography } from "@mui/material";
+import { PaperOwnProps, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import MoneyBagIcon from "../../../../../assets/svg/money-bag.svg";
 import DataCard from "../../../../../shared/components/data-card";
 import useTextFormatter from "../../../../../shared/hooks/use-text-formatter";
 
-export interface TicketMonetoryValuesProps {
+export interface TicketMonetoryValuesProps extends PaperOwnProps {
   principalAmount?: number | null;
   interestRate?: number;
   monthlyInterest?: number;
@@ -16,6 +16,7 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
   interestRate,
   monthlyInterest,
   darken,
+  ...props
 }) => {
   const { formatPercentage, formatRs } = useTextFormatter();
 
@@ -24,6 +25,7 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
       backgroundImg={MoneyBagIcon}
       highlightBackground={!principalAmount}
       darken={darken}
+      {...props}
     >
       <Stack direction="column" spacing={2}>
         <Typography

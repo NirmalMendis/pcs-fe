@@ -1,6 +1,25 @@
 import SaveIcon from "@mui/icons-material/Save";
-import { Grid, Paper } from "@mui/material";
-import { FC, useContext, useEffect } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { Theme } from "@mui/material";
+import {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import useGetCustomerById from "../../../../api/customer/use-get-customer-by-id";
 import useGetCalculateMonthlyInterest from "../../../../api/pawn-ticket/use-get-calculate-monthly-interest";
 import CustomerAtomicCard from "../../customer/customer-atomic-card";
@@ -8,15 +27,27 @@ import TicketDatesCard from "../update-ticket/general/ticket-dates";
 import TicketMonetaryValues from "../update-ticket/general/ticket-monetary-values";
 import TicketItemsTable from "../update-ticket/items/ticket-items-table";
 import { CreateTicketContext } from "./create-ticket";
+import InvoicePreview from "./invoice-preview";
 import StepperBtns from "./stepper-btns";
 
 export interface ConfirmTicketProps {
   handleCreatePawnTicket: () => void;
+  invoicePDFData?: File;
+  isLoadingPdf: boolean;
 }
-const ConfirmTicket: FC<ConfirmTicketProps> = ({ handleCreatePawnTicket }) => {
+const ConfirmTicket: FC<ConfirmTicketProps> = ({
+  handleCreatePawnTicket,
+  invoicePDFData,
+  isLoadingPdf,
+}) => {
   const { createPawnTicketFormData, setCreatePawnTicketFormData } =
     useContext(CreateTicketContext);
   const { items } = useContext(CreateTicketContext);
+  const largeScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up("md")
+  );
+  const printButtonRef = useRef<HTMLDivElement>(null);
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
 
   const { data: monthlyInterestData } = useGetCalculateMonthlyInterest(
     {
@@ -33,9 +64,14 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({ handleCreatePawnTicket }) => {
     },
     createPawnTicketFormData?.customerId !== undefined
   );
-  const calculatePrincipalAmount = () => {
+
+  const calculatePrincipalAmount = useCallback(() => {
     const total = items?.reduce((acc, item) => acc + item.pawningAmount, 0);
     return total;
+  }, [items]);
+
+  const handleInvoiceVisibility = () => {
+    setIsInvoiceVisible((prev) => !prev);
   };
 
   useEffect(() => {
@@ -47,50 +83,107 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({ handleCreatePawnTicket }) => {
         ...prev,
         principalAmount: calculatePrincipalAmount(),
       }));
-  }, []);
+  }, [
+    calculatePrincipalAmount,
+    createPawnTicketFormData?.principalAmount,
+    setCreatePawnTicketFormData,
+  ]);
+
+  useEffect(() => {
+    // Focus on the button element when the component is loaded
+    if (printButtonRef.current && largeScreen) {
+      printButtonRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [largeScreen]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item container xs={12}>
-        <Grid item xs={12} sm={6} md={4}>
-          <CustomerAtomicCard
-            name={createPawnTicketFormData?.customerName}
-            darken
-            email={customerData?.email}
+    <Stack
+      divider={<Divider orientation="horizontal" />}
+      spacing={2}
+      ref={printButtonRef}
+    >
+      <Box display={"flex"} justifyContent={"space-between"} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Confirm Pawn Ticket Details
+        </Typography>
+        <Button
+          startIcon={
+            isInvoiceVisible ? (
+              <VisibilityOffIcon color="secondary" />
+            ) : (
+              <VisibilityIcon color="secondary" />
+            )
+          }
+          color="violet"
+          sx={{ justifyContent: "start" }}
+          onClick={handleInvoiceVisibility}
+        >
+          {isInvoiceVisible ? `Hide Invoice` : "View Invoice"}
+        </Button>
+      </Box>
+      <Grid container>
+        <Grid
+          item
+          xs
+          sx={{ pl: "0px !important", pb: 2 }}
+          justifyContent={"space-between"}
+          display={{ xs: isInvoiceVisible ? "none" : "flex", md: "flex" }}
+          flexDirection={"column"}
+        >
+          <Stack
+            width={"100%"}
+            divider={<Divider orientation="horizontal" />}
+            sx={{ pl: 1, pr: 1 }}
+          >
+            <CustomerAtomicCard
+              name={createPawnTicketFormData?.customerName}
+              email={customerData?.email}
+              sx={{ height: "fit-content" }}
+            />
+            <TicketDatesCard
+              dueDate={createPawnTicketFormData?.dueDate}
+              pawnDate={createPawnTicketFormData?.pawnDate}
+              sx={{ height: "fit-content" }}
+            />
+            <TicketMonetaryValues
+              principalAmount={createPawnTicketFormData?.principalAmount}
+              interestRate={createPawnTicketFormData?.interestRate}
+              monthlyInterest={monthlyInterestData?.monthlyInterest}
+              sx={{ height: "fit-content" }}
+            />
+            <Stack component={Paper} sx={{ p: 1 }} elevation={0} spacing={1}>
+              <Typography variant="h6">Items</Typography>
+              {items ? <TicketItemsTable items={items} /> : null}
+            </Stack>
+          </Stack>
+          <Grid
+            item
+            xs={12}
+            sx={{ pl: 1, pr: 1 }}
+            justifyContent={"end"}
+            display={"flex"}
+            flexDirection={"column"}
+          >
+            <StepperBtns
+              actionButtonProps={{
+                onClick: handleCreatePawnTicket,
+                type: "button",
+                startIcon: <SaveIcon color="secondary" />,
+              }}
+              finalActionName="Confirm and Submit Ticket"
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={7} display={isInvoiceVisible ? "block" : "none"}>
+          <InvoicePreview
+            invoicePDFData={invoicePDFData}
+            isLoadingPdf={isLoadingPdf}
           />
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <TicketDatesCard
-          dueDate={createPawnTicketFormData?.dueDate}
-          pawnDate={createPawnTicketFormData?.pawnDate}
-          darken
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TicketMonetaryValues
-          principalAmount={createPawnTicketFormData?.principalAmount}
-          interestRate={createPawnTicketFormData?.interestRate}
-          monthlyInterest={monthlyInterestData?.monthlyInterest}
-          darken
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Paper sx={{ backgroundColor: "ternary.main", p: 1 }} elevation={0}>
-          {items ? <TicketItemsTable items={items} /> : null}
-        </Paper>
-      </Grid>
-      <Grid item xs={12}>
-        <StepperBtns
-          actionButtonProps={{
-            onClick: handleCreatePawnTicket,
-            type: "button",
-            startIcon: <SaveIcon color="secondary" />,
-          }}
-          finalActionName="Confirm and Submit Ticket"
-        />
-      </Grid>
-    </Grid>
+    </Stack>
   );
 };
 

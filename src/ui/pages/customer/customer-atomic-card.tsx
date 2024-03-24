@@ -1,10 +1,10 @@
 import { AccountCircle } from "@mui/icons-material";
-import { Stack, Typography } from "@mui/material";
+import { PaperOwnProps, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import CustomerIcon from "../../../assets/svg/customer.svg";
 import DataCard from "../../../shared/components/data-card";
 
-export interface CustomerAtomicCardProps {
+export interface CustomerAtomicCardProps extends PaperOwnProps {
   name?: string;
   email?: string;
   darken?: boolean;
@@ -14,12 +14,14 @@ const CustomerAtomicCard: FC<CustomerAtomicCardProps> = ({
   name,
   email,
   darken,
+  ...props
 }) => {
   return (
     <DataCard
       backgroundImg={CustomerIcon}
       highlightBackground={!name}
       darken={darken}
+      {...props}
     >
       <Stack direction="column" spacing={2}>
         <Typography

@@ -6,6 +6,7 @@ export const METADATA_ENDPOINT = "metadata";
 export const BRANCH_ENPOINT = "branch";
 export const CUSTOMER_ENPOINT = "customer";
 export const PAWN_TICKET_ENDPOINT = "pawn-ticket";
+export const INVOICE_ENDPOINT = "invoice";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
@@ -37,6 +38,9 @@ export const PAWN_TICKET_API = {
   GET_ALL_PAWN_TICEKTS: `${PAWN_TICKET_ENDPOINT}/`,
   GET_PAWN_TICKET_BY_ID: (id: number) => `${PAWN_TICKET_ENDPOINT}/${id}`,
   GET_CALCULATE_MONTHLY_INTEREST: `${PAWN_TICKET_ENDPOINT}/calculate-monthly-interest`,
-  GET_TICKET_INVOICE: (id: number) =>
-    `${PAWN_TICKET_ENDPOINT}/${id}/ticket-invoice`,
+};
+
+export const INVOICE_API = {
+  POST_DRAFT_TICKET_INVOICE: `${INVOICE_ENDPOINT}/draft`,
+  GET_TICKET_INVOICE: (id: number) => `${INVOICE_ENDPOINT}/${id}`,
 };

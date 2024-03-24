@@ -23,6 +23,7 @@ export interface PostPatchDeleteConfig {
   queryParams?: object;
   includeAccessToken?: boolean;
   signal?: AbortSignal;
+  responseType?: ResponseType;
 }
 
 declare module "axios" {
@@ -68,7 +69,14 @@ axiosInstance.interceptors.response.use(
           subscribeTokenRefresh((token) => {
             originalRequest.headers["Authorization"] = "Bearer " + token;
             axios(originalRequest)
-              .then((response) => resolve(response.data.data))
+              .then((response) => {
+                if (response.data.data) resolve(response.data.data);
+                else if (
+                  response.headers["content-type"] === "application/pdf"
+                ) {
+                  return resolve(response.data);
+                }
+              })
               .catch((error) => reject(error));
           });
         });
@@ -154,6 +162,7 @@ const postRequest = async <T>({
   includeAccessToken = true,
   queryParams,
   signal,
+  responseType,
 }: PostPatchDeleteConfig): Promise<T> => {
   return executeRequest({
     path,
@@ -162,6 +171,7 @@ const postRequest = async <T>({
     signal,
     method: "post",
     body,
+    responseType,
   });
 };
 
