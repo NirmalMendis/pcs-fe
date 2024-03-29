@@ -3,6 +3,7 @@ export const LOGOUT = "LOGOUT";
 
 export const GET_USER = "GET_USER";
 export const PATCH_USER_ACTIVE_BRANCH = "PATCH_USER_ACTIVE_BRANCH";
+export const GET_USER_PERMISSIONS = "GET_USER_PERMISSIONS";
 
 export const GET_METADATA = "GET_METADATA";
 

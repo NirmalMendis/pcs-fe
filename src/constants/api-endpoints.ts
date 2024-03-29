@@ -17,6 +17,7 @@ export const AUTH_API = {
 export const USER_API = {
   GET_USER: (id: number) => `${USER_ENPOINT}/${id}`,
   PATCH_USER_ACTIVE_BRANCH: `${USER_ENPOINT}/active-branch`,
+  GET_USER_PERMISSIONS: `${USER_ENPOINT}/permissions`,
 };
 
 export const METADATA_API = {

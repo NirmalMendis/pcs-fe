@@ -144,7 +144,7 @@ const MainLayout = () => {
               >
                 {currentUser?.branches?.map((branch) => (
                   <MenuItem value={branch.id} key={branch.id}>
-                    {branch.name}
+                    {branch.title}
                   </MenuItem>
                 ))}
               </Select>

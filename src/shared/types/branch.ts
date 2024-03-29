@@ -1,6 +1,6 @@
 interface Branch {
   id: number;
-  name: string;
+  title: string;
   mobileNo: string;
   email: string;
   lastName: string;

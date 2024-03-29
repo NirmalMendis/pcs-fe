@@ -9,7 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import {
+  PERMISSIONS,
+  PERMISSION_ACTIONS,
+} from "../../../../constants/iam-constants";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import PermissionsWrapper from "../../iam/permissions-wrapper";
 import CreateTicket from "../create-ticket/create-ticket";
 import AllPawnTicketsDrid from "./all-pawn-tickets-grid";
 
@@ -64,15 +69,22 @@ const AllPawnTickets = () => {
                       All Pawn Tickets
                     </Typography>
                   </Grid>
+
                   <Grid item xs={12} sm={4}>
                     <Box sx={{ justifyContent: "end", display: "flex" }}>
-                      <Button
-                        color="primary"
-                        size="medium"
-                        onClick={handleShowCreateTicket}
+                      <PermissionsWrapper
+                        action={PERMISSION_ACTIONS.CREATE}
+                        permission={PERMISSIONS.PAWN_TICKET}
+                        disabled
                       >
-                        Create ticket
-                      </Button>
+                        <Button
+                          color="primary"
+                          size="medium"
+                          onClick={handleShowCreateTicket}
+                        >
+                          Create ticket
+                        </Button>
+                      </PermissionsWrapper>
                     </Box>
                   </Grid>
                 </Grid>
