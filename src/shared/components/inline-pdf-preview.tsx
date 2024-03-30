@@ -17,6 +17,10 @@ export interface PdfPreviewProps {
 const StyledDocument = styled(Document)(() => ({
   width: "fit-content",
   height: "fit-content",
+  maxHeight: "850px",
+  gap: "10px",
+  display: "flex",
+  flexDirection: "column",
 }));
 
 const InlinePdfPreview: FC<PdfPreviewProps> = ({ file }) => {

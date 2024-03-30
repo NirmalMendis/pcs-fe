@@ -76,7 +76,6 @@ const AddItems = () => {
           sx={{
             p: 2,
             borderColor: "secondary.dark",
-            backgroundColor: "primary.light",
           }}
           ref={
             items.findIndex((arrayItem) => arrayItem.uiId === item.uiId) ===

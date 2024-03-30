@@ -4,6 +4,7 @@ import { useState } from "react";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
 import { DEFAULT_PAGE_SIZE } from "../../../../constants/generic-constants";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
+import NoDataGrid from "../../../../shared/components/no-data-grid";
 import renderCellExpand from "../../../../shared/components/render-cell-expand";
 
 const AllPawnTicketsDrid = () => {
@@ -60,29 +61,28 @@ const AllPawnTicketsDrid = () => {
 
   return (
     <Box>
-      {data?.pageData ? (
-        <DataGrid
-          rows={data?.pageData}
-          rowCount={data?.pager?.totalItems || 0}
-          columns={columns}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          pageSizeOptions={[DEFAULT_PAGE_SIZE]}
-          paginationMode="server"
-          autoHeight
-          sx={{
-            border: "1px solid",
-            borderColor: "secondary.light",
-            backgroundColor: "#ffffff",
-            padding: 1,
-          }}
-          loading={isFetchingAllPawnTickets}
-          slots={{
-            loadingOverlay: LinearProgress,
-            toolbar: GridToolBar,
-          }}
-        />
-      ) : null}
+      <DataGrid
+        rows={data?.pageData || []}
+        rowCount={data?.pager?.totalItems || 0}
+        columns={columns}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        pageSizeOptions={[DEFAULT_PAGE_SIZE]}
+        paginationMode="server"
+        autoHeight
+        sx={{
+          border: "1px solid",
+          borderColor: "secondary.light",
+          backgroundColor: "#ffffff",
+          padding: 1,
+        }}
+        loading={isFetchingAllPawnTickets}
+        slots={{
+          loadingOverlay: LinearProgress,
+          toolbar: GridToolBar,
+          noRowsOverlay: NoDataGrid,
+        }}
+      />
     </Box>
   );
 };

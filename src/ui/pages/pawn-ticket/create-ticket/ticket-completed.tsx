@@ -50,6 +50,20 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
 
   const handlePrintToPDF = useReactToPrint({
     content: () => invoiceHTMLRef.current,
+    pageStyle: `
+        @page {
+            /* Remove browser default header (title) and footer (url) */
+            margin: 15px;
+            size: A4;
+        }
+        @media print {
+            body {
+                /* Tell browsers to print background colors */
+                -webkit-print-color-adjust: exact; /* Chrome/Safari/Edge/Opera */
+                color-adjust: exact; /* Firefox */
+            }
+        }
+    `,
   });
 
   const handlePrint = async () => {
