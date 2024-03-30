@@ -15,11 +15,16 @@ import {
 import { useMediaQuery } from "@mui/material";
 import { FC, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import useMetaData from "../../../../api/meta-data/use-get-metadata";
 import useGetTicketInvoice, {
   InvoiceHTMLType,
 } from "../../../../api/pawn-ticket/use-get-ticket-invoice";
 import PartyImage from "../../../../assets/svg/party-icon.svg";
-import { MaterialContentTypes } from "../../../../shared/types/generic";
+import { MetaDataEnum } from "../../../../constants/string-constants";
+import {
+  InvoiceSettingsType,
+  MaterialContentTypes,
+} from "../../../../shared/types/generic";
 import InvoicePreview from "./invoice-preview";
 
 export interface TicketCompletedProps {
@@ -36,7 +41,9 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
     theme.breakpoints.up("md")
   );
   const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
-
+  const { data: invoicePdfSettings } = useMetaData<InvoiceSettingsType>({
+    type: MetaDataEnum.INVOICE_PDF_SETTINGS,
+  });
   const { data: invoicePDFData, isFetching: isLoadingPdf } =
     useGetTicketInvoice<Blob>({
       id: invoiceID,
@@ -53,8 +60,8 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
     pageStyle: `
         @page {
             /* Remove browser default header (title) and footer (url) */
-            margin: 15px;
-            size: A4;
+            margin: ${invoicePdfSettings?.margin.value};
+            size: ${invoicePdfSettings?.pageSize.value};
         }
         @media print {
             body {

@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { FC, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -33,7 +33,15 @@ const InlinePdfPreview: FC<PdfPreviewProps> = ({ file }) => {
   return (
     <StyledDocument file={file} onLoadSuccess={onDocumentLoadSuccess} noData="">
       {Array.from(new Array(numPages), (el, index) => (
-        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+        <Box
+          key={`page_${index + 1}`}
+          sx={{
+            boxShadow: "0px 0px 4px rgba(0, 0, 0, 0.25)",
+            margin: "5px",
+          }}
+        >
+          <Page pageNumber={index + 1} />
+        </Box>
       ))}
     </StyledDocument>
   );
