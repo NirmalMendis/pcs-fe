@@ -32,6 +32,9 @@ function stringAvatar(
   if (size === "medium") {
     sizeObj.width = 34;
     sizeObj.height = 34;
+  } else if (size === "small") {
+    sizeObj.width = 28;
+    sizeObj.height = 28;
   }
   return {
     sx: {
@@ -52,7 +55,7 @@ export default function ProfileAvatar({
   size,
 }: {
   name: string;
-  size: string;
+  size: "medium" | "small";
 }) {
   return <Avatar {...stringAvatar(name, size)} />;
 }

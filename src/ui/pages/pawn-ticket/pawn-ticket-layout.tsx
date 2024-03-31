@@ -8,7 +8,7 @@ import TabLayout from "../../../shared/components/tab-layout";
 import useUserPermissions from "../../../utils/auth/use-user-permissions";
 
 const PawnTicketLayout = () => {
-  const canAccessResource = useUserPermissions();
+  const { canAccessResource } = useUserPermissions();
 
   const authorizedAllPawnTicketTab = canAccessResource(
     {

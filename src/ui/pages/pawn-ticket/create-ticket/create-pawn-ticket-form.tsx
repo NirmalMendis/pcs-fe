@@ -4,6 +4,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
+import { CURRENCY_PREFIX } from "../../../../constants/generic-constants";
 import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
@@ -165,7 +166,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                 return (
                   <NumberField
                     label="Principal amount"
-                    customPrefix="Rs."
+                    customPrefix={CURRENCY_PREFIX}
                     {...field}
                     InputProps={{
                       readOnly: true,
@@ -183,7 +184,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                 return (
                   <NumberField
                     label="Service Charge"
-                    customPrefix="Rs."
+                    customPrefix={CURRENCY_PREFIX}
                     required
                     error={!!getSingleFieldError("serviceCharge")}
                     helperText={getSingleFieldError("serviceCharge")?.message}

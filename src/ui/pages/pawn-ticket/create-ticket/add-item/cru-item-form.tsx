@@ -4,6 +4,7 @@ import { Button, Grid, Stack, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
+import { CURRENCY_PREFIX } from "../../../../../constants/generic-constants";
 import NumberField from "../../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../../shared/hooks/use-single-field-error";
@@ -104,7 +105,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
               return (
                 <NumberField
                   label="Appraised Value (Market value)"
-                  customPrefix="Rs."
+                  customPrefix={CURRENCY_PREFIX}
                   required
                   error={!!getSingleFieldError("appraisedValue")}
                   helperText={getSingleFieldError("appraisedValue")?.message}
@@ -127,7 +128,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
               return (
                 <NumberField
                   label="Pawning Amount"
-                  customPrefix="Rs."
+                  customPrefix={CURRENCY_PREFIX}
                   required
                   error={!!getSingleFieldError("pawningAmount")}
                   helperText={getSingleFieldError("pawningAmount")?.message}

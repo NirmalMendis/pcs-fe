@@ -17,7 +17,9 @@ import { Outlet } from "react-router-dom";
 import useGetUser from "../../../api/user/use-get-user";
 import usePatchUserActiveBranch from "../../../api/user/use-patch-user-active-branch";
 import Backdrop from "../../../shared/components/backdrop";
+import { FeatureEnum } from "../../../shared/types/generic";
 import useAuthStore from "../../../store/use-auth-store-state";
+import PermissionsWrapper from "../../pages/iam/permissions-wrapper";
 import AppBar from "./app-bar";
 import AppBarProfile from "./app-bar-profile";
 import NavigationDrawer from "./navigation-drawer";
@@ -127,27 +129,29 @@ const MainLayout = () => {
             spacing={1}
           >
             {currentUser ? (
-              <Select
-                value={currentUser?.activeBranchId}
-                onChange={onChangeActiveBranch}
-                variant="standard"
-                size="small"
-                sx={{
-                  minHeight: "10px",
-                  height: "20px",
-                  color: "secondary.light",
-                  "::before": {
-                    borderColor: "white !important",
-                  },
-                }}
-                IconComponent={() => null}
-              >
-                {currentUser?.branches?.map((branch) => (
-                  <MenuItem value={branch.id} key={branch.id}>
-                    {branch.title}
-                  </MenuItem>
-                ))}
-              </Select>
+              <PermissionsWrapper feature={FeatureEnum.MULTIPLE_BRANCHES}>
+                <Select
+                  value={currentUser?.activeBranchId}
+                  onChange={onChangeActiveBranch}
+                  variant="standard"
+                  size="small"
+                  sx={{
+                    minHeight: "10px",
+                    height: "20px",
+                    color: "secondary.light",
+                    "::before": {
+                      borderColor: "white !important",
+                    },
+                  }}
+                  IconComponent={() => null}
+                >
+                  {currentUser?.branches?.map((branch) => (
+                    <MenuItem value={branch.id} key={branch.id}>
+                      {branch.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </PermissionsWrapper>
             ) : null}
             <AppBarProfile />
           </Stack>

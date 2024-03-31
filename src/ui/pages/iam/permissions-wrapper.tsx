@@ -5,40 +5,54 @@ import {
   cloneElement,
   isValidElement,
 } from "react";
-import {
-  PERMISSIONS,
-  PERMISSION_ACTIONS,
-} from "../../../constants/iam-constants";
+import { FeatureEnum, PermissionAtom } from "../../../shared/types/generic";
 import useUserPermissions from "../../../utils/auth/use-user-permissions";
 
 export interface PermissionsWrapper extends PropsWithChildren {
-  permission: PERMISSIONS;
-  action: PERMISSION_ACTIONS;
+  permission?: PermissionAtom;
+  feature?: FeatureEnum;
   disabled?: boolean;
 }
 
 const PermissionsWrapper: FC<PermissionsWrapper> = ({
   children,
-  action,
   permission,
+  feature,
   disabled,
 }) => {
-  const canAccessResource = useUserPermissions();
+  const { canAccessResource, withFeatureEnabled } = useUserPermissions();
 
-  const authorizedResource = canAccessResource(children, permission, action);
+  const getAuthorizedResource = () => {
+    let authorizedResource = null;
+    if (permission)
+      authorizedResource = canAccessResource(
+        children,
+        permission.permissionType,
+        permission.action
+      );
+    else if (feature) {
+      authorizedResource = withFeatureEnabled(children, feature);
+    }
+    return authorizedResource;
+  };
 
-  let returnedResourse = null;
-  if (authorizedResource) {
-    returnedResourse = authorizedResource;
-  } else if (disabled && children && isValidElement(children)) {
-    returnedResourse = Children.map(children, (child, index) =>
-      cloneElement(child, {
-        key: index,
-        disabled: true,
-      } as never)
-    );
-  }
-  return returnedResourse;
+  const getReturnedResource = () => {
+    let returnedResourse = null;
+    const authorizedResource = getAuthorizedResource();
+    if (authorizedResource) {
+      returnedResourse = authorizedResource;
+    } else if (disabled && children && isValidElement(children)) {
+      returnedResourse = Children.map(children, (child, index) =>
+        cloneElement(child, {
+          key: index,
+          disabled: true,
+        } as never)
+      );
+    }
+    return returnedResourse;
+  };
+
+  return getReturnedResource();
 };
 
 export default PermissionsWrapper;

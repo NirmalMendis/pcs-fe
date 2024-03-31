@@ -1,5 +1,5 @@
 const Unauthorized = () => {
-  return <div>Unauthorized</div>;
+  return <div>Are you lost?</div>;
 };
 
 export default Unauthorized;

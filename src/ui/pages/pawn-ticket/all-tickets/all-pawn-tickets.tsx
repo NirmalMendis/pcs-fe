@@ -73,9 +73,10 @@ const AllPawnTickets = () => {
                   <Grid item xs={12} sm={4}>
                     <Box sx={{ justifyContent: "end", display: "flex" }}>
                       <PermissionsWrapper
-                        action={PERMISSION_ACTIONS.CREATE}
-                        permission={PERMISSIONS.PAWN_TICKET}
-                        disabled
+                        permission={{
+                          action: PERMISSION_ACTIONS.CREATE,
+                          permissionType: PERMISSIONS.PAWN_TICKET,
+                        }}
                       >
                         <Button
                           color="primary"

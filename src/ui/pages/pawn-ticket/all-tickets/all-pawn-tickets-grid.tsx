@@ -1,11 +1,23 @@
-import { Box, LinearProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  ChipOwnProps,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
-import { DEFAULT_PAGE_SIZE } from "../../../../constants/generic-constants";
+import {
+  CURRENCY_PREFIX,
+  DEFAULT_PAGE_SIZE,
+} from "../../../../constants/generic-constants";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
+import ProfileAvatar from "../../../../shared/components/profile-avatar";
 import renderCellExpand from "../../../../shared/components/render-cell-expand";
+import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 
 const AllPawnTicketsDrid = () => {
   const [paginationModel, setPaginationModel] = useState({
@@ -18,14 +30,35 @@ const AllPawnTicketsDrid = () => {
   });
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "Pawn Ticket ID", width: 150 },
+    {
+      field: "id",
+      headerName: "Pawn Ticket ID",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <Button variant="outlined" color="primary">
+            {params.value}
+          </Button>
+        );
+      },
+    },
     {
       field: "customer",
       headerName: "Customer",
       width: 150,
       renderCell: (params) => {
-        if (params.value?.name) params.value = params.value?.name;
-        return renderCellExpand(params);
+        const renderName = (
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"start"}
+            gap={2}
+          >
+            <ProfileAvatar name={params.value?.name} size="small" />
+            <Typography>{params.value?.name}</Typography>
+          </Box>
+        );
+        return renderCellExpand({ ...params, value: renderName as never });
       },
     },
     {
@@ -33,37 +66,75 @@ const AllPawnTicketsDrid = () => {
       headerName: "Pawn Date",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) =>
-        new Date(params.value).toLocaleString([], { hour12: true }),
+      renderCell: (params) => new Date(params.value).toLocaleDateString(),
     },
     {
       field: "dueDate",
       headerName: "Due Date",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) =>
-        new Date(params.value).toLocaleString([], { hour12: true }),
+      renderCell: (params) => new Date(params.value).toLocaleDateString(),
     },
     {
       field: "principalAmount",
       headerName: "Principal Amount",
       minWidth: 150,
       flex: 1,
+      cellClassName: "bold-text",
+      valueGetter: (params) => {
+        const formatedAmount = `${CURRENCY_PREFIX}${params.value}`;
+        return formatedAmount;
+      },
     },
     {
       field: "interestRate",
       headerName: "Interest Rate",
       minWidth: 150,
       flex: 1,
+      valueGetter: (params) => {
+        const formatedAmount = `${params.value} %`;
+        return formatedAmount;
+      },
     },
-    { field: "status", headerName: "Status", minWidth: 150, flex: 1 },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 1,
+      renderCell: (params) => {
+        let color: ChipOwnProps["color"] = undefined;
+
+        switch (params.value) {
+          case PawnTicketStatusEnum.ACTIVE:
+            color = "success";
+            break;
+          case PawnTicketStatusEnum.DUE:
+            color = "error";
+            break;
+          case PawnTicketStatusEnum.RECOVERED:
+            color = "info";
+            break;
+          case PawnTicketStatusEnum.FORFEITED:
+            color = "default";
+            break;
+        }
+        return <Chip label={params.value} color={color} size="small" />;
+      },
+    },
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        "& .bold-text": {
+          fontWeight: "bold",
+        },
+      }}
+    >
       <DataGrid
         rows={data?.pageData || []}
         rowCount={data?.pager?.totalItems || 0}
+        rowHeight={35}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
@@ -75,6 +146,7 @@ const AllPawnTicketsDrid = () => {
           borderColor: "secondary.light",
           backgroundColor: "#ffffff",
           padding: 1,
+          "--DataGrid-overlayHeight": "300px",
         }}
         loading={isFetchingAllPawnTickets}
         slots={{

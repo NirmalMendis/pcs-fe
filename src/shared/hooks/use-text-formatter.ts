@@ -1,4 +1,5 @@
 import { useNumericFormat } from "react-number-format";
+import { CURRENCY_PREFIX } from "../../constants/generic-constants";
 
 const useTextFormatter = () => {
   const { format: formatCaratage } = useNumericFormat({
@@ -6,7 +7,7 @@ const useTextFormatter = () => {
     thousandSeparator: true,
   });
   const { format: formatRs } = useNumericFormat({
-    prefix: "Rs. ",
+    prefix: CURRENCY_PREFIX,
     thousandSeparator: true,
   });
   const { format: formatWeight } = useNumericFormat({

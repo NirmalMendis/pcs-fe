@@ -108,6 +108,9 @@ export const commonTheme: ThemeOptions = {
     MuiInputBase: {
       defaultProps: {
         size: "small",
+        style: {
+          borderRadius: 8,
+        },
       },
     },
     MuiCssBaseline: {
