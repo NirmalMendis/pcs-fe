@@ -32,7 +32,7 @@ export const DrawerContext = createContext({
   handleDrawerClose: () => {},
 });
 
-const Main = styled("main")(({ theme }) => ({
+export const Main = styled("main")(({ theme }) => ({
   flexGrow: 1,
   padding: 0,
   margin: 0,
