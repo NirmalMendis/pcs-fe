@@ -35,3 +35,10 @@ export enum PawnTicketStatusEnum {
   RECOVERED = "Recovered",
   FORFEITED = "Forfeited",
 }
+
+export interface OrderPaginatedRequest {
+  page: number;
+  pageSize: number;
+  orderBy?: string;
+  orderDirection?: "DESC" | "ASC";
+}

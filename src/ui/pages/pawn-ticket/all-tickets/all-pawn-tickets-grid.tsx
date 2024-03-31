@@ -8,11 +8,13 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
 import {
   CURRENCY_PREFIX,
   DEFAULT_PAGE_SIZE,
 } from "../../../../constants/generic-constants";
+import ROUTE_PATHS from "../../../../constants/route-paths";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
 import ProfileAvatar from "../../../../shared/components/profile-avatar";
@@ -27,7 +29,10 @@ const AllPawnTicketsDrid = () => {
   const { data, isFetching: isFetchingAllPawnTickets } = useGetAllPawnTickets({
     page: paginationModel.page + 1,
     pageSize: paginationModel.pageSize,
+    orderBy: "createdAt",
+    orderDirection: "DESC",
   });
+  const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
@@ -36,7 +41,15 @@ const AllPawnTicketsDrid = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <Button variant="outlined" color="primary">
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() =>
+              navigate(`../${ROUTE_PATHS.PAWN_TICKET.UPDATE}/${params.value}`, {
+                relative: "path",
+              })
+            }
+          >
             {params.value}
           </Button>
         );

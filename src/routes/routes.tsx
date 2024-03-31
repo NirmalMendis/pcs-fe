@@ -47,6 +47,15 @@ const Routes = () => {
     FeatureEnum.PAWN_TICKET
   );
 
+  const authorizedUpdatePawnTicket = withFeatureEnabled(
+    canAccessResource(
+      <UpdateTicket />,
+      PERMISSIONS.PAWN_TICKET,
+      PERMISSION_ACTIONS.VIEW
+    ),
+    FeatureEnum.PAWN_TICKET
+  );
+
   const featureEnabledPawnCategory = withFeatureEnabled(
     <Route
       path={ROUTE_PATHS.PAWN_TICKET.BASE}
@@ -60,7 +69,12 @@ const Routes = () => {
         path={ROUTE_PATHS.PAWN_TICKET.ALL}
         element={authorizedAllPawnTickets}
       />
-      <Route path={ROUTE_PATHS.PAWN_TICKET.UPDATE} element={<UpdateTicket />} />
+      <Route
+        path={ROUTE_PATHS.PAWN_TICKET.UPDATE}
+        element={authorizedUpdatePawnTicket}
+      >
+        <Route path=":id" element={authorizedUpdatePawnTicket} />
+      </Route>
     </Route>,
     FeatureEnum.PAWN_TICKET
   );

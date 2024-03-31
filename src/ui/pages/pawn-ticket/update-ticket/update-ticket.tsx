@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, Zoom } from "@mui/material";
 import { debounce } from "lodash";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetPawnTicketById from "../../../../api/pawn-ticket/use-get-pawn-ticket-by-id";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
@@ -31,7 +32,8 @@ const TABS = {
 
 const UpdateTicket = () => {
   const [currentTab, setCurrentTab] = useState(0);
-  const [ticketId, setTicketId] = useState<string | undefined>();
+  const { id: ticketId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data,
@@ -52,7 +54,7 @@ const UpdateTicket = () => {
   const onChangeSearch = (
     event?: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setTicketId(event?.target.value);
+    navigate(event?.target.value || "");
   };
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const UpdateTicket = () => {
     return () => {
       debouncedApiCall.cancel();
     };
-  }, [ticketId]);
+  }, [ticketId, refetch]);
 
   return (
     <Stack sx={{ pb: 1, pl: 3, pr: 3 }} spacing={1}>
@@ -84,7 +86,6 @@ const UpdateTicket = () => {
           <SearchInput
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
-            value={ticketId}
           />
         </Stack>
       </PageTitleCard>
