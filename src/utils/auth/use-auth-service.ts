@@ -29,7 +29,7 @@ const useAuthService = () => {
             user: user,
             isAuthenticed: true,
           });
-          window.location.href = `${ENV_CONFIGS.FE_BASE_URL}/${ROUTE_PATHS.PAWN_TICKET}`;
+          window.location.href = `${ENV_CONFIGS.FE_BASE_URL}${ROUTE_PATHS.DASHBOARD}`;
         },
       }
     );

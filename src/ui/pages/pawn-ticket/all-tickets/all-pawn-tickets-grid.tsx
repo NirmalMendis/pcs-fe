@@ -159,7 +159,7 @@ const AllPawnTicketsDrid = () => {
           borderColor: "secondary.light",
           backgroundColor: "#ffffff",
           padding: 1,
-          "--DataGrid-overlayHeight": "300px",
+          "--DataGrid-overlayHeight": "200px",
         }}
         loading={isFetchingAllPawnTickets}
         slots={{

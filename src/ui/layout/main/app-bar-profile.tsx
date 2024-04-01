@@ -8,12 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import Backdrop from "../../../shared/components/backdrop";
 import ProfileAvatar from "../../../shared/components/profile-avatar";
 import useAuthService from "../../../utils/auth/use-auth-service";
 
 const AppBarProfile = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { signOut, getBasicUserInfo } = useAuthService();
+  const { signOut, getBasicUserInfo, isLoading } = useAuthService();
   const userInfo = getBasicUserInfo();
   const name = userInfo?.firstName + " " + userInfo?.lastName;
 
@@ -84,6 +85,7 @@ const AppBarProfile = () => {
           </Stack>
         </MenuItem>
       </Menu>
+      <Backdrop open={isLoading} />
     </Box>
   );
 };
