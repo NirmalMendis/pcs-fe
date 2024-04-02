@@ -1,7 +1,6 @@
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./app";
@@ -10,16 +9,14 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <SnackbarProvider maxSnack={3}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ReactQueryDevtools initialIsOpen={false} />
         <App />
       </LocalizationProvider>
-    </QueryClientProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );
 
