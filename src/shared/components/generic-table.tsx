@@ -54,7 +54,7 @@ const GenericTable: FC<TableProps> = ({ columns, data }) => {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody sx={{ backgroundColor: "inherit" }}>
+        <TableBody sx={{ backgroundColor: "inherit", gap: 0 }}>
           {data.map((item, index) => (
             <TableRow key={index}>
               {columns.map((column, columnIndex) => (

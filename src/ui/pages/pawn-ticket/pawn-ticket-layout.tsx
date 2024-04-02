@@ -13,7 +13,7 @@ const PawnTicketLayout = () => {
   const authorizedAllPawnTicketTab = canAccessResource(
     {
       title: "Pawn Ticket",
-      icon: <ViewCompactIcon />,
+      icon: <ViewCompactIcon color="inherit" />,
       to: "/pawn-ticket/all",
     },
     PERMISSIONS.PAWN_TICKET,
@@ -22,7 +22,7 @@ const PawnTicketLayout = () => {
   const authorizedPawnTicketView = canAccessResource(
     {
       title: "Update Ticket",
-      icon: <UpdateIcon />,
+      icon: <UpdateIcon color="inherit" />,
       to: "/pawn-ticket/update",
     },
     PERMISSIONS.PAWN_TICKET,

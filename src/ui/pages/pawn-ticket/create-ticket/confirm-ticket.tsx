@@ -24,6 +24,7 @@ import useGetCustomerById from "../../../../api/customer/use-get-customer-by-id"
 import useGetCalculateMonthlyInterest from "../../../../api/pawn-ticket/use-get-calculate-monthly-interest";
 import CustomerAtomicCard from "../../customer/customer-atomic-card";
 import TicketDatesCard from "../update-ticket/general/ticket-dates";
+import TicketInterests from "../update-ticket/general/ticket-interests";
 import TicketMonetaryValues from "../update-ticket/general/ticket-monetary-values";
 import TicketItemsTable from "../update-ticket/items/ticket-items-table";
 import { CreateTicketContext } from "./create-ticket";
@@ -149,9 +150,12 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
             />
             <TicketMonetaryValues
               principalAmount={createPawnTicketFormData?.principalAmount}
+              serviceCharge={createPawnTicketFormData?.serviceCharge || 0}
+              sx={{ height: "fit-content" }}
+            />
+            <TicketInterests
               interestRate={createPawnTicketFormData?.interestRate}
               monthlyInterest={monthlyInterestData?.monthlyInterest}
-              sx={{ height: "fit-content" }}
             />
             <Stack component={Paper} sx={{ p: 1 }} elevation={0} spacing={1}>
               <Typography variant="h6">Items</Typography>

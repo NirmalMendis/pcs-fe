@@ -3,6 +3,7 @@ import { FC } from "react";
 import { PawnTicket } from "../../../../../shared/types/pawn-ticket";
 import CustomerAtomicCard from "../../../customer/customer-atomic-card";
 import TicketDatesCard from "./ticket-dates";
+import TicketInterests from "./ticket-interests";
 import TicketMonetaryValues from "./ticket-monetary-values";
 
 export interface TicketGeneralTabProps {
@@ -27,7 +28,13 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
       <Grid item xs={12} sm={6} md={4}>
         <TicketMonetaryValues
           principalAmount={pawnTicketData?.principalAmount}
+          serviceCharge={pawnTicketData?.serviceCharge}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <TicketInterests
           interestRate={pawnTicketData?.interestRate}
+          monthlyInterest={pawnTicketData?.monthlyInterest}
         />
       </Grid>
     </Grid>

@@ -27,11 +27,13 @@ declare module "@mui/material/styles" {
   interface Palette {
     ternary: Palette["primary"];
     violet: Palette["primary"];
+    icon: Palette["primary"];
   }
 
   interface PaletteOptions {
     ternary?: PaletteOptions["primary"];
     violet?: PaletteOptions["primary"];
+    icon?: PaletteOptions["primary"];
   }
 }
 
@@ -39,6 +41,12 @@ declare module "@mui/material" {
   interface ButtonPropsColorOverrides {
     violet: true;
     ternary: true;
+    icon: true;
+  }
+  interface SvgIconPropsColorOverrides {
+    violet: true;
+    ternary: true;
+    icon: true;
   }
 }
 
@@ -51,20 +59,20 @@ export const getDesignTokens = (mode: PaletteMode) => ({
     ...(mode === "light"
       ? {
           primary: {
-            light: "#f5fbff", //top tab layout, drawer
-            main: "#0063b1", //top app bar, icons
-            dark: "#8b8994", //lower tabs selected text
+            main: "#0063b1", //top app bar, !
+            light: "#f5fbff", //side drawer !
+            dark: "#8b8994", //lower tabs selected text !
             contrastText: "#fff",
           },
           secondary: {
-            light: "#e8e9f0",
-            main: "#ffffff",
-            dark: "#829baf", //lower tabs unselected text
+            main: "#ffffff", // page header tabs- tablayout !
+            light: "#e8e9f0", //customer search result and inner tab border !
+            dark: "#829baf", //lower tabs unselected text !
             contrastText: "#000",
           },
           ternary: {
+            main: "#f5f5f5", // app background + DataCard background
             light: "#b2ebf2",
-            main: "#f6f8fa", // app background + DataCard background
             dark: "#a7bac9",
             contrastText: "#000",
           },
@@ -74,6 +82,12 @@ export const getDesignTokens = (mode: PaletteMode) => ({
             dark: alpha(violetBase, 0.9),
             contrastText:
               getContrastRatio(violetMain, "#fff") > 4.5 ? "#fff" : "#111",
+          },
+          icon: {
+            main: "#7dccd1",
+            light: "#13754a",
+            dark: "#0063b1",
+            contrastText: "#ffffff",
           },
         }
       : {}),

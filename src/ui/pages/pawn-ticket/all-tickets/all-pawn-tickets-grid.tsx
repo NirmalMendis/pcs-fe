@@ -1,15 +1,9 @@
-import {
-  Box,
-  Button,
-  Chip,
-  ChipOwnProps,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Button, LinearProgress, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
+import { StatusColors } from "../../../../constants/color-constants";
 import {
   CURRENCY_PREFIX,
   DEFAULT_PAGE_SIZE,
@@ -19,7 +13,6 @@ import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
 import ProfileAvatar from "../../../../shared/components/profile-avatar";
 import renderCellExpand from "../../../../shared/components/render-cell-expand";
-import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 
 const AllPawnTicketsDrid = () => {
   const [paginationModel, setPaginationModel] = useState({
@@ -110,28 +103,40 @@ const AllPawnTicketsDrid = () => {
       },
     },
     {
+      field: "monthlyInterest",
+      headerName: "Monthly Interest",
+      minWidth: 150,
+      flex: 1,
+      cellClassName: "bold-text",
+      valueGetter: (params) => {
+        const formatedAmount = `${CURRENCY_PREFIX}${params.value}`;
+        return formatedAmount;
+      },
+    },
+    {
       field: "status",
       headerName: "Status",
       minWidth: 150,
       flex: 1,
       renderCell: (params) => {
-        let color: ChipOwnProps["color"] = undefined;
-
-        switch (params.value) {
-          case PawnTicketStatusEnum.ACTIVE:
-            color = "success";
-            break;
-          case PawnTicketStatusEnum.DUE:
-            color = "error";
-            break;
-          case PawnTicketStatusEnum.RECOVERED:
-            color = "info";
-            break;
-          case PawnTicketStatusEnum.FORFEITED:
-            color = "default";
-            break;
-        }
-        return <Chip label={params.value} color={color} size="small" />;
+        return (
+          <Box
+            sx={{
+              border: "1px solid",
+              borderColor: StatusColors[params.value].borderColor,
+              p: "5px",
+              pt: "5px",
+              pb: "5px",
+              borderRadius: "3px",
+              width: "100%",
+              textAlign: "center",
+              color: StatusColors[params.value].color,
+              backgroundColor: StatusColors[params.value].backgroundColor,
+            }}
+          >
+            {params.value}
+          </Box>
+        );
       },
     },
   ];

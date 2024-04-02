@@ -117,7 +117,7 @@ const MainLayout = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ color: "secondary.light" }}
+            sx={{ color: "secondary.main" }}
           >
             Pawning Center System
           </Typography>
@@ -138,7 +138,7 @@ const MainLayout = () => {
                   sx={{
                     minHeight: "10px",
                     height: "20px",
-                    color: "secondary.light",
+                    color: "secondary.main",
                     "::before": {
                       borderColor: "white !important",
                     },

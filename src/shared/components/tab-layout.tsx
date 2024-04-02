@@ -52,7 +52,7 @@ export default function TabLayout({ tabs, leftComponent }: TabLayoutProps) {
         location.pathname === tab.to || location.pathname.includes(tab.to + "/")
     );
     setValue(tabIndex === -1 ? 0 : tabIndex);
-  }, [location]);
+  }, [location, tabs]);
 
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
@@ -66,7 +66,7 @@ export default function TabLayout({ tabs, leftComponent }: TabLayoutProps) {
       <Grid
         container
         sx={{
-          bgcolor: "primary.light",
+          bgcolor: "secondary.main",
           boxShadow: " 0px 2px 10px -3px rgba(0,0,0,0.6);",
           zIndex: "0 !important",
           position: "relative",

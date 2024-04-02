@@ -1,18 +1,18 @@
 import { PaperOwnProps, Stack, Typography } from "@mui/material";
 import { FC } from "react";
-import MoneyBagIcon from "../../../../../assets/svg/money-bag.svg";
+import InterestIcon from "../../../../../assets/svg/interest-logo.svg";
 import DataCard from "../../../../../shared/components/data-card";
 import useTextFormatter from "../../../../../shared/hooks/use-text-formatter";
 
 export interface TicketMonetoryValuesProps extends PaperOwnProps {
-  principalAmount?: number | null;
-  serviceCharge?: number;
+  interestRate?: number;
+  monthlyInterest?: number;
   darken?: boolean;
 }
 
-const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
-  principalAmount,
-  serviceCharge,
+const TicketInterests: FC<TicketMonetoryValuesProps> = ({
+  interestRate,
+  monthlyInterest,
   darken,
   ...props
 }) => {
@@ -20,8 +20,8 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
 
   return (
     <DataCard
-      backgroundImg={MoneyBagIcon}
-      highlightBackground={!principalAmount}
+      backgroundImg={InterestIcon}
+      highlightBackground={interestRate === undefined}
       darken={darken}
       {...props}
     >
@@ -31,27 +31,27 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
           textTransform={"uppercase"}
           fontWeight="bold"
         >
-          Monetary
+          Interest
         </Typography>
         {formatRs && formatPercentage ? (
           <Stack direction="row" spacing={1} justifyContent="space-between">
-            {principalAmount !== undefined && (
+            {interestRate != undefined && (
               <Stack>
                 <Typography noWrap fontSize={14} fontWeight="bold">
-                  Principal Amount
+                  Interest Rate
                 </Typography>
                 <Typography
                   noWrap
                   fontSize={15}
                   color={"primary"}
-                  //  color={`${revisedChanges.checkInDateTime ? "red" : "primary"}`}
+                  //   color={`${revisedChanges.checkOutDateTime ? "red" : "primary"}`}
                   fontWeight="bold"
                 >
-                  {formatRs(String(principalAmount))}
+                  {formatPercentage(String(interestRate))}
                 </Typography>
               </Stack>
             )}
-            {serviceCharge !== undefined && (
+            {monthlyInterest !== undefined && (
               <Stack>
                 <Typography noWrap fontSize={14} fontWeight="bold">
                   Monthly Interest
@@ -63,7 +63,7 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
                   fontWeight="bold"
                   //   color={`${revisedChanges.numberOfNights ? "red" : "primary"}`}
                 >
-                  {formatRs(String(serviceCharge))}
+                  {formatRs(String(monthlyInterest))}
                 </Typography>
               </Stack>
             )}
@@ -74,4 +74,4 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
   );
 };
 
-export default TicketMonetaryValues;
+export default TicketInterests;

@@ -5,9 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import useGetPawnTicketById from "../../../../api/pawn-ticket/use-get-pawn-ticket-by-id";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
+import MenuDropDownButton from "../../../../shared/components/menu-dropdown-button";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
+import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 import TicketGeneralTab from "./general/ticket-general-tab";
 import TicketItemsTab from "./items/ticket-items";
 
@@ -36,7 +38,7 @@ const UpdateTicket = () => {
   const navigate = useNavigate();
 
   const {
-    data,
+    data: pawnTicketData,
     refetch,
     isFetching: isFetchingPawnTicketData,
   } = useGetPawnTicketById(
@@ -82,11 +84,20 @@ const UpdateTicket = () => {
             Pawn Ticket
           </Typography>
         </Stack>
-        <Stack>
+        <Stack direction={"row"} gap={2}>
           <SearchInput
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
+          {pawnTicketData?.status ? (
+            <MenuDropDownButton
+              selection={pawnTicketData?.status}
+              options={Object.values(PawnTicketStatusEnum).map((option) => ({
+                label: option,
+                disabled: false,
+              }))}
+            />
+          ) : null}
         </Stack>
       </PageTitleCard>
       <Tabs
@@ -114,22 +125,24 @@ const UpdateTicket = () => {
             timeout={500}
           >
             <Box>
-              <TicketGeneralTab pawnTicketData={data} />
+              <TicketGeneralTab pawnTicketData={pawnTicketData} />
             </Box>
           </Zoom>
         </Box>
         <Box>
-          <Zoom
-            in={true}
-            mountOnEnter
-            unmountOnExit
-            // style={{ transitionDelay: !showEditForm ? "400ms" : "0ms" }}
-            timeout={500}
-          >
-            <Box>
-              <TicketItemsTab items={data?.items} />
-            </Box>
-          </Zoom>
+          {pawnTicketData?.id !== undefined ? (
+            <Zoom
+              in={true}
+              mountOnEnter
+              unmountOnExit
+              // style={{ transitionDelay: !showEditForm ? "400ms" : "0ms" }}
+              timeout={500}
+            >
+              <Box>
+                <TicketItemsTab id={pawnTicketData?.id} />
+              </Box>
+            </Zoom>
+          ) : null}
         </Box>
       </Tabs>
       <Backdrop open={isFetchingPawnTicketData} />

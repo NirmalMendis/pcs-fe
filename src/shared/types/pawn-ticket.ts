@@ -1,5 +1,4 @@
 import Customer from "./customer";
-import { Item } from "./item";
 
 export interface PawnTicket {
   id: number;
@@ -8,10 +7,10 @@ export interface PawnTicket {
   interestRate: number;
   principalAmount: number;
   serviceCharge: number;
+  monthlyInterest: number;
   dueDate: Date;
   pawnDate: Date;
   branchId: number;
-  items: Array<Item>;
   customer: Customer;
   invoiceId?: number;
 }

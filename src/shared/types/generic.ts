@@ -34,6 +34,7 @@ export enum PawnTicketStatusEnum {
   DUE = "Due",
   RECOVERED = "Recovered",
   FORFEITED = "Forfeited",
+  REVISED = "Revised",
 }
 
 export interface OrderPaginatedRequest {

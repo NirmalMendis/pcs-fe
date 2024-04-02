@@ -52,7 +52,7 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
     return () => {
       debouncedApiCall.cancel();
     };
-  }, [searchQuery]);
+  }, [searchQuery, refetch]);
 
   useEffect(() => {
     if (searchInputRef.current) {
