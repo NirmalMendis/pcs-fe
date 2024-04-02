@@ -87,11 +87,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
                   error={!!getSingleFieldError("caratage")}
                   helperText={getSingleFieldError("caratage")?.message}
                   disabled={disableFields}
-                  value={field.value}
-                  inputRef={field.ref}
-                  onChange={(date) => {
-                    field.onChange(date);
-                  }}
+                  {...field}
                 />
               );
             }}
@@ -110,11 +106,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
                   error={!!getSingleFieldError("appraisedValue")}
                   helperText={getSingleFieldError("appraisedValue")?.message}
                   disabled={disableFields}
-                  value={field.value}
-                  inputRef={field.ref}
-                  onChange={(date) => {
-                    field.onChange(date);
-                  }}
+                  {...field}
                 />
               );
             }}
@@ -133,11 +125,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
                   error={!!getSingleFieldError("pawningAmount")}
                   helperText={getSingleFieldError("pawningAmount")?.message}
                   disabled={disableFields}
-                  value={field.value}
-                  inputRef={field.ref}
-                  onChange={(date) => {
-                    field.onChange(date);
-                  }}
+                  {...field}
                 />
               );
             }}
@@ -156,11 +144,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
                   error={!!getSingleFieldError("weight")}
                   helperText={getSingleFieldError("weight")?.message}
                   disabled={disableFields}
-                  value={field.value}
-                  inputRef={field.ref}
-                  onChange={(date) => {
-                    field.onChange(date);
-                  }}
+                  {...field}
                 />
               );
             }}

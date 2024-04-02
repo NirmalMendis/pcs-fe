@@ -44,11 +44,10 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
     {
       field: "id",
       headerName: "",
-      minWidth: 50,
+      width: 40,
       filterable: false,
       sortable: false,
       hideable: false,
-      flex: 1,
       renderCell: () => {
         return <LabelImportantIcon sx={{ color: "success.light" }} />;
       },

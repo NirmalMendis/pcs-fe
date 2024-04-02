@@ -1,4 +1,7 @@
-import { PawnTicketStatusEnum } from "../shared/types/generic";
+import {
+  InterestStatusEnum,
+  PawnTicketStatusEnum,
+} from "../shared/types/generic";
 
 interface StatusColors {
   backgroundColor: string;
@@ -11,7 +14,7 @@ interface StatusColors {
 }
 
 interface StatusColorsMap {
-  [key: PawnTicketStatusEnum | string]: StatusColors;
+  [key: PawnTicketStatusEnum | InterestStatusEnum | string]: StatusColors;
 }
 
 export const StatusColors: StatusColorsMap = {
@@ -50,14 +53,14 @@ export const StatusColors: StatusColorsMap = {
     selectedBackgroundColor: "rgba(128, 128, 128,1)",
     hoverColor: "rgba(128, 128, 128,0.2)",
   },
-  test: {
+  [InterestStatusEnum.UPCOMING]: {
     backgroundColor: "rgba(232, 184, 81,0.1)",
     color: "rgba(232, 184, 81,1)",
     borderColor: "rgba(232, 184, 81,1)",
     selectedBackgroundColor: "rgba(232, 184, 81,1)",
     hoverColor: "rgba(232, 184, 81,0.2)",
   },
-  ["Checked Out"]: {
+  [InterestStatusEnum.OVERDUE]: {
     backgroundColor: "rgba(247, 142, 49,0.1)",
     color: "rgba(247, 142, 49,1)",
     borderColor: "rgba(247, 142, 49,1)",
@@ -71,7 +74,7 @@ export const StatusColors: StatusColorsMap = {
     selectedBackgroundColor: "rgba(232, 51, 218,1)",
     hoverColor: "#c6e9f7",
   },
-  Revised2: {
+  [InterestStatusEnum.PAID]: {
     backgroundColor: "rgba(224, 247, 203,1)",
     color: "rgba(69, 143, 1,1)",
     borderColor: "rgba(69, 143, 1,1)",

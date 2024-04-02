@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { MAXIMUM_PRICE_VALUE } from "../../../../constants/generic-constants";
 
 const createPawnTicketSchema = yup.object({
   pawnDate: yup.date().required("Please enter the pawn date."),
@@ -6,9 +7,27 @@ const createPawnTicketSchema = yup.object({
   serviceCharge: yup
     .number()
     .positive("Number must be positive")
+    .max(
+      MAXIMUM_PRICE_VALUE,
+      `Number must be less than or equal to ${MAXIMUM_PRICE_VALUE}`
+    )
     .typeError("Please enter a number value")
     .nullable()
-    .transform((_, val) => (val ? Number(val) : null)),
+    .transform((_, val) => (val ? Number(val) : null))
+    .test(
+      "serviceCharge",
+      "Service charge must be less than principal amount",
+      function (value) {
+        const { principalAmount } = this.parent;
+        if (value && principalAmount && value >= principalAmount) {
+          return this.createError({
+            message: "Service charge must be less than principal amount",
+            path: "serviceCharge",
+          });
+        }
+        return true;
+      }
+    ),
   principalAmount: yup
     .number()
     .positive("Number must be positive")
@@ -16,6 +35,7 @@ const createPawnTicketSchema = yup.object({
   interestRate: yup
     .number()
     .positive("Number must be positive")
+    .max(100, `Number must be less than or equal to ${100}`)
     .required("Please enter the interest rate.")
     .typeError("Please enter a number value"),
   customerId: yup

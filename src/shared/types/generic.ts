@@ -37,6 +37,13 @@ export enum PawnTicketStatusEnum {
   REVISED = "Revised",
 }
 
+export enum InterestStatusEnum {
+  UPCOMING = "Upcoming",
+  DUE = "Due",
+  PAID = "Paid",
+  OVERDUE = "Overdue",
+}
+
 export interface OrderPaginatedRequest {
   page: number;
   pageSize: number;

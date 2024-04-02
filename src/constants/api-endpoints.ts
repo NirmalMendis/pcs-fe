@@ -8,6 +8,7 @@ export const CUSTOMER_ENPOINT = "customer";
 export const PAWN_TICKET_ENDPOINT = "pawn-ticket";
 export const INVOICE_ENDPOINT = "invoice";
 export const ITEM_ENDPOINT = "item";
+export const INTEREST_ENDPOINT = "interest";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
@@ -50,4 +51,9 @@ export const INVOICE_API = {
 export const ITEM_API = {
   GET_ITEMS_BY_PAWN_TICKET_ID: (id: number) =>
     `${ITEM_ENDPOINT}/pawn-ticket/${id}`,
+};
+
+export const INTEREST_API = {
+  GET_INTERESTS_BY_PAWN_TICKET_ID: (id: number) =>
+    `${INTEREST_ENDPOINT}/pawn-ticket/${id}`,
 };

@@ -11,6 +11,7 @@ import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
 import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 import TicketGeneralTab from "./general/ticket-general-tab";
+import TicketInterestsSchedule from "./interests/ticket-interests-schedule";
 import TicketItemsTab from "./items/ticket-items";
 
 const TABS = {
@@ -21,6 +22,10 @@ const TABS = {
   ITEMS: {
     INDEX: 1,
     NAME: "Items",
+  },
+  INTERESTS: {
+    INDEX: 1,
+    NAME: "Interests",
   },
   PAYMENTS: {
     INDEX: 3,
@@ -144,6 +149,21 @@ const UpdateTicket = () => {
             </Zoom>
           ) : null}
         </Box>
+        {pawnTicketData?.id ? (
+          <Box>
+            <Zoom
+              in={true}
+              mountOnEnter
+              unmountOnExit
+              // style={{ transitionDelay: !showEditForm ? "400ms" : "0ms" }}
+              timeout={500}
+            >
+              <Box>
+                <TicketInterestsSchedule id={pawnTicketData?.id} />
+              </Box>
+            </Zoom>
+          </Box>
+        ) : null}
       </Tabs>
       <Backdrop open={isFetchingPawnTicketData} />
     </Stack>
