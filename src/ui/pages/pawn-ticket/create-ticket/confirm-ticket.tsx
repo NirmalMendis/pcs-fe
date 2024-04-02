@@ -128,6 +128,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
         <Grid
           item
           xs
+          md={isInvoiceVisible ? 6 : 12}
           sx={{ pl: "0px !important", pb: 2 }}
           justifyContent={"space-between"}
           display={{ xs: isInvoiceVisible ? "none" : "flex", md: "flex" }}
@@ -159,28 +160,32 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
             />
             <Stack component={Paper} sx={{ p: 1 }} elevation={0} spacing={1}>
               <Typography variant="h6">Items</Typography>
-              {items ? <TicketItemsTable items={items} /> : null}
+              {items ? (
+                <TicketItemsTable
+                  items={items.map((item) => ({ ...item, id: item.uiId }))}
+                />
+              ) : null}
             </Stack>
+            <Grid
+              item
+              xs={12}
+              sx={{ pl: 1, pr: 1 }}
+              justifyContent={"end"}
+              display={"flex"}
+              flexDirection={"column"}
+            >
+              <StepperBtns
+                actionButtonProps={{
+                  onClick: handleCreatePawnTicket,
+                  type: "button",
+                  startIcon: <SaveIcon color="secondary" />,
+                }}
+                finalActionName="Confirm and Submit Ticket"
+              />
+            </Grid>
           </Stack>
-          <Grid
-            item
-            xs={12}
-            sx={{ pl: 1, pr: 1 }}
-            justifyContent={"end"}
-            display={"flex"}
-            flexDirection={"column"}
-          >
-            <StepperBtns
-              actionButtonProps={{
-                onClick: handleCreatePawnTicket,
-                type: "button",
-                startIcon: <SaveIcon color="secondary" />,
-              }}
-              finalActionName="Confirm and Submit Ticket"
-            />
-          </Grid>
         </Grid>
-        <Grid item xs={12} md={7} display={isInvoiceVisible ? "block" : "none"}>
+        <Grid item xs={12} md={6} display={isInvoiceVisible ? "block" : "none"}>
           <InvoicePreview
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}

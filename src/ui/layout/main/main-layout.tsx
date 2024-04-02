@@ -16,6 +16,7 @@ import { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import useGetUser from "../../../api/user/use-get-user";
 import usePatchUserActiveBranch from "../../../api/user/use-patch-user-active-branch";
+import { PRODUCT_NAME } from "../../../constants/string-constants";
 import Backdrop from "../../../shared/components/backdrop";
 import { FeatureEnum } from "../../../shared/types/generic";
 import useAuthStore from "../../../store/use-auth-store-state";
@@ -119,7 +120,7 @@ const MainLayout = () => {
             component="div"
             sx={{ color: "secondary.main" }}
           >
-            Pawning Center System
+            {PRODUCT_NAME.toUpperCase()}
           </Typography>
           <Stack
             direction="row"

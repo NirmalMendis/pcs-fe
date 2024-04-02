@@ -1,6 +1,7 @@
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import LoginImage from "../../../assets/images/login-image.jpg";
 import GoldBricksImage from "../../../assets/svg/gold-bricks.svg";
+import { PRODUCT_NAME } from "../../../constants/string-constants";
 import LoginForm from "./login-form/login-form";
 
 const Login = () => {
@@ -50,7 +51,7 @@ const Login = () => {
               spacing={{ xs: 2, sm: 1 }}
             >
               <Typography variant="h5" textAlign={"center"}>
-                Pawning Center System
+                {PRODUCT_NAME}
               </Typography>
               <Box
                 alignItems={"center"}

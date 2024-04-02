@@ -7,6 +7,7 @@ import { StatusColors } from "../../../../constants/color-constants";
 import {
   CURRENCY_PREFIX,
   DEFAULT_PAGE_SIZE,
+  MUI_DATAGRID_DEFAULT_ROW_HEIGHT,
 } from "../../../../constants/generic-constants";
 import ROUTE_PATHS from "../../../../constants/route-paths";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
@@ -152,7 +153,7 @@ const AllPawnTicketsDrid = () => {
       <DataGrid
         rows={data?.pageData || []}
         rowCount={data?.pager?.totalItems || 0}
-        rowHeight={35}
+        rowHeight={MUI_DATAGRID_DEFAULT_ROW_HEIGHT}
         columns={columns}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

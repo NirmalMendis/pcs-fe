@@ -13,3 +13,6 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const DD_MM_YYY_FORMAT = "dd-MM-yyyy";
 
 export const CURRENCY_PREFIX = "Rs. ";
+
+export const MUI_DATAGRID_DEFAULT_ROW_HEIGHT = 35;
+export const MUI_DATAGRID_DEFAULT_HEIGHT = "500px";

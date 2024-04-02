@@ -1,4 +1,4 @@
-import { Grid, Pagination } from "@mui/material";
+import { Grid } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import useGetItemsByPawnTicketId from "../../../../../api/item/use-get-items-by-ticketId";
 import { DEFAULT_PAGE_SIZE } from "../../../../../constants/generic-constants";
@@ -8,35 +8,36 @@ import TicketItemsTable from "./ticket-items-table";
 export type TicketItemsTabProps = Pick<PawnTicket, "id">;
 
 const TicketItemsTab: FC<TicketItemsTabProps> = ({ id }) => {
-  const [page, setPage] = useState(1);
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-
-  const { data: items, refetch } = useGetItemsByPawnTicketId({
-    id: id,
-    page,
+  const [paginationModel, setPaginationModel] = useState({
     pageSize: DEFAULT_PAGE_SIZE,
+    page: 0,
+  });
+
+  const {
+    data: items,
+    isFetching: isFetchingGetItemsByPawnTicketId,
+    refetch,
+  } = useGetItemsByPawnTicketId({
+    id: id,
+    page: paginationModel.page + 1,
+    pageSize: paginationModel.pageSize,
   });
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [refetch, paginationModel.page]);
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        {items ? <TicketItemsTable items={items.pageData} /> : null}
+        <TicketItemsTable
+          items={items?.pageData}
+          totalItems={items?.pager.totalItems}
+          paginationModel={paginationModel}
+          setPaginationModel={setPaginationModel}
+          isFetching={isFetchingGetItemsByPawnTicketId}
+        />
       </Grid>
-      {items?.pageData.length ? (
-        <Grid item xs={12}>
-          <Pagination
-            count={items?.pager.totalPages}
-            page={page}
-            onChange={handleChange}
-          />
-        </Grid>
-      ) : null}
     </Grid>
   );
 };

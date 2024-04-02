@@ -5,3 +5,5 @@ export enum MetaDataEnum {
 }
 
 export const APP_PORTAL = "pcs-admin-portal";
+
+export const PRODUCT_NAME = "Collatix IO";
