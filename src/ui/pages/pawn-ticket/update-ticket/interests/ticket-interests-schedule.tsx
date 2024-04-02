@@ -6,6 +6,7 @@ import { FC, useState } from "react";
 import useGetInterestsByPawnTicketId from "../../../../../api/interest/use-get-interest-by-ticketId";
 import { StatusColors } from "../../../../../constants/color-constants";
 import {
+  DD_MM_YYY_FORMAT,
   DEFAULT_PAGE_SIZE,
   MUI_DATAGRID_DEFAULT_HEIGHT,
   MUI_DATAGRID_DEFAULT_ROW_HEIGHT,
@@ -49,14 +50,14 @@ const TicketInterestsSchedule: FC<InterestsProps> = ({ id }) => {
       headerName: "From",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => new Date(params.value).toLocaleDateString(),
+      renderCell: (params) => format(new Date(params.value), DD_MM_YYY_FORMAT),
     },
     {
       field: "toDate",
       headerName: "To",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => new Date(params.value).toLocaleDateString(),
+      renderCell: (params) => format(new Date(params.value), DD_MM_YYY_FORMAT),
     },
     {
       field: "paymentMonth",

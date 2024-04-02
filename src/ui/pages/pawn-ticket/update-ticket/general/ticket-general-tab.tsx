@@ -1,7 +1,14 @@
-import { Grid } from "@mui/material";
-import { FC } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Button, Grid, Stack, Theme, useMediaQuery } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import useGetTicketInvoice, {
+  InvoiceHTMLType,
+} from "../../../../../api/pawn-ticket/use-get-ticket-invoice";
+import { MaterialContentTypes } from "../../../../../shared/types/generic";
 import { PawnTicket } from "../../../../../shared/types/pawn-ticket";
 import CustomerAtomicCard from "../../../customer/customer-atomic-card";
+import InvoicePreview from "../../create-ticket/invoice-preview";
 import TicketDatesCard from "./ticket-dates";
 import TicketInterests from "./ticket-interests";
 import TicketMonetaryValues from "./ticket-monetary-values";
@@ -11,30 +18,87 @@ export interface TicketGeneralTabProps {
 }
 
 const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
+  const largeScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up("md")
+  );
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
+
+  const { data: invoicePDFData, isFetching: isLoadingPdf } =
+    useGetTicketInvoice<Blob>(
+      {
+        id: pawnTicketData?.invoiceId || 0,
+        materialContentType: MaterialContentTypes.PDF,
+      },
+      pawnTicketData?.invoiceId !== undefined
+    );
+
+  const { data: invoiceHTMLData } = useGetTicketInvoice<InvoiceHTMLType>(
+    {
+      id: pawnTicketData?.invoiceId || 0,
+      materialContentType: MaterialContentTypes.HTML,
+    },
+    pawnTicketData?.invoiceId !== undefined
+  );
+
+  const handleInvoiceVisibility = () => {
+    setIsInvoiceVisible((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (largeScreen) setIsInvoiceVisible(true);
+  }, [largeScreen]);
+
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12} sm={6} md={4}>
-        <CustomerAtomicCard
-          name={pawnTicketData?.customer.name}
-          email={pawnTicketData?.customer.email}
-        />
+      {!largeScreen ? (
+        <Grid item xs={12} justifyContent={"end"} display={"flex"}>
+          <Button
+            startIcon={
+              isInvoiceVisible ? (
+                <VisibilityOffIcon color="secondary" />
+              ) : (
+                <VisibilityIcon color="secondary" />
+              )
+            }
+            color="violet"
+            sx={{ justifyContent: "start" }}
+            onClick={handleInvoiceVisibility}
+          >
+            {isInvoiceVisible ? `Hide Invoice` : "View Invoice"}
+          </Button>
+        </Grid>
+      ) : null}
+      <Grid
+        item
+        xs
+        display={{ xs: isInvoiceVisible ? "none" : "block", md: "block" }}
+      >
+        <Stack width={"100%"} spacing={3} sx={{ pl: 1, pr: 1 }}>
+          <CustomerAtomicCard
+            name={pawnTicketData?.customer.name}
+            email={pawnTicketData?.customer.email}
+          />
+          <TicketDatesCard
+            dueDate={pawnTicketData?.dueDate}
+            pawnDate={pawnTicketData?.pawnDate}
+          />
+          <TicketMonetaryValues
+            principalAmount={pawnTicketData?.principalAmount}
+            serviceCharge={pawnTicketData?.serviceCharge}
+          />
+          <TicketInterests
+            interestRate={pawnTicketData?.interestRate}
+            monthlyInterest={pawnTicketData?.monthlyInterest}
+          />
+        </Stack>
       </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <TicketDatesCard
-          dueDate={pawnTicketData?.dueDate}
-          pawnDate={pawnTicketData?.pawnDate}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <TicketMonetaryValues
-          principalAmount={pawnTicketData?.principalAmount}
-          serviceCharge={pawnTicketData?.serviceCharge}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <TicketInterests
-          interestRate={pawnTicketData?.interestRate}
-          monthlyInterest={pawnTicketData?.monthlyInterest}
+      <Grid item xs={12} md={6} display={isInvoiceVisible ? "block" : "none"}>
+        <InvoicePreview
+          invoicePDFData={invoicePDFData}
+          isLoadingPdf={isLoadingPdf}
+          invoiceHTMLData={invoiceHTMLData}
+          allowDownload
+          allowPrint
         />
       </Grid>
     </Grid>

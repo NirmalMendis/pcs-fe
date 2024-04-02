@@ -1,11 +1,13 @@
 import { Box, Button, LinearProgress, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { format } from "date-fns";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
 import { StatusColors } from "../../../../constants/color-constants";
 import {
   CURRENCY_PREFIX,
+  DD_MM_YYY_FORMAT,
   DEFAULT_PAGE_SIZE,
   MUI_DATAGRID_DEFAULT_ROW_HEIGHT,
 } from "../../../../constants/generic-constants";
@@ -73,14 +75,14 @@ const AllPawnTicketsDrid = () => {
       headerName: "Pawn Date",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => new Date(params.value).toLocaleDateString(),
+      renderCell: (params) => format(new Date(params.value), DD_MM_YYY_FORMAT),
     },
     {
       field: "dueDate",
       headerName: "Due Date",
       minWidth: 150,
       flex: 1,
-      renderCell: (params) => new Date(params.value).toLocaleDateString(),
+      renderCell: (params) => format(new Date(params.value), DD_MM_YYY_FORMAT),
     },
     {
       field: "principalAmount",
