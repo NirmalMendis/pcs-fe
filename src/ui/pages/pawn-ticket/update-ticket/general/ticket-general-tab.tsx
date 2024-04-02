@@ -1,10 +1,12 @@
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Button, Grid, Stack, Theme, useMediaQuery } from "@mui/material";
+import { Box, Button, Grid, Stack, Theme, useMediaQuery } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import useGetTicketInvoice, {
   InvoiceHTMLType,
 } from "../../../../../api/pawn-ticket/use-get-ticket-invoice";
+import CityIcon from "../../../../../assets/svg/city.svg";
+import RiverIcon from "../../../../../assets/svg/river.svg";
 import { MaterialContentTypes } from "../../../../../shared/types/generic";
 import { PawnTicket } from "../../../../../shared/types/pawn-ticket";
 import CustomerAtomicCard from "../../../customer/customer-atomic-card";
@@ -92,14 +94,37 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
           />
         </Stack>
       </Grid>
-      <Grid item xs={12} md={6} display={isInvoiceVisible ? "block" : "none"}>
-        <InvoicePreview
-          invoicePDFData={invoicePDFData}
-          isLoadingPdf={isLoadingPdf}
-          invoiceHTMLData={invoiceHTMLData}
-          allowDownload
-          allowPrint
-        />
+      <Grid
+        item
+        xs={12}
+        md={6}
+        display={isInvoiceVisible ? "flex" : "none"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        {invoicePDFData ? (
+          <InvoicePreview
+            invoicePDFData={invoicePDFData}
+            isLoadingPdf={isLoadingPdf}
+            invoiceHTMLData={invoiceHTMLData}
+            allowDownload
+            allowPrint
+          />
+        ) : (
+          <Box sx={{ position: "relative", opacity: 0.8 }}>
+            <img style={{ height: "250px" }} src={CityIcon} alt="River" />
+            <img
+              style={{
+                height: "250px",
+                position: "absolute",
+                top: "100px", // Adjust the vertical position as needed
+                left: "140px", // Adjust the horizontal position as needed
+              }}
+              src={RiverIcon}
+              alt="City"
+            />
+          </Box>
+        )}
       </Grid>
     </Grid>
   );

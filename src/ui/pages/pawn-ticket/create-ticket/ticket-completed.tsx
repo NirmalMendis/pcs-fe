@@ -68,7 +68,7 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
   return (
     <Stack divider={<Divider orientation="horizontal" />} spacing={2}>
       <Box display={"flex"} justifyContent={"space-between"} sx={{ mb: 1 }}>
-        <Typography variant="h6" sx={{ mb: 1 }} ref={printButtonRef}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
           Ticket Completed
         </Typography>
         <Button
@@ -86,7 +86,7 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
           {isInvoiceVisible ? `Hide Invoice` : "View Invoice"}
         </Button>
       </Box>
-      <Grid container>
+      <Grid container ref={printButtonRef}>
         <Grid
           item
           xs
