@@ -54,7 +54,7 @@ const TicketMonetaryValues: FC<TicketMonetoryValuesProps> = ({
             {serviceCharge !== undefined && (
               <Stack>
                 <Typography noWrap fontSize={14} fontWeight="bold">
-                  Monthly Interest
+                  Service Charge
                 </Typography>
                 <Typography
                   noWrap

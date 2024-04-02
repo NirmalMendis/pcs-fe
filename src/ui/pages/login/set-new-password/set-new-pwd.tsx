@@ -1,7 +1,7 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { InferType } from "yup";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
-import SetNewPasswordSchema from "./setnew-password-schema";
+import SetNewPasswordSchema from "./set-new-password-schema";
 
 type SetNewPasswordSchemaType = typeof SetNewPasswordSchema;
 type ForgotPwdValues = InferType<SetNewPasswordSchemaType>;

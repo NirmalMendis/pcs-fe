@@ -14,12 +14,14 @@ import {
 } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { FC, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import useMetaData from "../../../../api/meta-data/use-get-metadata";
 import useGetTicketInvoice, {
   InvoiceHTMLType,
 } from "../../../../api/pawn-ticket/use-get-ticket-invoice";
 import PartyImage from "../../../../assets/svg/party-icon.svg";
+import ROUTE_PATHS from "../../../../constants/route-paths";
 import { MetaDataEnum } from "../../../../constants/string-constants";
 import {
   InvoiceSettingsType,
@@ -30,10 +32,12 @@ import InvoicePreview from "./invoice-preview";
 export interface TicketCompletedProps {
   handleReset: () => void;
   invoiceID: number;
+  pawnTicketId: number;
 }
 const TicketCompleted: FC<TicketCompletedProps> = ({
   handleReset,
   invoiceID,
+  pawnTicketId,
 }) => {
   const printButtonRef = useRef<HTMLDivElement>(null);
   const invoiceHTMLRef = useRef<HTMLElement | null>(null);
@@ -44,6 +48,8 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
   const { data: invoicePdfSettings } = useMetaData<InvoiceSettingsType>({
     type: MetaDataEnum.INVOICE_PDF_SETTINGS,
   });
+  const navigate = useNavigate();
+
   const { data: invoicePDFData, isFetching: isLoadingPdf } =
     useGetTicketInvoice<Blob>({
       id: invoiceID,
@@ -163,6 +169,14 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
               <Button
                 startIcon={<VisibilityIcon color="secondary" />}
                 sx={{ justifyContent: "start" }}
+                onClick={() =>
+                  navigate(
+                    `../${ROUTE_PATHS.PAWN_TICKET.UPDATE}/${pawnTicketId}`,
+                    {
+                      relative: "path",
+                    }
+                  )
+                }
               >
                 View Pawn Ticket
               </Button>

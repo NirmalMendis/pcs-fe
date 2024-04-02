@@ -158,7 +158,9 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
                 disabled={!isValid}
                 startIcon={<SaveIcon color="secondary" />}
               >
-                {submitCount > 0 ? `Save changes` : `Submit`}
+                {submitCount > 0 || item?.description
+                  ? `Save changes`
+                  : `Submit`}
               </Button>
               {submitCount > 0 && (
                 <Button onClick={handleEditCancel}>Cancel</Button>

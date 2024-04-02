@@ -97,7 +97,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
         behavior: "smooth",
       });
     }
-  }, [largeScreen]);
+  }, [printButtonRef, largeScreen, isLoadingPdf]);
 
   return (
     <Stack

@@ -222,6 +222,7 @@ const CreateTicket = () => {
             <TicketCompleted
               handleReset={handleReset}
               invoiceID={createPawnTicketData.invoiceId}
+              pawnTicketId={createPawnTicketData.id}
             />
           ) : (
             <>
