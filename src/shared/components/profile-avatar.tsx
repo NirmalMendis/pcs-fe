@@ -1,5 +1,6 @@
 import { SxProps } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import { MULTIPLE_WHITESPACE_REGEX } from "../../constants/generic-constants";
 
 function stringToColor(string: string) {
   let hash = 0;
@@ -25,6 +26,7 @@ function stringAvatar(
   name: string,
   size: string
 ): { sx: SxProps; children: string } {
+  const formattedName = name.replaceAll(MULTIPLE_WHITESPACE_REGEX, " ");
   const sizeObj = {
     width: 40,
     height: 40,
@@ -38,14 +40,14 @@ function stringAvatar(
   }
   return {
     sx: {
-      bgcolor: stringToColor(name),
+      bgcolor: stringToColor(formattedName),
       fontSize: 14,
       width: sizeObj.width,
       height: sizeObj.height,
       textTransform: "capitalize",
     },
-    children: `${name.split(" ")[0][0]}${
-      name.split(" ").length > 1 ? name.split(" ")[1][0] : ""
+    children: `${formattedName.split(" ")[0][0]}${
+      formattedName.split(" ").length > 1 ? formattedName.split(" ")[1][0] : ""
     }`,
   };
 }

@@ -26,6 +26,11 @@ const App = () => {
 
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2,
+      },
+    },
     mutationCache: new MutationCache({
       onError: (error, _, __, mutation) => {
         if (

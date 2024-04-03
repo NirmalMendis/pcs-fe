@@ -1,10 +1,15 @@
-import { Box, Stack, Typography, Zoom } from "@mui/material";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { Box, Breadcrumbs, Link, Stack, Typography, Zoom } from "@mui/material";
 import { debounce } from "lodash";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetPawnTicketById from "../../../../api/pawn-ticket/use-get-pawn-ticket-by-id";
+import useGetRevisionIds from "../../../../api/pawn-ticket/use-get-revision-ids";
+import usePatchUpdateInvoice from "../../../../api/pawn-ticket/use-patch-update-invoice";
+import usePostCreateRevision from "../../../../api/pawn-ticket/use-post-create-revision";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
+import EllipsisMenu from "../../../../shared/components/ellipsis-menu";
 import MenuDropDownButton from "../../../../shared/components/menu-dropdown-button";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
@@ -41,6 +46,18 @@ const UpdateTicket = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const { id: ticketId } = useParams();
   const navigate = useNavigate();
+  const { data: revisionIds } = useGetRevisionIds({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    id: +ticketId!,
+  });
+  const {
+    mutate: mutatePostCreateRevision,
+    isPending: isPendingMutatePostCreateRevision,
+  } = usePostCreateRevision();
+  const {
+    mutate: mutatePatchUpdateInvoice,
+    isPending: isPendingMutatePatchUpdateInvoice,
+  } = usePatchUpdateInvoice();
 
   const {
     data: pawnTicketData,
@@ -62,6 +79,42 @@ const UpdateTicket = () => {
     event?: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     navigate(event?.target.value || "");
+  };
+
+  const onSelectRevision = (id: number) => {
+    navigate(String(id));
+  };
+
+  const createRevision = () => {
+    if (pawnTicketData?.id !== undefined)
+      mutatePostCreateRevision(
+        {
+          payload: {
+            id: pawnTicketData?.id,
+          },
+        },
+        {
+          onSuccess: (data) => {
+            navigate(String(data.id));
+          },
+        }
+      );
+  };
+
+  const updateInvoiceForLatestRevision = () => {
+    if (pawnTicketData?.id !== undefined)
+      mutatePatchUpdateInvoice(
+        {
+          payload: {
+            id: pawnTicketData?.id,
+          },
+        },
+        {
+          onSuccess: () => {
+            refetch();
+          },
+        }
+      );
   };
 
   useEffect(() => {
@@ -88,21 +141,84 @@ const UpdateTicket = () => {
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
             Pawn Ticket
           </Typography>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+            {revisionIds?.map((revision) => {
+              return (
+                <Link
+                  underline="hover"
+                  color="inherit"
+                  onClick={() => onSelectRevision(revision)}
+                  component={Typography}
+                  variant="h5"
+                  key={revision}
+                  sx={{
+                    cursor: "pointer",
+                    color: `${
+                      pawnTicketData?.id === revision
+                        ? "primary.main"
+                        : "inherit"
+                    }`,
+                  }}
+                >
+                  {revision}
+                </Link>
+              );
+            })}
+          </Breadcrumbs>
         </Stack>
-        <Stack direction={"row"} gap={2}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent={"end"}
+          gap={2}
+        >
           <SearchInput
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
-          {pawnTicketData?.status ? (
-            <MenuDropDownButton
-              selection={pawnTicketData?.status}
-              options={Object.values(PawnTicketStatusEnum).map((option) => ({
-                label: option,
-                disabled: false,
-              }))}
+          <Stack direction={"row"}>
+            {pawnTicketData?.status ? (
+              <MenuDropDownButton
+                selection={pawnTicketData?.status}
+                options={Object.values(PawnTicketStatusEnum).map((option) => ({
+                  label: option,
+                  disabled: false,
+                }))}
+              />
+            ) : null}
+            <EllipsisMenu
+              options={[
+                {
+                  label: "Create revision",
+                  onClick: createRevision,
+                  disabled: !!pawnTicketData?.revision,
+                },
+                {
+                  label: "Edit General Details",
+                  onClick: () => {
+                    console.log("first");
+                  },
+                },
+                {
+                  label: "Edit Items",
+                  onClick: () => {
+                    console.log("first");
+                  },
+                },
+                {
+                  label: "Edit Interests",
+                  onClick: () => {
+                    console.log("first");
+                  },
+                },
+                {
+                  label: "Generate Invoice",
+                  onClick: updateInvoiceForLatestRevision,
+                  disabled:
+                    !!pawnTicketData?.revision || !!pawnTicketData?.invoiceId,
+                },
+              ]}
             />
-          ) : null}
+          </Stack>
         </Stack>
       </PageTitleCard>
       <Tabs
@@ -165,7 +281,13 @@ const UpdateTicket = () => {
           </Box>
         ) : null}
       </Tabs>
-      <Backdrop open={isFetchingPawnTicketData} />
+      <Backdrop
+        open={
+          isFetchingPawnTicketData ||
+          isPendingMutatePostCreateRevision ||
+          isPendingMutatePatchUpdateInvoice
+        }
+      />
     </Stack>
   );
 };

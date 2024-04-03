@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 import React, { Dispatch, FC, SetStateAction, useContext } from "react";
 import { UseFormReset } from "react-hook-form";
 import usePostCreateCustomer from "../../../../api/customer/use-post-create-customer";
+import { MULTIPLE_WHITESPACE_REGEX } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
 import ModalDrawer from "../../../../shared/components/modal-drawer";
 import CRUCustomerForm, {
@@ -46,7 +47,11 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   ) => {
     mutatePostCreateCustomer(
       {
-        payload: data,
+        payload: {
+          ...data,
+          firstName: data.firstName.replaceAll(MULTIPLE_WHITESPACE_REGEX, " "),
+          lastName: data.lastName.replaceAll(MULTIPLE_WHITESPACE_REGEX, " "),
+        },
       },
       {
         onSuccess(data) {

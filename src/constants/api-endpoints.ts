@@ -41,6 +41,10 @@ export const PAWN_TICKET_API = {
   GET_ALL_PAWN_TICEKTS: `${PAWN_TICKET_ENDPOINT}/`,
   GET_PAWN_TICKET_BY_ID: (id: number) => `${PAWN_TICKET_ENDPOINT}/${id}`,
   GET_CALCULATE_MONTHLY_INTEREST: `${PAWN_TICKET_ENDPOINT}/calculate-monthly-interest`,
+  GET_REVISION_IDS: (id: number) => `${PAWN_TICKET_ENDPOINT}/revision/${id}`,
+  POST_CREATE_REVISION: (id: number) =>
+    `${PAWN_TICKET_ENDPOINT}/revision/${id}`,
+  PATCH_UPDATE_INVOICE: (id: number) => `${PAWN_TICKET_ENDPOINT}/${id}/invoice`,
 };
 
 export const INVOICE_API = {

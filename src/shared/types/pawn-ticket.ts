@@ -13,4 +13,5 @@ export interface PawnTicket {
   branchId: number;
   customer: Customer;
   invoiceId?: number;
+  revision: number | null;
 }

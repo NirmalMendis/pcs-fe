@@ -129,7 +129,7 @@ const InvoicePreview: FC<InvoicePreviewProps> = ({
           <Box width={"100%"} justifyContent={"center"} display={"flex"}>
             <Box
               width={{ xs: "max-content" }}
-              maxWidth={{ xs: "100vw", md: "max-content" }}
+              maxWidth={{ xs: "90vw", md: "max-content" }}
               overflow={"scroll"}
             >
               <InlinePdfPreview file={invoicePDFData as File} />

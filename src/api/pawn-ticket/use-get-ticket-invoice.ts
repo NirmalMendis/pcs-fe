@@ -18,7 +18,7 @@ const useGetTicketInvoice = <T>(
   enabled?: boolean
 ): UseQueryResult<T, Error> => {
   return useQuery({
-    queryKey: [GET_TICKET_INVOICE, materialContentType],
+    queryKey: [GET_TICKET_INVOICE, materialContentType, id],
     queryFn: ({ signal }) =>
       apiService.getRequest<T>({
         path: INVOICE_API.GET_TICKET_INVOICE(id),

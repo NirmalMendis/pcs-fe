@@ -51,7 +51,7 @@ export interface SearchInputProps extends InputBaseProps {
 }
 
 const SearchInput: FC<SearchInputProps> = (props) => {
-  const { placeholder, onChange, value } = props;
+  const { placeholder, onChange, value, defaultValue } = props;
   return (
     <Search>
       <SearchIconWrapper>
@@ -62,6 +62,7 @@ const SearchInput: FC<SearchInputProps> = (props) => {
         onChange={onChange}
         value={value}
         inputProps={{ "aria-label": "search" }}
+        defaultValue={defaultValue}
       />
     </Search>
   );

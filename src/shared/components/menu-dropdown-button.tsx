@@ -63,7 +63,7 @@ const MenuDropDownButton: FC<MenuDropDownButtonProps> = ({
     setAnchorEl(null);
   };
   return (
-    <Box sx={{ height: "100%", display: "flex" }}>
+    <Box sx={{ height: "100%", display: "flex", width: "100%" }}>
       <ButtonGroup
         variant="contained"
         sx={{
@@ -75,6 +75,7 @@ const MenuDropDownButton: FC<MenuDropDownButtonProps> = ({
             color: "white",
           },
           ...StatusColors[selection],
+          width: "100%",
         }}
         onClick={handleClick}
       >
@@ -85,6 +86,7 @@ const MenuDropDownButton: FC<MenuDropDownButtonProps> = ({
             "&:hover": { backgroundColor: "inherit" },
             paddingLeft: 5,
             paddingRight: 5,
+            width: "100%",
           }}
         >
           {options.find((option) => option.label === selection)?.label}

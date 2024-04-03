@@ -1,6 +1,14 @@
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Box, Button, Grid, Stack, Theme, useMediaQuery } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Theme,
+  useMediaQuery,
+} from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import useGetTicketInvoice, {
   InvoiceHTMLType,
@@ -98,11 +106,11 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
         item
         xs={12}
         md={6}
-        display={isInvoiceVisible ? "flex" : "none"}
+        display={isInvoiceVisible ? "block" : "none"}
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {invoicePDFData ? (
+        {invoicePDFData || isLoadingPdf ? (
           <InvoicePreview
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}
@@ -111,19 +119,43 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
             allowPrint
           />
         ) : (
-          <Box sx={{ position: "relative", opacity: 0.8 }}>
-            <img style={{ height: "250px" }} src={CityIcon} alt="River" />
-            <img
-              style={{
-                height: "250px",
-                position: "absolute",
-                top: "100px", // Adjust the vertical position as needed
-                left: "140px", // Adjust the horizontal position as needed
-              }}
-              src={RiverIcon}
-              alt="City"
-            />
-          </Box>
+          <Stack height={"100%"}>
+            {pawnTicketData ? (
+              <Alert severity="info">
+                Perform updates and generate invoice from menu to finalize and
+                lock this ticket
+              </Alert>
+            ) : null}
+            <Box
+              display={"flex"}
+              width={"100%"}
+              height={"100%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  opacity: 0.7,
+                  height: "200px",
+                  left: "-50px",
+                  top: { xs: "20px", sm: "-40px" },
+                }}
+              >
+                <img style={{ height: "100%" }} src={CityIcon} alt="River" />
+                <img
+                  style={{
+                    height: "100%",
+                    position: "absolute",
+                    top: "90px",
+                    left: "100px",
+                  }}
+                  src={RiverIcon}
+                  alt="City"
+                />
+              </Box>
+            </Box>
+          </Stack>
         )}
       </Grid>
     </Grid>
