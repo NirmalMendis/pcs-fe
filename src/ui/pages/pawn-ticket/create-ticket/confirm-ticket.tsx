@@ -23,11 +23,11 @@ import {
 import useGetCustomerById from "../../../../api/customer/use-get-customer-by-id";
 import useGetCalculateMonthlyInterest from "../../../../api/pawn-ticket/use-get-calculate-monthly-interest";
 import CustomerAtomicCard from "../../customer/customer-atomic-card";
+import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 import TicketDatesCard from "../update-ticket/general/ticket-dates";
 import TicketInterests from "../update-ticket/general/ticket-interests";
 import TicketMonetaryValues from "../update-ticket/general/ticket-monetary-values";
 import TicketItemsTable from "../update-ticket/items/ticket-items-table";
-import { CreateTicketContext } from "./create-ticket";
 import InvoicePreview from "./invoice-preview";
 import StepperBtns from "./stepper-btns";
 
@@ -41,9 +41,8 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
   invoicePDFData,
   isLoadingPdf,
 }) => {
-  const { createPawnTicketFormData, setCreatePawnTicketFormData } =
+  const { createPawnTicketFormData, setCreatePawnTicketFormData, items } =
     useContext(CreateTicketContext);
-  const { items } = useContext(CreateTicketContext);
   const largeScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up("md")
   );

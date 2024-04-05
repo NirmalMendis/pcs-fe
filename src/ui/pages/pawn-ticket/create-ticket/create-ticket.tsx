@@ -1,4 +1,5 @@
 import {
+  Box,
   Divider,
   Grid,
   Paper,
@@ -8,45 +9,28 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { addMonths } from "date-fns";
 import { useSnackbar } from "notistack";
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import usePostCreatePawnTicket, {
   PostCreatePawnTicketRequest,
 } from "../../../../api/pawn-ticket/use-post-create-pawn-ticket";
 import usePostDraftTicketInvoice from "../../../../api/pawn-ticket/use-post-draft-ticket-invoice";
 import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import {
+  CreateTicketContext,
+  emptyItem,
+  initialTicketFormData,
+} from "../all-tickets/all-pawn-tickets";
 import AddItems from "./add-item/add-items";
-import { CRUItemFormValues } from "./add-item/cru-item-form";
 import ConfirmTicket from "./confirm-ticket";
-import CreatePawnTicketForm, {
-  CreatePawnTicketFormValues,
-} from "./create-pawn-ticket-form";
+import CreatePawnTicketForm from "./create-pawn-ticket-form";
 import TicketCompleted from "./ticket-completed";
 
 interface ActiveStepContextProps {
   activeStep: number;
   handleNext?: () => void;
   handleBack?: () => void;
-}
-
-export interface TicketFormItem extends CRUItemFormValues {
-  isSubmitted: boolean;
-  uiId: number;
-}
-
-export interface TicketFormData extends CreatePawnTicketFormValues {
-  customerName: string;
-}
-
-interface CreateTicketContext {
-  createPawnTicketFormData?: Partial<TicketFormData>;
-  setCreatePawnTicketFormData: Dispatch<
-    SetStateAction<Partial<TicketFormData>>
-  >;
-  items?: Array<TicketFormItem>;
-  setItems: Dispatch<SetStateAction<Array<TicketFormItem>>>;
 }
 
 export const createTicketSteps = [
@@ -59,34 +43,14 @@ export const ActiveStepContext = createContext<ActiveStepContextProps>({
   activeStep: 0,
 });
 
-export const CreateTicketContext = createContext<CreateTicketContext>({
-  setCreatePawnTicketFormData: () => null,
-  setItems: () => null,
-});
-
-export const emptyItem: CRUItemFormValues & {
-  isSubmitted: boolean;
-  uiId: number;
-} = {
-  appraisedValue: 0,
-  caratage: 0,
-  description: "",
-  pawningAmount: 0,
-  weight: 0,
-  isSubmitted: false,
-  uiId: 0,
-};
-
-export const initialTicketFormData = {
-  pawnDate: new Date(),
-  dueDate: addMonths(new Date(), 1),
-};
 const CreateTicket = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [createPawnTicketFormData, setCreatePawnTicketFormData] = useState<
-    Partial<TicketFormData>
-  >(initialTicketFormData);
-  const [items, setItems] = useState<Array<TicketFormItem>>([emptyItem]);
+  const {
+    createPawnTicketFormData,
+    setCreatePawnTicketFormData,
+    items,
+    setItems,
+  } = useContext(CreateTicketContext);
 
   const {
     data: createPawnTicketData,
@@ -142,7 +106,7 @@ const CreateTicket = () => {
   };
 
   const generateDraftInvoice = () => {
-    if (createPawnTicketFormData.customerId)
+    if (createPawnTicketFormData?.customerId && items)
       mutatePostTicketInvoicePdf({
         payload: {
           customerId: createPawnTicketFormData.customerId,
@@ -164,34 +128,58 @@ const CreateTicket = () => {
   };
 
   const renderStepperContent = () => {
+    //need to keep all forms mounted, else forms will reset when moving back
+    let displayAddTickets = "none";
+    let displayPawnTicketForm = "none";
+    let displayConfirmTicket = "none";
     switch (activeStep) {
       case 0:
-        return [
-          <Typography key={"item-title"} variant="h6" sx={{ mb: 1 }}>
-            Add Items to Ticket
-          </Typography>,
-          <AddItems key={"add-items"} />,
-        ];
+        displayAddTickets = "block";
+        break;
       case 1:
-        return [
-          <Typography key={"ticket-title"} variant="h6" sx={{ mb: 1 }}>
-            Enter Pawn Ticket Details
-          </Typography>,
-          <CreatePawnTicketForm
-            key={"create-ticket-form"}
-            generateDraftInvoice={generateDraftInvoice}
-          />,
-        ];
+        displayPawnTicketForm = "block";
+        break;
       case 2:
-        return [
+        displayConfirmTicket = "block";
+        break;
+    }
+
+    return (
+      <Box>
+        <Stack
+          sx={{ display: displayAddTickets }}
+          divider={<Divider orientation="horizontal" />}
+          spacing={2}
+        >
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Add Items to Ticket
+          </Typography>
+          <AddItems />
+        </Stack>
+        <Stack
+          sx={{ display: displayPawnTicketForm }}
+          divider={<Divider orientation="horizontal" />}
+          spacing={2}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 1,
+            }}
+          >
+            Enter Pawn Ticket Details
+          </Typography>
+          <CreatePawnTicketForm generateDraftInvoice={generateDraftInvoice} />
+        </Stack>
+        <Box sx={{ display: displayConfirmTicket }}>
           <ConfirmTicket
-            key={"ticket-confirmation-content"}
             handleCreatePawnTicket={handleCreatePawnTicket}
             invoicePDFData={draftInvoicePDFData as File}
             isLoadingPdf={isPendingPostDraftTicketInvoicePdf}
-          />,
-        ];
-    }
+          />
+        </Box>
+      </Box>
+    );
   };
 
   return (
@@ -229,21 +217,7 @@ const CreateTicket = () => {
               <ActiveStepContext.Provider
                 value={{ activeStep, handleNext, handleBack }}
               >
-                <CreateTicketContext.Provider
-                  value={{
-                    createPawnTicketFormData,
-                    setCreatePawnTicketFormData,
-                    items,
-                    setItems,
-                  }}
-                >
-                  <Stack
-                    spacing={2}
-                    divider={<Divider orientation="horizontal" />}
-                  >
-                    {renderStepperContent()}
-                  </Stack>
-                </CreateTicketContext.Provider>
+                {renderStepperContent()}
               </ActiveStepContext.Provider>
             </>
           )}

@@ -8,8 +8,9 @@ import { CURRENCY_PREFIX } from "../../../../constants/generic-constants";
 import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
+import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
-import { ActiveStepContext, CreateTicketContext } from "./create-ticket";
+import { ActiveStepContext } from "./create-ticket";
 import SearchRegisterCustomerModal from "./search-register-customer-modal";
 import StepperBtns from "./stepper-btns";
 
@@ -185,7 +186,6 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                   <NumberField
                     label="Service Charge"
                     customPrefix={CURRENCY_PREFIX}
-                    required
                     error={!!getSingleFieldError("serviceCharge")}
                     helperText={getSingleFieldError("serviceCharge")?.message}
                     {...field}

@@ -11,7 +11,7 @@ import NoDataGrid from "../../../../../shared/components/no-data-grid";
 import CustomPagination from "../../../../../shared/components/pagination";
 import useTextFormatter from "../../../../../shared/hooks/use-text-formatter";
 import { Item } from "../../../../../shared/types/item";
-import { TicketFormItem } from "../../create-ticket/create-ticket";
+import { TicketFormItem } from "../../all-tickets/all-pawn-tickets";
 
 export interface TicketItemsTableProps {
   items?: Array<Partial<Item> & Partial<TicketFormItem>>;

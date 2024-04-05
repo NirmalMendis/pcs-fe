@@ -10,7 +10,7 @@ import CRUCustomerForm, {
   CRUCustomerFormValues,
 } from "../../customer/cru-customer-form";
 import SearchCustomer from "../../customer/search-customer";
-import { CreateTicketContext } from "./create-ticket";
+import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 
 export interface SearchRegisterCustomerModalProps {
   openCustomerModal: boolean;

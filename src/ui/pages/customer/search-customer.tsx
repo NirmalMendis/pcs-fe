@@ -42,6 +42,10 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
     setSearchQuery(event?.target.value);
   };
 
+  const handleCustomerSearch = () => {
+    setSearchQuery(searchQuery);
+  };
+
   useEffect(() => {
     const debouncedApiCall = debounce(() => {
       refetch();
@@ -72,7 +76,7 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
       />
       <Box display={"flex"} justifyContent={"end"}>
         <Button
-          // onClick={handleOpenGuestSearch}
+          onClick={handleCustomerSearch}
           startIcon={<SearchIcon color="secondary" />}
           sx={{ pl: 2, pr: 2 }}
         >

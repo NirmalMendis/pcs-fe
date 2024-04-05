@@ -1,13 +1,14 @@
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button, Grid, Stack, TextField } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import { CURRENCY_PREFIX } from "../../../../../constants/generic-constants";
 import NumberField from "../../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../../shared/hooks/use-single-field-error";
+import { CreateTicketContext } from "../../all-tickets/all-pawn-tickets";
 import cruItemSchema from "./cru-item-schema";
 
 type CRUItemSchemaType = typeof cruItemSchema;
@@ -16,9 +17,10 @@ export type CRUItemFormValues = InferType<CRUItemSchemaType>;
 export interface CRUItemFormProps {
   onSubmit: (data: CRUItemFormValues) => void;
   item?: CRUItemFormValues;
+  uiId: number;
 }
 
-const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
+const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
   const {
     register,
     handleSubmit,
@@ -29,6 +31,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
   } = useCustomHookForm<CRUItemSchemaType>(cruItemSchema, {
     defaultValues: item,
   });
+  const { items } = useContext(CreateTicketContext);
 
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
@@ -61,6 +64,15 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
   useEffect(() => {
     setAllowEdit(!isSubmitted);
   }, [isSubmitted]);
+
+  useEffect(() => {
+    //set pawning amount from instant calculator
+    if (items && !isSubmitted) {
+      const itemToUpdate = items.find((currItem) => currItem.uiId === uiId);
+      if (itemToUpdate?.pawningAmount)
+        setValue("pawningAmount", itemToUpdate?.pawningAmount);
+    }
+  }, [items, setValue, uiId, isSubmitted]);
 
   return (
     <form onSubmit={handleSubmit(handleIntegratedSubmit)} noValidate>

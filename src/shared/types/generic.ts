@@ -50,3 +50,8 @@ export interface OrderPaginatedRequest {
   orderBy?: string;
   orderDirection?: "DESC" | "ASC";
 }
+
+export enum TimePeriod {
+  month = "month",
+  year = "year",
+}

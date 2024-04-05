@@ -4,10 +4,10 @@ import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import ConfirmationDialog from "../../../../../shared/components/confirmation-dialog";
 import {
-  ActiveStepContext,
   CreateTicketContext,
   emptyItem,
-} from "../create-ticket";
+} from "../../all-tickets/all-pawn-tickets";
+import { ActiveStepContext } from "../create-ticket";
 import StepperBtns from "../stepper-btns";
 import CRUItemForm, { CRUItemFormValues } from "./cru-item-form";
 
@@ -104,6 +104,7 @@ const AddItems = () => {
                 handleSaveItemToState(...props, item.uiId)
               }
               item={item.isSubmitted ? item : undefined}
+              uiId={item.uiId}
             />
           </Stack>
         </Card>
