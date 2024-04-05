@@ -186,7 +186,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
         open={openCustomerModal}
         handleModalClose={setOpenCustomerModal}
         anchor="right"
-        PaperProps={{ sx: { width: { xs: "100%", md: "40%", lg: "50%" } } }}
+        PaperProps={{ sx: { width: { xs: "100%", md: "40%" } } }}
       >
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Stack sx={{ p: 2, pt: 0 }} spacing={2} divider={<Divider />}>
