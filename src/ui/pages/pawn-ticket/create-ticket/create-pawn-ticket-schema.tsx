@@ -34,7 +34,7 @@ const createPawnTicketSchema = yup.object({
     .typeError("Please enter a number value"),
   interestRate: yup
     .number()
-    .positive("Number must be positive")
+    .moreThan(-1, "Number must be positive")
     .max(100, `Number must be less than or equal to ${100}`)
     .required("Please enter the interest rate.")
     .typeError("Please enter a number value"),

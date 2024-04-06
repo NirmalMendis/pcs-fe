@@ -1,21 +1,34 @@
 import * as yup from "yup";
-import { MAXIMUM_PRICE_VALUE } from "../../../../constants/generic-constants";
+import {
+  MAXIMUM_PERIOD_VALUE,
+  MAXIMUM_PRICE_VALUE,
+} from "../../../../constants/generic-constants";
 
 const instantCalculatorSchema = yup.object({
   items: yup.array().of(
     yup.object().shape({
-      pawningAmount: yup.number().required("Pawning Amount is required"),
+      pawningAmount: yup
+        .number()
+        .max(
+          MAXIMUM_PRICE_VALUE,
+          `Number must be less than or equal to ${MAXIMUM_PRICE_VALUE}`
+        )
+        .typeError("Please enter a number value"),
     })
   ),
   pawnDate: yup.date().required("Please enter the pawn date."),
   periodQuantity: yup
     .number()
     .positive("Number must be positive")
+    .max(
+      MAXIMUM_PERIOD_VALUE,
+      `Number must be less than or equal to ${MAXIMUM_PERIOD_VALUE}`
+    )
     .typeError("Please enter a number value"),
   periodType: yup.string().required("Please select a value"),
   interestRate: yup
     .number()
-    .positive("Number must be positive")
+    .moreThan(-1, "Number must be positive")
     .max(100, `Number must be less than or equal to ${100}`)
     .required("Please enter the interest rate.")
     .typeError("Please enter a number value"),

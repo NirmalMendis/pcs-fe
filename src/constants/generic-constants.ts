@@ -19,5 +19,6 @@ export const MUI_DATAGRID_DEFAULT_HEIGHT = "500px";
 
 export const MAXIMUM_PRICE_VALUE = 10000000;
 export const MAXIMUM_QUANTITATIVE_VALUE = 1000000;
+export const MAXIMUM_PERIOD_VALUE = 10 * 12;
 
 export const MULTIPLE_WHITESPACE_REGEX = /\s+/g;

@@ -87,11 +87,13 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
   const startDate = watch("pawnDate");
   const periodQuantity = watch("periodQuantity");
   const periodType = watch("periodType");
-  const principalAmount = watch("items")?.reduce(
-    (acc, cur) => (acc += +cur.pawningAmount || 0),
-    0
-  );
-  const serviceCharge = watch("serviceCharge");
+  const items = watch("items");
+  const principalAmount = !getSingleFieldError("items")
+    ? items?.reduce((acc, cur) => (acc += Number(cur.pawningAmount) || 0), 0)
+    : undefined;
+  const serviceCharge = !getSingleFieldError("serviceCharge")
+    ? Number(watch("serviceCharge"))
+    : undefined;
   const interestRate = watch("interestRate");
   const {
     data: monthlyInterestData,
@@ -107,7 +109,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
 
   const getDueDate = () => {
     let dueDate;
-    if (periodQuantity) {
+    if (periodQuantity && !getSingleFieldError("periodQuantity")) {
       if (periodType === TimePeriod.year)
         dueDate = addMonths(startDate, periodQuantity * 12);
       else if (periodType === TimePeriod.month)
@@ -117,6 +119,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
     return dueDate;
   };
   const dueDate = getDueDate();
+
   const handleShowInstantCalculator = () => {
     setOpenCustomerModal(true);
   };
@@ -134,19 +137,28 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
     });
     if (items)
       setItems(
-        items?.map((item, index) => ({
-          uiId: index,
-          pawningAmount: item.pawningAmount,
-          appraisedValue: 0,
-          caratage: 0,
-          description: "",
-          isSubmitted: false,
-          weight: 0,
-        }))
+        items
+          ?.filter((item) => item.pawningAmount !== undefined)
+          ?.map((item, index) => ({
+            uiId: index,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            pawningAmount: item.pawningAmount!,
+            appraisedValue: 0,
+            caratage: 0,
+            description: "",
+            isSubmitted: false,
+            weight: 0,
+          }))
       );
     setOpenCustomerModal(false);
     setShowCreateTicket(true);
   };
+
+  const itemErrors = getSingleFieldError("items") as Array<{
+    pawningAmount?: {
+      message: string;
+    };
+  }>;
 
   useEffect(() => {
     if (newItemRef.current) {
@@ -160,7 +172,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
       refetch();
     }, TYPING_TIMEOUT_FOR_SEARCH);
 
-    if (interestRate && principalAmount) debouncedApiCall();
+    if (interestRate <= 100 && principalAmount) debouncedApiCall();
 
     return () => {
       debouncedApiCall.cancel();
@@ -186,7 +198,9 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
         open={openCustomerModal}
         handleModalClose={setOpenCustomerModal}
         anchor="right"
-        PaperProps={{ sx: { width: { xs: "100%", md: "40%" } } }}
+        PaperProps={{
+          sx: { width: { xs: "100%", sm: "70%", md: "40%", lg: "30%" } },
+        }}
       >
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Stack sx={{ p: 2, pt: 0 }} spacing={2} divider={<Divider />}>
@@ -225,9 +239,16 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                                   label="Pawning Amount"
                                   customPrefix={CURRENCY_PREFIX}
                                   required
-                                  error={!!getSingleFieldError("items")}
+                                  error={
+                                    itemErrors?.length
+                                      ? !!itemErrors[index]?.pawningAmount
+                                      : false
+                                  }
                                   helperText={
-                                    getSingleFieldError("items")?.message
+                                    itemErrors?.length
+                                      ? itemErrors[index]?.pawningAmount
+                                          ?.message
+                                      : null
                                   }
                                   {...field}
                                 />
@@ -241,8 +262,12 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                               border: "1px solid",
                               borderRadius: "5px",
                             }}
+                            disabled={items?.length === 1}
                           >
-                            <DeleteIcon color="error" fontSize="inherit" />
+                            <DeleteIcon
+                              color={items?.length === 1 ? "disabled" : "error"}
+                              fontSize="inherit"
+                            />
                           </IconButton>
                         </Stack>
                       </Grid>
@@ -250,7 +275,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                   ))}
                 </Stack>
                 <Button
-                  onClick={() => append({ pawningAmount: 0 })}
+                  onClick={() => append({})}
                   startIcon={<AddCircleOutlineRoundedIcon color="secondary" />}
                   sx={{ pl: 2, pr: 2 }}
                 >
