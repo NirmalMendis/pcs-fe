@@ -8,7 +8,11 @@ import { CURRENCY_PREFIX } from "../../../../constants/generic-constants";
 import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
-import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
+import {
+  CreateTicketContext,
+  TicketFormData,
+  TicketFormItem,
+} from "../all-tickets/all-pawn-tickets";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
 import { ActiveStepContext } from "./create-ticket";
 import SearchRegisterCustomerModal from "./search-register-customer-modal";
@@ -18,7 +22,10 @@ type CreatePawnTicketSchemaType = typeof createPawnTicketSchema;
 export type CreatePawnTicketFormValues = InferType<CreatePawnTicketSchemaType>;
 
 export interface CreatePawnTicketFormProps {
-  generateDraftInvoice: () => void;
+  generateDraftInvoice: (
+    createPawnTicketFormData: Partial<TicketFormData>,
+    items: TicketFormItem[] | undefined
+  ) => void;
 }
 // eslint-disable-next-line react/display-name
 const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
@@ -45,7 +52,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
         ...prev,
         ...data,
       }));
-    generateDraftInvoice();
+    generateDraftInvoice(data, items);
     if (handleNext) handleNext();
   };
 

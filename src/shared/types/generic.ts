@@ -15,6 +15,7 @@ export enum SettingEnum {
 export enum FeatureEnum {
   PAWN_TICKET = "PAWN_TICKET",
   MULTIPLE_BRANCHES = "MULTIPLE_BRANCHES",
+  MULTIPLE_ITEM_TYPES = "MULTIPLE_ITEM_TYPES",
 }
 
 export type PermissionAtom = {
@@ -55,3 +56,33 @@ export enum TimePeriod {
   month = "month",
   year = "year",
 }
+
+export enum ItemTypes {
+  GENERIC = "Generic",
+  GOLD = "Gold",
+  VEHICLE = "Vehicle",
+}
+
+export enum ItemDetailKey {
+  CARATAGE = "caratage",
+  WEIGHT = "weight",
+  VEHICLE_NO = "vehicleNo",
+}
+
+export const ItemDetailMeta: Record<
+  ItemDetailKey,
+  { label: string; unit: string }
+> = {
+  [ItemDetailKey.CARATAGE]: {
+    label: "Caratage",
+    unit: "K",
+  },
+  [ItemDetailKey.WEIGHT]: {
+    label: "Weight",
+    unit: "g",
+  },
+  [ItemDetailKey.VEHICLE_NO]: {
+    label: "Vehicle No",
+    unit: "",
+  },
+};

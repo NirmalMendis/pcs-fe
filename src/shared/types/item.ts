@@ -1,10 +1,19 @@
+export interface ItemDetailType {
+  id: number;
+  type: string;
+  value: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+  itemId?: number;
+}
+
 export interface Item {
   id: number;
   description: string;
-  caratage: number;
   appraisedValue: number;
   pawningAmount: number;
-  weight: number;
+  itemDetails?: Array<ItemDetailType>;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;

@@ -17,8 +17,11 @@ import usePostCreatePawnTicket, {
 import usePostDraftTicketInvoice from "../../../../api/pawn-ticket/use-post-draft-ticket-invoice";
 import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import getTransformedItems from "../../../../shared/helper/get-tramsformed-items";
 import {
   CreateTicketContext,
+  TicketFormData,
+  TicketFormItem,
   emptyItem,
   initialTicketFormData,
 } from "../all-tickets/all-pawn-tickets";
@@ -81,7 +84,8 @@ const CreateTicket = () => {
   };
 
   const handleCreatePawnTicket = () => {
-    if (items && createPawnTicketFormData) {
+    const transformedItems = getTransformedItems(items);
+    if (transformedItems && createPawnTicketFormData) {
       const createPawnTicketFormDataExcludingPrincpal = {
         ...createPawnTicketFormData,
       };
@@ -90,7 +94,7 @@ const CreateTicket = () => {
         {
           payload: {
             ...(createPawnTicketFormDataExcludingPrincpal as PostCreatePawnTicketRequest),
-            items: items,
+            items: transformedItems,
           },
         },
         {
@@ -105,17 +109,16 @@ const CreateTicket = () => {
     }
   };
 
-  const generateDraftInvoice = () => {
-    if (createPawnTicketFormData?.customerId && items)
+  const generateDraftInvoice = (
+    createPawnTicketFormData: Partial<TicketFormData>,
+    items: TicketFormItem[] | undefined
+  ) => {
+    const transformedItems = getTransformedItems(items);
+    if (createPawnTicketFormData?.customerId && transformedItems)
       mutatePostTicketInvoicePdf({
         payload: {
           customerId: createPawnTicketFormData.customerId,
-          items: items.map((item) => ({
-            weight: item.weight,
-            pawningAmount: item.pawningAmount,
-            description: item.description,
-            appraisedValue: item.appraisedValue,
-          })),
+          items: transformedItems,
           pawnTicket: {
             dueDate: createPawnTicketFormData.dueDate as Date,
             interestRate: createPawnTicketFormData.interestRate as number,

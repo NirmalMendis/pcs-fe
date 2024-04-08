@@ -31,7 +31,17 @@ const TicketItemsTab: FC<TicketItemsTabProps> = ({ id }) => {
     <Grid container spacing={1}>
       <Grid item xs={12}>
         <TicketItemsTable
-          items={items?.pageData}
+          items={items?.pageData.map((item) => ({
+            appraisedValue: item.appraisedValue,
+            description: item.description,
+            pawningAmount: item.pawningAmount,
+            id: item.id,
+            itemDetails:
+              item.itemDetails?.map((detail) => ({
+                type: detail.type,
+                value: detail.value,
+              })) || [],
+          }))}
           totalItems={items?.pager.totalItems}
           paginationModel={paginationModel}
           setPaginationModel={setPaginationModel}

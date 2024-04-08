@@ -3,18 +3,10 @@ import {
   MAXIMUM_PRICE_VALUE,
   MAXIMUM_QUANTITATIVE_VALUE,
 } from "../../../../../constants/generic-constants";
+import { ItemTypes } from "../../../../../shared/types/generic";
 
 const cruItemSchema = yup.object({
   description: yup.string().required("Please enter a item description"),
-  caratage: yup
-    .number()
-    .positive("Number must be positive")
-    .max(
-      MAXIMUM_QUANTITATIVE_VALUE,
-      `Number must be less than or equal to ${MAXIMUM_QUANTITATIVE_VALUE}`
-    )
-    .required("Please enter the caratage")
-    .typeError("Please enter a number value"),
   appraisedValue: yup
     .number()
     .positive("Number must be positive")
@@ -33,15 +25,38 @@ const cruItemSchema = yup.object({
     )
     .required("Please enter the pawning amount.")
     .typeError("Please enter a number value"),
-  weight: yup
-    .number()
-    .positive("Number must be positive")
-    .max(
-      MAXIMUM_QUANTITATIVE_VALUE,
-      `Number must be less than or equal to ${MAXIMUM_QUANTITATIVE_VALUE}`
-    )
-    .required("Please enter the weight.")
-    .typeError("Please enter a number value"),
+  itemType: yup.string().required("Please select a value"),
+  caratage: yup.number().when("itemType", ([itemType]) => {
+    return itemType === ItemTypes.GOLD
+      ? yup
+          .number()
+          .positive("Number must be positive")
+          .max(
+            MAXIMUM_QUANTITATIVE_VALUE,
+            `Number must be less than or equal to ${MAXIMUM_QUANTITATIVE_VALUE}`
+          )
+          .required("Please enter the caratage")
+          .typeError("Please enter a number value")
+      : yup.number().notRequired().nullable();
+  }),
+  weight: yup.number().when("itemType", ([itemType]) => {
+    return itemType === ItemTypes.GOLD
+      ? yup
+          .number()
+          .positive("Number must be positive")
+          .max(
+            MAXIMUM_QUANTITATIVE_VALUE,
+            `Number must be less than or equal to ${MAXIMUM_QUANTITATIVE_VALUE}`
+          )
+          .required("Please enter the caratage")
+          .typeError("Please enter a number value")
+      : yup.number().notRequired().nullable();
+  }),
+  vehicleNo: yup.string().when("itemType", ([itemType]) => {
+    return itemType === ItemTypes.VEHICLE
+      ? yup.string().required("Please vehicle number")
+      : yup.string().notRequired().nullable();
+  }),
 });
 
 export default cruItemSchema;

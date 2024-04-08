@@ -15,6 +15,7 @@ import {
   PERMISSION_ACTIONS,
 } from "../../../../constants/iam-constants";
 import PageTitleCard from "../../../../shared/components/page-title-card";
+import { ItemTypes } from "../../../../shared/types/generic";
 import PermissionsWrapper from "../../iam/permissions-wrapper";
 import { CRUItemFormValues } from "../create-ticket/add-item/cru-item-form";
 import { CreatePawnTicketFormValues } from "../create-ticket/create-pawn-ticket-form";
@@ -36,12 +37,11 @@ export const emptyItem: CRUItemFormValues & {
   uiId: number;
 } = {
   appraisedValue: 0,
-  caratage: 0,
   description: "",
   pawningAmount: 0,
-  weight: 0,
   isSubmitted: false,
   uiId: 0,
+  itemType: ItemTypes.GOLD,
 };
 
 export interface TicketFormItem extends CRUItemFormValues {

@@ -22,12 +22,15 @@ import {
 } from "react";
 import useGetCustomerById from "../../../../api/customer/use-get-customer-by-id";
 import useGetCalculateMonthlyInterest from "../../../../api/pawn-ticket/use-get-calculate-monthly-interest";
+import getTransformedItems from "../../../../shared/helper/get-tramsformed-items";
 import CustomerAtomicCard from "../../customer/customer-atomic-card";
 import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 import TicketDatesCard from "../update-ticket/general/ticket-dates";
 import TicketInterests from "../update-ticket/general/ticket-interests";
 import TicketMonetaryValues from "../update-ticket/general/ticket-monetary-values";
-import TicketItemsTable from "../update-ticket/items/ticket-items-table";
+import TicketItemsTable, {
+  TicketItemsTableProps,
+} from "../update-ticket/items/ticket-items-table";
 import InvoicePreview from "./invoice-preview";
 import StepperBtns from "./stepper-btns";
 
@@ -161,7 +164,14 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
               <Typography variant="h6">Items</Typography>
               {items ? (
                 <TicketItemsTable
-                  items={items.map((item) => ({ ...item, id: item.uiId }))}
+                  items={
+                    getTransformedItems(
+                      items.map((item) => ({
+                        ...item,
+                        id: item.uiId,
+                      }))
+                    ) as TicketItemsTableProps["items"]
+                  }
                 />
               ) : null}
             </Stack>

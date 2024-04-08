@@ -1,5 +1,5 @@
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC } from "react";
 import {
@@ -10,11 +10,18 @@ import {
 import NoDataGrid from "../../../../../shared/components/no-data-grid";
 import CustomPagination from "../../../../../shared/components/pagination";
 import useTextFormatter from "../../../../../shared/hooks/use-text-formatter";
-import { Item } from "../../../../../shared/types/item";
-import { TicketFormItem } from "../../all-tickets/all-pawn-tickets";
+import {
+  ItemDetailKey,
+  ItemDetailMeta,
+} from "../../../../../shared/types/generic";
+import { Item, ItemDetailType } from "../../../../../shared/types/item";
 
 export interface TicketItemsTableProps {
-  items?: Array<Partial<Item> & Partial<TicketFormItem>>;
+  items?: Array<
+    Pick<Item, "id" | "description" | "appraisedValue" | "pawningAmount"> & {
+      itemDetails: Array<Pick<ItemDetailType, "type" | "value">>;
+    }
+  >;
   totalItems?: number;
   paginationModel?: {
     pageSize: number;
@@ -38,7 +45,7 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
   isFetching,
   columnMinWidth = 100,
 }) => {
-  const { formatCaratage, formatRs, formatWeight } = useTextFormatter();
+  const { formatRs } = useTextFormatter();
 
   const columns: GridColDef[] = [
     {
@@ -59,12 +66,35 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
       flex: 1,
     },
     {
-      field: "caratage",
-      headerName: "Caratage",
+      field: "itemDetails",
+      headerName: "Item Details",
       minWidth: columnMinWidth,
       flex: 1,
       renderCell: (params) => {
-        if (formatCaratage) return formatCaratage(String(params.value));
+        return params.value && params.value.length ? (
+          <Stack width={"100%"}>
+            {params.value?.map(
+              (detail: Pick<ItemDetailType, "type" | "value">) => (
+                <Stack
+                  key={detail?.type}
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  spacing={1}
+                  flexWrap="wrap"
+                >
+                  <Typography fontWeight={600}>{`${ItemDetailMeta[
+                    detail.type as ItemDetailKey
+                  ]?.label}`}</Typography>
+                  <Typography>{`${detail?.value} ${ItemDetailMeta[
+                    detail.type as ItemDetailKey
+                  ]?.unit}`}</Typography>
+                </Stack>
+              )
+            )}
+          </Stack>
+        ) : (
+          "-"
+        );
       },
     },
     {
@@ -86,22 +116,13 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
         if (formatRs) return formatRs(String(params.value));
       },
     },
-    {
-      field: "weight",
-      headerName: "Weight",
-      minWidth: columnMinWidth,
-      flex: 1,
-      renderCell: (params) => {
-        if (formatWeight) return formatWeight(String(params.value));
-      },
-    },
   ];
 
   return (
     <DataGrid
       rows={data || []}
       rowCount={totalItems || data?.length || 0}
-      rowHeight={MUI_DATAGRID_DEFAULT_ROW_HEIGHT}
+      rowHeight={MUI_DATAGRID_DEFAULT_ROW_HEIGHT + 10}
       columns={columns}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}

@@ -144,10 +144,9 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             pawningAmount: item.pawningAmount!,
             appraisedValue: 0,
-            caratage: 0,
             description: "",
             isSubmitted: false,
-            weight: 0,
+            itemType: "",
           }))
       );
     setOpenCustomerModal(false);

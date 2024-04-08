@@ -1,14 +1,16 @@
 import { UseMutationResult, useMutation } from "@tanstack/react-query";
 import { INVOICE_API } from "../../constants/api-endpoints";
 import { POST_DRAFT_TICKET_INVOICE } from "../../constants/query-leys";
-import { Item } from "../../shared/types/item";
+import { Item, ItemDetailType } from "../../shared/types/item";
 import { PawnTicket } from "../../shared/types/pawn-ticket";
 import { apiService } from "../api-service";
 
 export interface PostDraftTicketInvoiceRequest {
   customerId: number;
   items: Array<
-    Pick<Item, "appraisedValue" | "description" | "pawningAmount" | "weight">
+    Pick<Item, "appraisedValue" | "description" | "pawningAmount"> & {
+      itemDetails: Array<Pick<ItemDetailType, "type" | "value">>;
+    }
   >;
   pawnTicket: Pick<
     PawnTicket,
