@@ -6,7 +6,7 @@ export enum MetaDataEnum {
 
 export const APP_PORTAL = "pcs-admin-portal";
 
-export const PRODUCT_NAME = "Collatix IO";
+export const PRODUCT_NAME = "Assetank";
 
 export const GENERIC_ERROR =
   "Sorry, Something went wrong! Please try again or contact administrator";
