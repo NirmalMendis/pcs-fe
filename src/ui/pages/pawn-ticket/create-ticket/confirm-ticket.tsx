@@ -5,13 +5,13 @@ import {
   Box,
   Button,
   Divider,
-  Grid,
   Paper,
   Stack,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import { Theme } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import {
   FC,
   useCallback,
@@ -128,7 +128,6 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
       </Box>
       <Grid container>
         <Grid
-          item
           xs
           md={isInvoiceVisible ? 6 : 12}
           sx={{ pl: "0px !important", pb: 2 }}
@@ -176,7 +175,6 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
               ) : null}
             </Stack>
             <Grid
-              item
               xs={12}
               sx={{ pl: 1, pr: 1 }}
               justifyContent={"end"}
@@ -194,7 +192,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
             </Grid>
           </Stack>
         </Grid>
-        <Grid item xs={12} md={6} display={isInvoiceVisible ? "block" : "none"}>
+        <Grid xs={12} md={6} display={isInvoiceVisible ? "block" : "none"}>
           <InvoicePreview
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}

@@ -8,7 +8,6 @@ import {
   Divider,
   FormControl,
   FormHelperText,
-  Grid,
   IconButton,
   InputLabel,
   MenuItem,
@@ -17,6 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Skeleton } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers";
 import { addMonths, format } from "date-fns";
 import { debounce } from "lodash";

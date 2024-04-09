@@ -1,12 +1,13 @@
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { Main } from "../../layout/main/main-layout";
 
 const SettingUp = () => {
   return (
     <Main>
       <Grid container>
-        <Grid item xs={12} textAlign="center" sx={{ mt: 10 }}>
+        <Grid xs={12} textAlign="center" sx={{ mt: 10 }}>
           <SettingsIcon
             sx={{
               fontSize: 100,
@@ -22,7 +23,7 @@ const SettingUp = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12} textAlign="center" sx={{ mt: 4 }}>
+        <Grid xs={12} textAlign="center" sx={{ mt: 4 }}>
           <Typography
             fontFamily="cursive"
             fontStyle="italic"

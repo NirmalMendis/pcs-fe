@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   Fade,
-  Grid,
   IconButton,
   Stack,
   Typography,
 } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { addMonths } from "date-fns";
 import { Dispatch, SetStateAction, createContext, useState } from "react";
 import {
@@ -83,7 +83,7 @@ const AllPawnTickets = () => {
   return (
     <Grid container sx={{ p: 1 }}>
       {showCreateTicket && (
-        <Grid item xs={12}>
+        <Grid xs={12}>
           <Fade
             in={showCreateTicket}
             mountOnEnter
@@ -111,7 +111,7 @@ const AllPawnTickets = () => {
         </Grid>
       )}
       {!showCreateTicket && (
-        <Grid item xs={12}>
+        <Grid xs={12}>
           <Fade
             in={!showCreateTicket}
             mountOnEnter
@@ -125,18 +125,12 @@ const AllPawnTickets = () => {
                   justifyContent="space-between"
                   spacing={{ xs: 2 }}
                 >
-                  <Grid item xs={12} sm={4}>
+                  <Grid xs={12} sm={4}>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       All Pawn Tickets
                     </Typography>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={4}
-                    justifyContent={"end"}
-                    display={"flex"}
-                  >
+                  <Grid xs={12} sm={4} justifyContent={"end"} display={"flex"}>
                     <Stack direction={"row"} spacing={2}>
                       <CreateTicketContext.Provider
                         value={{

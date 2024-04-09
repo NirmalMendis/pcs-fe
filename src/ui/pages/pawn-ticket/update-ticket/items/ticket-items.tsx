@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC, useEffect, useState } from "react";
 import useGetItemsByPawnTicketId from "../../../../../api/item/use-get-items-by-ticketId";
 import { DEFAULT_PAGE_SIZE } from "../../../../../constants/generic-constants";
@@ -29,7 +29,7 @@ const TicketItemsTab: FC<TicketItemsTabProps> = ({ id }) => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12}>
+      <Grid xs={12}>
         <TicketItemsTable
           items={items?.pageData.map((item) => ({
             appraisedValue: item.appraisedValue,

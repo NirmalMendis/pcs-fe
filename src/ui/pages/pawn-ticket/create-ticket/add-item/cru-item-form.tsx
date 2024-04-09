@@ -4,13 +4,13 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
 } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
@@ -105,7 +105,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
     switch (itemType) {
       case ItemTypes.GOLD:
         return [
-          <Grid item xs={12} sm={3} key={"gold-weight"}>
+          <Grid xs={12} sm={3} key={"gold-weight"}>
             <Controller
               control={control}
               name={ItemDetailKey.WEIGHT}
@@ -126,7 +126,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
               }}
             />
           </Grid>,
-          <Grid item xs={12} sm={3} key={"gold-caratage"}>
+          <Grid xs={12} sm={3} key={"gold-caratage"}>
             <Controller
               control={control}
               name={ItemDetailKey.CARATAGE}
@@ -150,7 +150,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
         ];
       case ItemTypes.VEHICLE:
         return [
-          <Grid item xs={12} sm={3} key={"vehicle-number"}>
+          <Grid xs={12} sm={3} key={"vehicle-number"}>
             <TextField
               label={ItemDetailMeta[ItemDetailKey.VEHICLE_NO].label}
               {...register(ItemDetailKey.VEHICLE_NO)}
@@ -182,7 +182,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
   return (
     <form onSubmit={handleSubmit(handleIntegratedSubmit)} noValidate>
       <Grid container rowSpacing={3} columnSpacing={2}>
-        <Grid item xs={12} sm={3}>
+        <Grid xs={12} sm={3}>
           <TextField
             label="Description"
             {...register("description")}
@@ -191,7 +191,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
             disabled={disableFields}
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid xs={12} sm={3}>
           <Controller
             control={control}
             name="appraisedValue"
@@ -210,7 +210,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid xs={12} sm={3}>
           <Controller
             control={control}
             name="pawningAmount"
@@ -230,7 +230,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
           />
         </Grid>
         <PermissionsWrapper feature={FeatureEnum.MULTIPLE_ITEM_TYPES}>
-          <Grid item xs={12} sm={3}>
+          <Grid xs={12} sm={3}>
             <Controller
               control={control}
               name="itemType"
@@ -272,7 +272,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
           </Grid>
         </PermissionsWrapper>
         {getItemDetailFields()}
-        <Grid item xs={12} display={"flex"} justifyContent={"end"}>
+        <Grid xs={12} display={"flex"} justifyContent={"end"}>
           {!disableFields && (
             <Stack direction={"row"} spacing={1}>
               <Button

@@ -1,14 +1,7 @@
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import {
-  Alert,
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Theme,
-  useMediaQuery,
-} from "@mui/material";
+import { Alert, Box, Button, Stack, Theme, useMediaQuery } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC, useEffect, useState } from "react";
 import useGetTicketInvoice, {
   InvoiceHTMLType,
@@ -61,7 +54,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
   return (
     <Grid container spacing={1}>
       {!largeScreen ? (
-        <Grid item xs={12} justifyContent={"end"} display={"flex"}>
+        <Grid xs={12} justifyContent={"end"} display={"flex"}>
           <Button
             startIcon={
               isInvoiceVisible ? (
@@ -79,7 +72,6 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
         </Grid>
       ) : null}
       <Grid
-        item
         xs
         display={{ xs: isInvoiceVisible ? "none" : "block", md: "block" }}
       >
@@ -103,7 +95,6 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
         </Stack>
       </Grid>
       <Grid
-        item
         xs={12}
         md={6}
         display={isInvoiceVisible ? "block" : "none"}

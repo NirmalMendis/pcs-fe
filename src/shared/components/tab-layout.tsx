@@ -1,7 +1,8 @@
-import { Grid, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/system";
 import {
   JSXElementConstructor,
@@ -11,7 +12,6 @@ import {
   useState,
 } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-
 export interface TabProps {
   title: string;
   icon:
@@ -75,7 +75,6 @@ export default function TabLayout({ tabs, leftComponent }: TabLayoutProps) {
         {/* in case needed to add right side component, set below col values
       xs={7} sm={8} md={9} lg={10} */}
         <Grid
-          item
           xs={12}
           sx={{ [theme.breakpoints.down("sm")]: { width: "100vw" } }}
         >
@@ -104,7 +103,6 @@ export default function TabLayout({ tabs, leftComponent }: TabLayoutProps) {
           )}
         </Grid>
         <Grid
-          item
           sm={3}
           md={2}
           xs={5}

@@ -1,5 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers";
 import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
@@ -88,7 +89,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Grid container rowSpacing={3} columnSpacing={2}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <TextField
               label="Customer"
               placeholder="Customer"
@@ -114,7 +115,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
               name="pawnDate"
@@ -140,7 +141,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
               name="dueDate"
@@ -166,7 +167,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
               name="principalAmount"
@@ -184,7 +185,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
               name="serviceCharge"
@@ -201,7 +202,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
               name="interestRate"
@@ -220,7 +221,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <StepperBtns
               actionButtonProps={{
                 disabled: !isValid,

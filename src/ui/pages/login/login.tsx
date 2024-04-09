@@ -1,4 +1,5 @@
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import LoginImage from "../../../assets/images/login-image.jpg";
 import GoldBricksImage from "../../../assets/svg/gold-bricks.svg";
 import { PRODUCT_NAME } from "../../../constants/string-constants";
@@ -14,7 +15,6 @@ const Login = () => {
       direction={"column"}
     >
       <Grid
-        item
         xs={12}
         sm={8}
         elevation={8}
@@ -25,13 +25,11 @@ const Login = () => {
       >
         <Grid
           container
-          item
           direction={{ xs: "column", sm: "row" }}
           xs={12}
           spacing={2}
         >
           <Grid
-            item
             xs={7}
             display={{ xs: "none", sm: "flex" }}
             width={{ xs: "400px" }}
@@ -44,7 +42,7 @@ const Login = () => {
               alt="Pawn center logo Logo"
             />
           </Grid>
-          <Grid item xs={5} padding={2}>
+          <Grid xs={5} padding={2}>
             <Stack
               justifyContent={"space-between"}
               sx={{ height: "100%" }}

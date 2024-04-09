@@ -1,7 +1,6 @@
 import {
   Box,
   Divider,
-  Grid,
   Paper,
   Stack,
   Step,
@@ -9,6 +8,7 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { useSnackbar } from "notistack";
 import { createContext, useContext, useState } from "react";
 import usePostCreatePawnTicket, {
@@ -187,12 +187,12 @@ const CreateTicket = () => {
 
   return (
     <Grid container spacing={1.5}>
-      <Grid item xs={12}>
+      <Grid xs={12}>
         <PageTitleCard>
           <Typography variant="h5">Create Pawn Ticket</Typography>
         </PageTitleCard>
       </Grid>
-      <Grid item xs={12}>
+      <Grid xs={12}>
         <Stack sx={{ width: "100%", p: 2 }} spacing={4} component={Paper}>
           <Stepper activeStep={activeStep}>
             {createTicketSteps.map((label) => {

@@ -1,5 +1,6 @@
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-import { Box, Grid, LinearProgress } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import { FC, useState } from "react";
@@ -111,7 +112,7 @@ const TicketInterestsSchedule: FC<InterestsProps> = ({ id }) => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12}>
+      <Grid xs={12}>
         <DataGrid
           rows={data?.pageData || []}
           rowCount={data?.pager.totalItems || data?.pageData?.length || 0}

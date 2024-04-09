@@ -2,7 +2,8 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import SafetyCheckIcon from "@mui/icons-material/SafetyCheck";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import { Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import DashboardStatCard from "../../../shared/components/dashboard-stat-card";
 import PageTitleCard from "../../../shared/components/page-title-card";
 import { PawnTicketStatusEnum } from "../../../shared/types/generic";
@@ -21,14 +22,12 @@ const Dashboard = () => {
       </PageTitleCard>
       <Grid
         container
-        item
         xs={12}
-        spacing={1}
+        spacing={2}
         justifyContent="center"
         alignItems="center"
       >
         <Grid
-          item
           xs={12}
           sm={6}
           md={3}
@@ -56,7 +55,6 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid
-          item
           xs={12}
           sm={6}
           md={3}
@@ -81,7 +79,6 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid
-          item
           xs={12}
           sm={6}
           md={3}
@@ -106,7 +103,6 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid
-          item
           xs={12}
           sm={6}
           md={3}

@@ -1,16 +1,9 @@
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Stack,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Stack, Theme, Typography } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetTicketInvoice, {
@@ -88,7 +81,6 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
       </Box>
       <Grid container ref={printButtonRef}>
         <Grid
-          item
           xs
           sx={{ pl: "0px !important", pb: 2 }}
           display={{ xs: isInvoiceVisible ? "none" : "block", md: "block" }}
@@ -125,7 +117,7 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
             </Stack>
           </Stack>
         </Grid>
-        <Grid item xs={12} md={7} display={isInvoiceVisible ? "block" : "none"}>
+        <Grid xs={12} md={7} display={isInvoiceVisible ? "block" : "none"}>
           <InvoicePreview
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}

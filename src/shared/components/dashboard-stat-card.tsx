@@ -1,13 +1,13 @@
 import {
   Box,
   Divider,
-  Grid,
   Stack,
   SvgIconTypeMap,
   Typography,
   Zoom,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/system";
 import { FC } from "react";
 
@@ -77,8 +77,8 @@ const DashboardStatCard: FC<DashboardCampStatCardProps> = ({
     >
       <ResponsiveOuterBox color={color}>
         <Grid container spacing={1}>
-          <Grid container item xs={12}>
-            <Grid item xs={8}>
+          <Grid container xs={12}>
+            <Grid xs={8}>
               <Stack textAlign="start">
                 <Typography fontSize={16} fontWeight={600}>
                   {values[0].label}
@@ -86,19 +86,19 @@ const DashboardStatCard: FC<DashboardCampStatCardProps> = ({
                 <Typography fontSize={18}>{values[0].value}</Typography>
               </Stack>
             </Grid>
-            <Grid item xs={4}>
+            <Grid xs={4}>
               <InnerIcon />
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Divider sx={{ backgroundColor: "secondary.main" }} />
             <Typography fontSize={14} fontWeight={600} textAlign={"left"}>
               {dataTitle}
             </Typography>
           </Grid>
-          <Grid container item xs={12}>
+          <Grid container xs={12}>
             {values.slice(1, values.length).map((item) => (
-              <Grid item xs={6} key={item.label}>
+              <Grid xs={6} key={item.label}>
                 <Stack textAlign="start">
                   <Typography fontSize={12}>{item.label}</Typography>
                   <Typography fontSize={14}>{item.value}</Typography>

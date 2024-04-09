@@ -1,4 +1,5 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { FC } from "react";
 import { UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
@@ -29,7 +30,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data, reset))}>
       <Grid container rowSpacing={3} columnSpacing={2}>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="NIC number"
             {...register("nicNo")}
@@ -38,7 +39,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="First name"
             {...register("firstName")}
@@ -47,7 +48,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Last name"
             {...register("lastName")}
@@ -56,7 +57,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Email"
             type="email"
@@ -66,7 +67,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Mobile number"
             {...register("mobileNo")}
@@ -75,7 +76,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Address Line 1"
             {...register("addressLine1")}
@@ -84,7 +85,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Address Line 2"
             {...register("addressLine2")}
@@ -92,7 +93,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             helperText={getSingleFieldError("addressLine2")?.message}
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Address Line 3"
             {...register("addressLine3")}
@@ -100,7 +101,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             helperText={getSingleFieldError("addressLine3")?.message}
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="City"
             {...register("city")}
@@ -109,7 +110,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={3} md={4}>
+        <Grid xs={12} sm={3} md={4}>
           <TextField
             label="Postal code"
             {...register("postalCode")}
@@ -117,7 +118,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             helperText={getSingleFieldError("postalCode")?.message}
           />
         </Grid>
-        <Grid item xs={12} display={"flex"} justifyContent={"end"}>
+        <Grid xs={12} display={"flex"} justifyContent={"end"}>
           <Button type="submit" disabled={!isValid}>
             Register
           </Button>
