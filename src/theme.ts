@@ -160,9 +160,6 @@ export const commonTheme: ThemeOptions = {
     h4: {
       textTransform: "uppercase",
     },
-    body1: {
-      color: "#000",
-    },
     subdued: {
       color: "#8a8a8a",
     },

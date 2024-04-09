@@ -33,7 +33,10 @@ const DrawerListItem: FC<DrawerListItemProps> = ({ icon, text, to }) => {
       <ListItem key={text} sx={{ backgroundColor: "inherit" }} disablePadding>
         <ListItemButton>
           <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText primary={text} />
+          <ListItemText
+            primary={text}
+            sx={{ color: "secondary.contrastText" }}
+          />
         </ListItemButton>
       </ListItem>
     </Link>
