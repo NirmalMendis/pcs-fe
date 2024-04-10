@@ -1,12 +1,23 @@
-import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DatePicker } from "@mui/x-date-pickers";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetAllPawnTickets from "../../../../api/pawn-ticket/use-get-all-pawn-tickets";
 import { StatusColors } from "../../../../constants/color-constants";
 import {
-  CURRENCY_PREFIX,
   DD_MM_YYY_FORMAT,
   DEFAULT_PAGE_SIZE,
   MUI_DATAGRID_DEFAULT_ROW_HEIGHT,
@@ -16,19 +27,59 @@ import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
 import ProfileAvatar from "../../../../shared/components/profile-avatar";
 import renderCellExpand from "../../../../shared/components/render-cell-expand";
+import useTextFormatter from "../../../../shared/hooks/use-text-formatter";
+import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 
 const AllPawnTicketsDrid = () => {
   const [paginationModel, setPaginationModel] = useState({
     pageSize: DEFAULT_PAGE_SIZE,
     page: 0,
   });
-  const { data, isFetching: isFetchingAllPawnTickets } = useGetAllPawnTickets({
+
+  const [filters, setFilters] = useState<{
+    startDate?: Date;
+    endDate?: Date;
+    status?: PawnTicketStatusEnum;
+  }>({});
+
+  const {
+    data,
+    isFetching: isFetchingAllPawnTickets,
+    refetch,
+  } = useGetAllPawnTickets({
     page: paginationModel.page + 1,
     pageSize: paginationModel.pageSize,
     orderBy: "createdAt",
     orderDirection: "DESC",
+    ...filters,
   });
+
+  const { formatRs } = useTextFormatter();
   const navigate = useNavigate();
+
+  const onChangeStartDate = (value: Date | null) => {
+    if (value)
+      setFilters((prev) => ({
+        ...prev,
+        startDate: value,
+      }));
+  };
+
+  const onChangeEndDate = (value: Date | null) => {
+    if (value)
+      setFilters((prev) => ({
+        ...prev,
+        endDate: value,
+      }));
+  };
+
+  const onChangeStatus = (event: SelectChangeEvent<unknown>) => {
+    if (event.target.value)
+      setFilters((prev) => ({
+        ...prev,
+        status: event.target.value as PawnTicketStatusEnum,
+      }));
+  };
 
   const columns: GridColDef[] = [
     {
@@ -91,7 +142,7 @@ const AllPawnTicketsDrid = () => {
       flex: 1,
       cellClassName: "bold-text",
       valueGetter: (params) => {
-        const formatedAmount = `${CURRENCY_PREFIX}${params.value}`;
+        const formatedAmount = formatRs ? formatRs(String(params.value)) : "";
         return formatedAmount;
       },
     },
@@ -112,7 +163,7 @@ const AllPawnTicketsDrid = () => {
       flex: 1,
       cellClassName: "bold-text",
       valueGetter: (params) => {
-        const formatedAmount = `${CURRENCY_PREFIX}${params.value}`;
+        const formatedAmount = formatRs ? formatRs(String(params.value)) : "";
         return formatedAmount;
       },
     },
@@ -144,14 +195,58 @@ const AllPawnTicketsDrid = () => {
     },
   ];
 
+  useEffect(() => {
+    if (filters.endDate && filters.startDate) refetch();
+  }, [refetch, filters.endDate, filters.startDate]);
+
+  useEffect(() => {
+    if (filters.status) refetch();
+  }, [refetch, filters.status]);
+
   return (
-    <Box
+    <Stack
       sx={{
         "& .bold-text": {
           fontWeight: "bold",
         },
+        marginTop: "20px !important",
       }}
+      spacing={2}
     >
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <DatePicker
+          label="Start date"
+          slotProps={{
+            textField: {
+              size: "small",
+            },
+          }}
+          disableFuture
+          value={filters.startDate}
+          onChange={onChangeStartDate}
+        />
+        <DatePicker
+          label="End date"
+          slotProps={{
+            textField: {
+              size: "small",
+            },
+          }}
+          disableFuture
+          value={filters.endDate}
+          onChange={onChangeEndDate}
+        />
+        <FormControl fullWidth>
+          <InputLabel>Type</InputLabel>
+          <Select label="Type" onChange={onChangeStatus}>
+            {Object.values(PawnTicketStatusEnum).map((value) => (
+              <MenuItem value={value} key={value}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Stack>
       <DataGrid
         rows={data?.pageData || []}
         rowCount={data?.pager?.totalItems || 0}
@@ -176,7 +271,7 @@ const AllPawnTicketsDrid = () => {
           noRowsOverlay: NoDataGrid,
         }}
       />
-    </Box>
+    </Stack>
   );
 };
 

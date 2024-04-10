@@ -101,6 +101,7 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
       field: "appraisedValue",
       headerName: "Appraised Value",
       minWidth: columnMinWidth,
+      align: "right",
       flex: 1,
       renderCell: (params) => {
         if (formatRs) return formatRs(String(params.value));
@@ -111,6 +112,7 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
       headerName: "Pawning Amount",
       minWidth: columnMinWidth,
       flex: 1,
+      align: "right",
       cellClassName: "bold-text",
       renderCell: (params) => {
         if (formatRs) return formatRs(String(params.value));
