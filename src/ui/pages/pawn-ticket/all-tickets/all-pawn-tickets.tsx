@@ -1,3 +1,4 @@
+import AddIcon from "@mui/icons-material/Add";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
   Box,
@@ -152,6 +153,7 @@ const AllPawnTickets = () => {
                           color="primary"
                           size="medium"
                           onClick={handleShowCreateTicket}
+                          startIcon={<AddIcon color="secondary" />}
                         >
                           Create ticket
                         </Button>
