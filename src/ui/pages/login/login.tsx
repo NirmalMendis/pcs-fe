@@ -1,72 +1,39 @@
-import { Box, Paper, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import LoginImage from "../../../assets/images/login-image.jpg";
-import GoldBricksImage from "../../../assets/svg/gold-bricks.svg";
-import { PRODUCT_NAME } from "../../../constants/string-constants";
+import { Box, Slide, Stack } from "@mui/material";
+import { Link } from "@mui/material";
+import { useRef } from "react";
+import AuthContainer from "./auth-container";
 import LoginForm from "./login-form/login-form";
 
 const Login = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      minHeight={"100vh"}
-      direction={"column"}
-    >
-      <Grid
-        xs={12}
-        sm={8}
-        elevation={8}
-        sx={{
-          p: 5,
-        }}
-        component={Paper}
-      >
-        <Grid
-          container
-          direction={{ xs: "column", sm: "row" }}
-          xs={12}
-          spacing={2}
+    <AuthContainer title="Login">
+      <Box ref={containerRef} sx={{ overflow: "hidden" }}>
+        <Slide
+          in={true}
+          mountOnEnter
+          unmountOnExit
+          container={containerRef.current}
+          direction="right"
+          timeout={1000}
         >
-          <Grid
-            xs={7}
-            display={{ xs: "none", sm: "flex" }}
-            width={{ xs: "400px" }}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <img
-              style={{ width: "100%", height: "auto" }}
-              src={LoginImage}
-              alt="Pawn center logo Logo"
-            />
-          </Grid>
-          <Grid xs={5} padding={2}>
-            <Stack
-              justifyContent={"space-between"}
-              sx={{ height: "100%" }}
-              spacing={{ xs: 2, sm: 1 }}
-            >
-              <Typography variant="h5" textAlign={"center"}>
-                {PRODUCT_NAME}
-              </Typography>
-              <Box
-                alignItems={"center"}
-                justifyContent={"center"}
-                display={"flex"}
+          <Stack sx={{ pt: 1 }} spacing={1}>
+            <LoginForm />
+            <Box>
+              <Link
+                component="button"
+                variant="body2"
+                //  onClick={() => setUIState(FORGOT_PASSWORD)}
+                underline="none"
               >
-                <img style={{ maxWidth: "100px" }} src={GoldBricksImage} />
-              </Box>
-              <Typography variant="h6">Login</Typography>
-              <LoginForm />
-            </Stack>
-          </Grid>
-        </Grid>
-      </Grid>
-      {/* <ForgotPwdForm />
-      <SetNewPasswordForm /> */}
-    </Grid>
+                Forgot Password?
+              </Link>
+            </Box>
+          </Stack>
+        </Slide>
+      </Box>
+    </AuthContainer>
   );
 };
 

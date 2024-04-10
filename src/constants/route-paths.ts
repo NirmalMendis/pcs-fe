@@ -6,5 +6,6 @@ const ROUTE_PATHS = {
   },
   LOGIN: "login",
   DASHBOARD: "/",
+  LANDING_PAGE: "/",
 };
 export default ROUTE_PATHS;

@@ -18,6 +18,7 @@ import Dashboard from "../ui/pages/dashboard/dashboard";
 import ErrorBoundary from "../ui/pages/iam/error-boundary";
 import SettingUp from "../ui/pages/iam/setting-up";
 import Unauthorized from "../ui/pages/iam/unauthorized";
+import LandingPage from "../ui/pages/landing-page/landing-page";
 import Login from "../ui/pages/login/login";
 import AllPawnTickets from "../ui/pages/pawn-ticket/all-tickets/all-pawn-tickets";
 import PawnTicketLayout from "../ui/pages/pawn-ticket/pawn-ticket-layout";
@@ -95,6 +96,7 @@ const Routes = () => {
     </Route>
   ) : (
     <Route path="/" element={<LoginLayout />}>
+      <Route path={ROUTE_PATHS.LANDING_PAGE} element={<LandingPage />} />
       <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
       <Route path="*" element={<Navigate to={ROUTE_PATHS.LOGIN} />} />
     </Route>
