@@ -62,7 +62,7 @@ const Dashboard = () => {
                   ),
                 },
                 {
-                  label: "Monthh",
+                  label: "Month",
                   value: formatRs(
                     String(ticketStatusStats[PawnTicketStatusEnum.ACTIVE].month)
                   ),
@@ -119,7 +119,7 @@ const Dashboard = () => {
                   ),
                 },
                 {
-                  label: "Monthh",
+                  label: "Month",
                   value: formatRs(
                     String(
                       ticketStatusStats[PawnTicketStatusEnum.RECOVERED]
@@ -150,7 +150,7 @@ const Dashboard = () => {
                   ),
                 },
                 {
-                  label: "Monthh",
+                  label: "Month",
                   value: formatRs(
                     String(
                       ticketStatusStats[PawnTicketStatusEnum.FORFEITED]

@@ -232,13 +232,12 @@ const AllPawnTicketsDrid = () => {
               size: "small",
             },
           }}
-          disableFuture
           value={filters.endDate}
           onChange={onChangeEndDate}
         />
         <FormControl fullWidth>
-          <InputLabel>Type</InputLabel>
-          <Select label="Type" onChange={onChangeStatus}>
+          <InputLabel>Status</InputLabel>
+          <Select label="Status" onChange={onChangeStatus}>
             {Object.values(PawnTicketStatusEnum).map((value) => (
               <MenuItem value={value} key={value}>
                 {value}
