@@ -31,7 +31,10 @@ const LandingPage = () => {
               marginBottom: "30px !important",
             }}
           >
-            <img style={{ maxWidth: "300px" }} src={AssetankLogo} />
+            <img
+              style={{ maxWidth: "400px", width: "100%" }}
+              src={AssetankLogo}
+            />
           </Box>
           <Stack alignItems={"center"} spacing={3}>
             <Box
