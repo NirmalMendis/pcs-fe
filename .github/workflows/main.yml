@@ -16,7 +16,7 @@ jobs:
           echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
       - run: npm install
       - run: CI=false npm run build
-      - name: Deploy to Ubuntu Server
+      - name: Deploy to Ubuntu Server www
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
