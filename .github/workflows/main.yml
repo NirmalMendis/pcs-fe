@@ -25,7 +25,3 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "build/*"
           target: ${{ secrets.DEPLOY_TARGET }}
-          rm: true
-          script: |
-            cd ${{ secrets.DEPLOY_TARGET }}
-            rm -rf testdel
