@@ -16,6 +16,9 @@ jobs:
           echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
       - run: npm install
       - run: CI=false npm run build
+      - name: Clear existing files in the target directory
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.DEPLOY_KEY }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "rm -rf ${{ secrets.DEPLOY_TARGET }}/*"
       - name: ssh deploy on aws  lightsail
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
