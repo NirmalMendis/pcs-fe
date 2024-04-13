@@ -15,6 +15,7 @@ const Dashboard = () => {
     data: ticketStatusStats,
     isFetching: isFetchingGetTicketStatusStats,
   } = useGetTicketStatusStats();
+
   const { formatRs } = useTextFormatter();
 
   return (
