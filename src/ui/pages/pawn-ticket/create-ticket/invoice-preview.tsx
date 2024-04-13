@@ -14,6 +14,7 @@ export interface InvoicePreviewProps {
   isLoadingPdf: boolean;
   invoicePDFData?: Blob;
   invoiceHTMLData?: InvoiceHTMLType | undefined;
+  pawnTicketId?: number;
   allowPrint?: boolean;
   allowDownload?: boolean;
 }
@@ -22,6 +23,7 @@ const InvoicePreview: FC<InvoicePreviewProps> = ({
   invoicePDFData,
   isLoadingPdf,
   invoiceHTMLData,
+  pawnTicketId,
   allowPrint,
   allowDownload,
 }) => {
@@ -65,7 +67,9 @@ const InvoicePreview: FC<InvoicePreviewProps> = ({
       const a = document.createElement("a");
 
       a.href = url;
-      a.download = "filename.pdf";
+      a.download = pawnTicketId
+        ? `ticket_${pawnTicketId}.pdf`
+        : "draft_ticket.pdf";
       a.click();
       window.URL.revokeObjectURL(url);
     }

@@ -24,7 +24,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
   const largeScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up("md")
   );
-  const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(!!largeScreen);
 
   const { data: invoicePDFData, isFetching: isLoadingPdf } =
     useGetTicketInvoice<Blob>(
@@ -105,6 +105,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
           <InvoicePreview
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}
+            pawnTicketId={pawnTicketData?.id}
             invoiceHTMLData={invoiceHTMLData}
             allowDownload
             allowPrint

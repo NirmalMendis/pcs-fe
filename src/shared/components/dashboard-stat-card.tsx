@@ -76,7 +76,7 @@ const DashboardStatCard: FC<DashboardCampStatCardProps> = ({
       style={{ transitionDelay: delay }}
     >
       <ResponsiveOuterBox color={color}>
-        <Grid container spacing={1}>
+        <Grid container spacing={1} sx={{ width: "100%" }}>
           <Grid container xs={12}>
             <Grid xs={8}>
               <Stack textAlign="start">

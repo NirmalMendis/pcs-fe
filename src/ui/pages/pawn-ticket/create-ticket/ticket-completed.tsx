@@ -29,7 +29,7 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
   const largeScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up("md")
   );
-  const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(!!largeScreen);
 
   const navigate = useNavigate();
 
@@ -122,6 +122,7 @@ const TicketCompleted: FC<TicketCompletedProps> = ({
             invoicePDFData={invoicePDFData}
             isLoadingPdf={isLoadingPdf}
             invoiceHTMLData={invoiceHTMLData}
+            pawnTicketId={pawnTicketId}
             allowDownload
             allowPrint
           />
