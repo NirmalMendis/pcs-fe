@@ -23,6 +23,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           port: ${{ secrets.DEPLOY_PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
-          source: "build/"
+          source: "build/*"
           target: ${{ secrets.DEPLOY_TARGET }}
           rm: true
+          strip_components: 1
