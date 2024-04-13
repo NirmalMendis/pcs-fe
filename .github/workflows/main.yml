@@ -27,4 +27,4 @@ jobs:
           TARGET: ${{ secrets.DEPLOY_TARGET }}
           SCRIPT_BEFORE: |
             cd ${{ secrets.DEPLOY_TARGET }}
-            mkdir ease
+            mkdir ease123
