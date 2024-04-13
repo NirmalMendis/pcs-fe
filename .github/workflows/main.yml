@@ -16,7 +16,7 @@ jobs:
           echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
       - run: npm install
       - run: CI=false npm run build
-      - name: ssh deploy on aws lightsail
+      - name: ssh deploy on aws  lightsail
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
