@@ -15,6 +15,7 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_USER=${{ secrets.STG_DEPLOY_USER }}" >> $GITHUB_ENV
+            echo "DEPLOY_PORT=${{ secrets.STG_DEPLOY_PORT }}" >> $GITHUB_ENV
             echo "CONFIG_ENV_CONTENT=${{ secrets.STG_CONFIG_ENV_CONTENT }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "PROD_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
@@ -28,7 +29,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+          REMOTE_HOST: ${{ env.DEPLOY_HOST }}
           REMOTE_USER: ${{ env.DEPLOY_USER }}
           REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           SOURCE: "build/*"
