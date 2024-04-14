@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [dev]
+    branches: [staging, prod]
 
 jobs:
   build-and-deploy:
@@ -11,6 +11,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.18.2
+      - name: Setup environment
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            echo "DEV_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
+            echo "PROD_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
+          fi
+      - name: test console environment
+        run: |
+          echo "vari---------${{ env.DEV_SECRET }}"
       - name: Create .env file from CONFIG_ENV_CONTENT
         run: |
           echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
