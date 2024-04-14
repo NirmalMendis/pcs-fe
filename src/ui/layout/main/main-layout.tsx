@@ -20,7 +20,7 @@ import { PRODUCT_NAME } from "../../../constants/string-constants";
 import Backdrop from "../../../shared/components/backdrop";
 import { FeatureEnum } from "../../../shared/types/generic";
 import useAuthStore from "../../../store/use-auth-store-state";
-import PermissionsWrapper from "../../pages/iam/permissions-wrapper";
+import PermissionsWrapper from "../../pages/access-control/permissions-wrapper";
 import AppBar from "./app-bar";
 import AppBarProfile from "./app-bar-profile";
 import NavigationDrawer from "./navigation-drawer";

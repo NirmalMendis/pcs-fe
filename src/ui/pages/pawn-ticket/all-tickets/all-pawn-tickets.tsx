@@ -17,7 +17,7 @@ import {
 } from "../../../../constants/iam-constants";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import { ItemTypes } from "../../../../shared/types/generic";
-import PermissionsWrapper from "../../iam/permissions-wrapper";
+import PermissionsWrapper from "../../access-control/permissions-wrapper";
 import { CRUItemFormValues } from "../create-ticket/add-item/cru-item-form";
 import { CreatePawnTicketFormValues } from "../create-ticket/create-pawn-ticket-form";
 import CreateTicket from "../create-ticket/create-ticket";

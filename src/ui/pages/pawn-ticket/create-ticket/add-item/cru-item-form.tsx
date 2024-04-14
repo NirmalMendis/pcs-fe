@@ -24,7 +24,7 @@ import {
   ItemDetailMeta,
   ItemTypes,
 } from "../../../../../shared/types/generic";
-import PermissionsWrapper from "../../../iam/permissions-wrapper";
+import PermissionsWrapper from "../../../access-control/permissions-wrapper";
 import { CreateTicketContext } from "../../all-tickets/all-pawn-tickets";
 import cruItemSchema from "./cru-item-schema";
 
