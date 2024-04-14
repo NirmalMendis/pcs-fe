@@ -50,7 +50,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
     theme.breakpoints.up("md")
   );
   const printButtonRef = useRef<HTMLDivElement>(null);
-  const [isInvoiceVisible, setIsInvoiceVisible] = useState(largeScreen);
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(!!largeScreen);
 
   const { data: monthlyInterestData } = useGetCalculateMonthlyInterest(
     {
@@ -186,6 +186,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
                   onClick: handleCreatePawnTicket,
                   type: "button",
                   startIcon: <SaveIcon color="secondary" />,
+                  disabled: isLoadingPdf,
                 }}
                 finalActionName="Confirm and Submit Ticket"
               />
