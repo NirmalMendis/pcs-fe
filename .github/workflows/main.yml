@@ -15,12 +15,13 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_USER=${{ secrets.STG_DEPLOY_USER }}" >> $GITHUB_ENV
+            echo "CONFIG_ENV_CONTENT=${{ secrets.STG_CONFIG_ENV_CONTENT }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "PROD_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
           fi
       - name: Create .env file from CONFIG_ENV_CONTENT
         run: |
-          echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
+          echo "${{ env.CONFIG_ENV_CONTENT }}" > .env
       - run: npm install
       - run: CI=false npm run build
       - name: ssh deploy on aws  lightsail
