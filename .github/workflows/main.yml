@@ -16,7 +16,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_USER=${{ secrets.STG_DEPLOY_USER }}" >> $GITHUB_ENV
             echo "DEPLOY_PORT=${{ secrets.STG_DEPLOY_PORT }}" >> $GITHUB_ENV
-            echo "DEPLOY_KEY=${{ secrets.STG_DEPLOY_KEY }}" >> $GITHUB_ENV
+            echo "DEPLOY_KEY=$(echo "${{ secrets.STG_DEPLOY_KEY }}" | base64 --decode)" >> $GITHUB_ENV
             echo "CONFIG_ENV_CONTENT=${{ secrets.STG_CONFIG_ENV_CONTENT }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "PROD_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
