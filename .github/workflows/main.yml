@@ -15,12 +15,10 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_USER=${{ secrets.STG_DEPLOY_USER }}" >> $GITHUB_ENV
+            echo "DEPLOY_PORT=${{ secrets.STG_DEPLOY_PORT }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "PROD_SECRET=${{ secrets.DEPLOY_USER }}" >> $GITHUB_ENV
           fi
-      - name: test console environment
-        run: |
-          echo "vari---------${{ env.DEPLOY_USER }}"
       - name: Create .env file from CONFIG_ENV_CONTENT
         run: |
           echo "${{ secrets.CONFIG_ENV_CONTENT }}" > .env
@@ -32,6 +30,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_USER: ${{ env.DEPLOY_USER }}
-          REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
+          REMOTE_PORT: ${{ env.DEPLOY_PORT }}
           SOURCE: "build/*"
           TARGET: ${{ secrets.DEPLOY_TARGET }}

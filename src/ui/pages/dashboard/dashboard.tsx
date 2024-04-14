@@ -27,7 +27,7 @@ const Dashboard = () => {
         sx={{ gap: 1 }}
       >
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          Dashboard test
+          Dashboard
         </Typography>
       </PageTitleCard>
       {ticketStatusStats && formatRs ? (
