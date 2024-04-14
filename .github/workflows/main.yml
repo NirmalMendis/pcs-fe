@@ -19,13 +19,12 @@ jobs:
             echo "DEPLOY_USER=${{ secrets.STG_DEPLOY_USER }}" >> $GITHUB_ENV
             echo "DEPLOY_PORT=${{ secrets.STG_DEPLOY_PORT }}" >> $GITHUB_ENV
             echo "DEPLOY_TARGET=${{ secrets.STG_DEPLOY_TARGET }}" >> $GITHUB_ENV
-            printf "CONFIG_ENV_CONTENT=${{ secrets.STG_CONFIG_ENV_CONTENT }}" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "DEPLOY_USER=${{ secrets.PROD_DEPLOY_USER }}" >> $GITHUB_ENV
           fi
       - name: Create .env file from CONFIG_ENV_CONTENT
         run: |
-          echo "${{ env.CONFIG_ENV_CONTENT }}" > .env
+          echo "${{ secrets.STG_CONFIG_ENV_CONTENT }}" > .env
       - run: npm install
       - run: CI=false npm run build
       - name: ssh deploy on aws  lightsail
