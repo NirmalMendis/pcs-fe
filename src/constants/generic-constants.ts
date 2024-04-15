@@ -22,3 +22,6 @@ export const MAXIMUM_QUANTITATIVE_VALUE = 1000000;
 export const MAXIMUM_PERIOD_VALUE = 10 * 12;
 
 export const MULTIPLE_WHITESPACE_REGEX = /\s+/g;
+
+export const NICNO_REGEX = /^([0-9]{9})(X|V)$|^([0-9]{12})$/gis;
+export const MOBILE_REGEX = /^(?:0|94|\+94)[0-9]{9,10}$/;
