@@ -1,6 +1,7 @@
 export enum PERMISSIONS {
   PAWN_TICKET = "PAWN_TICKET",
   CUSTOMER = "CUSTOMER",
+  IAM = "IAM",
   TEST = "TEST",
 }
 

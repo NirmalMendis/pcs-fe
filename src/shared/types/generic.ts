@@ -16,6 +16,7 @@ export enum FeatureEnum {
   PAWN_TICKET = "PAWN_TICKET",
   MULTIPLE_BRANCHES = "MULTIPLE_BRANCHES",
   MULTIPLE_ITEM_TYPES = "MULTIPLE_ITEM_TYPES",
+  IAM = "IAM",
 }
 
 export type PermissionAtom = {
@@ -45,11 +46,16 @@ export enum InterestStatusEnum {
   OVERDUE = "Overdue",
 }
 
+export enum OrderDirection {
+  DESC = "DESC",
+  ASC = "ASC",
+}
+
 export interface OrderPaginatedRequest {
   page: number;
   pageSize: number;
   orderBy?: string;
-  orderDirection?: "DESC" | "ASC";
+  orderDirection?: OrderDirection;
 }
 
 export enum TimePeriod {

@@ -124,7 +124,7 @@ const TicketItemsTable: FC<TicketItemsTableProps> = ({
     <DataGrid
       rows={data || []}
       rowCount={totalItems || data?.length || 0}
-      rowHeight={MUI_DATAGRID_DEFAULT_ROW_HEIGHT + 10}
+      rowHeight={MUI_DATAGRID_DEFAULT_ROW_HEIGHT + 15}
       columns={columns}
       paginationModel={paginationModel}
       onPaginationModelChange={setPaginationModel}

@@ -18,8 +18,11 @@ import ErrorBoundary from "../ui/pages/access-control/error-boundary";
 import SettingUp from "../ui/pages/access-control/setting-up";
 import Unauthorized from "../ui/pages/access-control/unauthorized";
 import Dashboard from "../ui/pages/dashboard/dashboard";
+import IAMLayout from "../ui/pages/iam/iam-layout";
+import UserManagement from "../ui/pages/iam/user-management/user-management";
 import LandingPage from "../ui/pages/landing-page/landing-page";
 import Login from "../ui/pages/login/login";
+import SetNewPassword from "../ui/pages/login/set-new-password/set-new-pwd";
 import AllPawnTickets from "../ui/pages/pawn-ticket/all-tickets/all-pawn-tickets";
 import PawnTicketLayout from "../ui/pages/pawn-ticket/pawn-ticket-layout";
 import UpdateTicket from "../ui/pages/pawn-ticket/update-ticket/update-ticket";
@@ -80,6 +83,37 @@ const Routes = () => {
     FeatureEnum.PAWN_TICKET
   );
 
+  const authorizedIAMCategory = canAccessResource(
+    <IAMLayout />,
+    PERMISSIONS.IAM,
+    PERMISSION_ACTIONS.VIEW
+  );
+
+  const authorizedUserManagement = withFeatureEnabled(
+    canAccessResource(
+      <UserManagement />,
+      PERMISSIONS.IAM,
+      PERMISSION_ACTIONS.VIEW
+    ),
+    FeatureEnum.PAWN_TICKET
+  );
+
+  const featureEnabledIAMCategory = withFeatureEnabled(
+    <Route path={ROUTE_PATHS.IAM.BASE} element={authorizedIAMCategory}>
+      <Route
+        index
+        element={<Navigate replace to={ROUTE_PATHS.IAM.USER_MANAGEMENT} />}
+      />
+      <Route
+        path={ROUTE_PATHS.IAM.USER_MANAGEMENT}
+        element={authorizedUserManagement}
+      >
+        <Route path=":id" element={authorizedUserManagement} />
+      </Route>
+    </Route>,
+    FeatureEnum.IAM
+  );
+
   const getFallBackRouteElement = () => {
     if (isFetchingAppFeatures || isFetchingUserPermissions) {
       return <SettingUp />;
@@ -92,12 +126,14 @@ const Routes = () => {
     <Route element={<MainLayout />} errorElement={<ErrorBoundary />}>
       <Route path={ROUTE_PATHS.DASHBOARD} element={<Dashboard />} />
       {featureEnabledPawnCategory}
+      {featureEnabledIAMCategory}
       <Route path="*" element={getFallBackRouteElement()} />
     </Route>
   ) : (
     <Route path="/" element={<LoginLayout />}>
       <Route path={ROUTE_PATHS.LANDING_PAGE} element={<LandingPage />} />
       <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
+      <Route path={ROUTE_PATHS.SET_NEW_PASSWORD} element={<SetNewPassword />} />
       <Route path="*" element={<Navigate to={ROUTE_PATHS.LOGIN} />} />
     </Route>
   );

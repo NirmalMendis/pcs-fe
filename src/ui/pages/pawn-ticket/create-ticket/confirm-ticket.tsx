@@ -52,13 +52,12 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
   const printButtonRef = useRef<HTMLDivElement>(null);
   const [isInvoiceVisible, setIsInvoiceVisible] = useState(!!largeScreen);
 
-  const { data: monthlyInterestData } = useGetCalculateMonthlyInterest(
+  const { data: monthlyInterestData, refetch } = useGetCalculateMonthlyInterest(
     {
       interestRate: createPawnTicketFormData?.interestRate || 0,
       principalAmount: createPawnTicketFormData?.principalAmount || 0,
     },
-    createPawnTicketFormData?.interestRate !== undefined &&
-      createPawnTicketFormData.principalAmount !== undefined
+    false
   );
 
   const { data: customerData } = useGetCustomerById(
@@ -100,6 +99,14 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
       });
     }
   }, [printButtonRef, largeScreen, isLoadingPdf]);
+
+  useEffect(() => {
+    refetch();
+  }, [
+    createPawnTicketFormData?.interestRate,
+    createPawnTicketFormData?.principalAmount,
+    refetch,
+  ]);
 
   return (
     <Stack

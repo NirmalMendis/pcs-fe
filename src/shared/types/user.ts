@@ -1,8 +1,10 @@
 import Branch from "./branch";
+import Role from "./role";
 
 interface User {
   id: number;
   email: string;
+  name: string;
   firstName: string;
   lastName: string;
   mobileNo: string;
@@ -12,6 +14,7 @@ interface User {
   activeBranchId: number;
   activeBranch: Branch;
   branches: Array<Branch>;
+  roles: Array<Role>;
 }
 
 export default User;

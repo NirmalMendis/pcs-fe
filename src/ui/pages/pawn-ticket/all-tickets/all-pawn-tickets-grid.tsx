@@ -28,7 +28,10 @@ import NoDataGrid from "../../../../shared/components/no-data-grid";
 import ProfileAvatar from "../../../../shared/components/profile-avatar";
 import renderCellExpand from "../../../../shared/components/render-cell-expand";
 import useTextFormatter from "../../../../shared/hooks/use-text-formatter";
-import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
+import {
+  OrderDirection,
+  PawnTicketStatusEnum,
+} from "../../../../shared/types/generic";
 
 const AllPawnTicketsDrid = () => {
   const [paginationModel, setPaginationModel] = useState({
@@ -50,7 +53,7 @@ const AllPawnTicketsDrid = () => {
     page: paginationModel.page + 1,
     pageSize: paginationModel.pageSize,
     orderBy: "createdAt",
-    orderDirection: "DESC",
+    orderDirection: OrderDirection.DESC,
     ...filters,
   });
 

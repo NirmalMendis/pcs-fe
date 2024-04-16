@@ -10,14 +10,18 @@ export const INVOICE_ENDPOINT = "invoice";
 export const ITEM_ENDPOINT = "item";
 export const INTEREST_ENDPOINT = "interest";
 export const STAT_ENDPOINT = "stat";
+export const ROLE_ENDPOINT = "role";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
   LOGOUT: `${AUTH_ENDPOINT}/logout`,
   REFRESH: `${AUTH_ENDPOINT}/refresh`,
+  SET_NEW_PASSWORD: `${AUTH_ENDPOINT}/set-new-password`,
 };
 
 export const USER_API = {
+  GET_ALL_USERS: `${USER_ENPOINT}`,
+  POST_CREATE_USER: `${USER_ENPOINT}`,
   GET_USER: (id: number) => `${USER_ENPOINT}/${id}`,
   PATCH_USER_ACTIVE_BRANCH: `${USER_ENPOINT}/active-branch`,
   GET_USER_PERMISSIONS: `${USER_ENPOINT}/permissions`,
@@ -65,4 +69,8 @@ export const INTEREST_API = {
 
 export const STATS_API = {
   GET_TICKET_STATUS_STATS: `${STAT_ENDPOINT}/ticket-status`,
+};
+
+export const ROLE_API = {
+  GET_ALL_ROLES: `${ROLE_ENDPOINT}`,
 };
