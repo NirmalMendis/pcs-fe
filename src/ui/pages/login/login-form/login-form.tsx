@@ -1,6 +1,15 @@
 import KeyIcon from "@mui/icons-material/Key";
 import PersonIcon from "@mui/icons-material/Person";
-import { Button, InputAdornment, Stack, TextField } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 import { InferType } from "yup";
 import Backdrop from "../../../../shared/components/backdrop";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
@@ -16,6 +25,16 @@ const LoginForm = () => {
     handleSubmit,
     formState: { isValid, errors },
   } = useCustomHookForm<LoginSchemaType>(loginSchema);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const { signIn, isLoading } = useAuthService();
   const onSubmit = (data: LoginFormValues) => {
@@ -42,7 +61,7 @@ const LoginForm = () => {
         />
         <TextField
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}
@@ -50,6 +69,18 @@ const LoginForm = () => {
             startAdornment: (
               <InputAdornment position="start">
                 <KeyIcon color="warning" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
               </InputAdornment>
             ),
           }}

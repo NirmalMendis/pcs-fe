@@ -1,6 +1,16 @@
-import { Box, Button, Slide, Stack, TextField } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Slide,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useSnackbar } from "notistack";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { InferType } from "yup";
 import usePatchSetNewPassword from "../../../../api/auth/use-patch-set-new-password";
@@ -20,6 +30,25 @@ const SetNewPassword = () => {
     handleSubmit,
     formState: { errors, isValid, touchedFields },
   } = useCustomHookForm<SetNewPasswordSchemaType>(SetNewPasswordSchema);
+
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show);
+
+  const handleMouseDownNewPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseDownConfirmPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -80,17 +109,45 @@ const SetNewPassword = () => {
           >
             <TextField
               label="NewPassword"
-              type="password"
+              type={showNewPassword ? "text" : "password"}
               {...register("newPassword")}
               error={!!getSingleFieldError("newPassword")}
               helperText={getSingleFieldError("newPassword")?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowNewPassword}
+                      onMouseDown={handleMouseDownNewPassword}
+                      edge="end"
+                    >
+                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <TextField
               label="ConfirmPassword"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               {...register("confirmPassword")}
               error={!!getSingleFieldError("confirmPassword")}
               helperText={getSingleFieldError("confirmPassword")?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownConfirmPassword}
+                      edge="end"
+                    >
+                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button
               type="submit"
