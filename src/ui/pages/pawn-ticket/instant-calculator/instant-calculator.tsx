@@ -133,7 +133,6 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
     const { items, ...ticketData } = data;
     setCreatePawnTicketFormData({
       ...ticketData,
-      dueDate: getDueDate(),
     });
     if (items)
       setItems(
@@ -301,6 +300,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                         value={field.value}
                         inputRef={field.ref}
                         onChange={field.onChange}
+                        format={DD_MM_YYY_FORMAT}
                       />
                     );
                   }}

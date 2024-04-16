@@ -1,5 +1,5 @@
 import { PaperOwnProps, Stack, Typography } from "@mui/material";
-import { differenceInMonths, format } from "date-fns";
+import { addMonths, format } from "date-fns";
 import { FC } from "react";
 import TicketDatesIcon from "../../../../../assets/svg/ticket-dates.svg";
 import { DD_MM_YYY_FORMAT } from "../../../../../constants/generic-constants";
@@ -7,13 +7,13 @@ import DataCard from "../../../../../shared/components/data-card";
 
 export interface CustomerAtomicCardProps extends PaperOwnProps {
   pawnDate?: Date;
-  dueDate?: Date;
+  periodInMonths?: number;
   darken?: boolean;
 }
 
 const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
   pawnDate,
-  dueDate,
+  periodInMonths,
   darken,
   ...props
 }) => {
@@ -32,7 +32,7 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
         >
           Dates
         </Typography>
-        {pawnDate && dueDate && (
+        {pawnDate && periodInMonths && (
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack>
               <Typography noWrap fontSize={14} fontWeight="bold">
@@ -59,7 +59,10 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
                 //   color={`${revisedChanges.checkOutDateTime ? "red" : "primary"}`}
                 fontWeight="bold"
               >
-                {format(dueDate, DD_MM_YYY_FORMAT)}
+                {format(
+                  addMonths(pawnDate as Date, periodInMonths),
+                  DD_MM_YYY_FORMAT
+                )}
               </Typography>
             </Stack>
             <Stack>
@@ -72,7 +75,7 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
                 color={"primary"}
                 //   color={`${revisedChanges.numberOfNights ? "red" : "primary"}`}
               >
-                {differenceInMonths(dueDate, pawnDate)}
+                {periodInMonths}
               </Typography>
             </Stack>
           </Stack>

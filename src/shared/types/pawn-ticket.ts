@@ -10,6 +10,7 @@ export interface PawnTicket {
   monthlyInterest: number;
   dueDate: Date;
   pawnDate: Date;
+  periodInMonths: number;
   branchId: number;
   customer: Customer;
   invoiceId?: number;

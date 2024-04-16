@@ -1,9 +1,20 @@
 import * as yup from "yup";
-import { MAXIMUM_PRICE_VALUE } from "../../../../constants/generic-constants";
+import {
+  MAXIMUM_PERIOD_VALUE,
+  MAXIMUM_PRICE_VALUE,
+} from "../../../../constants/generic-constants";
 
 const createPawnTicketSchema = yup.object({
   pawnDate: yup.date().required("Please enter the pawn date."),
-  dueDate: yup.date().required("Please enter the due date."),
+  periodQuantity: yup
+    .number()
+    .positive("Number must be positive")
+    .max(
+      MAXIMUM_PERIOD_VALUE,
+      `Number must be less than or equal to ${MAXIMUM_PERIOD_VALUE}`
+    )
+    .typeError("Please enter a number value"),
+  periodType: yup.string().required("Please select a value"),
   serviceCharge: yup
     .number()
     .moreThan(-1, "Number must be positive")

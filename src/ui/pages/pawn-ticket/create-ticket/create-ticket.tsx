@@ -18,6 +18,8 @@ import usePostDraftTicketInvoice from "../../../../api/pawn-ticket/use-post-draf
 import Backdrop from "../../../../shared/components/backdrop";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import getTransformedItems from "../../../../shared/helper/get-tramsformed-items";
+import getPeriodInMonths from "../../../../shared/helper/getPeriodInMonths";
+import { TimePeriod } from "../../../../shared/types/generic";
 import {
   CreateTicketContext,
   TicketFormData,
@@ -94,6 +96,10 @@ const CreateTicket = () => {
         {
           payload: {
             ...(createPawnTicketFormDataExcludingPrincpal as PostCreatePawnTicketRequest),
+            periodInMonths: getPeriodInMonths(
+              createPawnTicketFormDataExcludingPrincpal.periodType as TimePeriod,
+              createPawnTicketFormDataExcludingPrincpal.periodQuantity
+            ),
             items: transformedItems,
           },
         },
@@ -120,7 +126,10 @@ const CreateTicket = () => {
           customerId: createPawnTicketFormData.customerId,
           items: transformedItems,
           pawnTicket: {
-            dueDate: createPawnTicketFormData.dueDate as Date,
+            periodInMonths: getPeriodInMonths(
+              createPawnTicketFormData.periodType as TimePeriod,
+              createPawnTicketFormData.periodQuantity
+            ),
             interestRate: createPawnTicketFormData.interestRate as number,
             pawnDate: createPawnTicketFormData.pawnDate as Date,
             principalAmount: createPawnTicketFormData.principalAmount as number,

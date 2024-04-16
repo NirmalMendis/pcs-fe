@@ -3,12 +3,15 @@ import { PAWN_TICKET_API } from "../../constants/api-endpoints";
 import { POST_CREATE_PAWN_TICKET } from "../../constants/query-leys";
 import { Item, ItemDetailType } from "../../shared/types/item";
 import { PawnTicket } from "../../shared/types/pawn-ticket";
-import { CreatePawnTicketFormValues } from "../../ui/pages/pawn-ticket/create-ticket/create-pawn-ticket-form";
 import { apiService } from "../api-service";
 
-export type PostCreatePawnTicketRequest = Omit<
-  CreatePawnTicketFormValues,
-  "principalAmount"
+export type PostCreatePawnTicketRequest = Pick<
+  PawnTicket,
+  | "serviceCharge"
+  | "pawnDate"
+  | "customerId"
+  | "interestRate"
+  | "periodInMonths"
 > & {
   items: Array<
     Pick<Item, "description" | "pawningAmount" | "appraisedValue"> & {

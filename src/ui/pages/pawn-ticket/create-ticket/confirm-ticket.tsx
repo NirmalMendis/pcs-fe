@@ -23,6 +23,8 @@ import {
 import useGetCustomerById from "../../../../api/customer/use-get-customer-by-id";
 import useGetCalculateMonthlyInterest from "../../../../api/pawn-ticket/use-get-calculate-monthly-interest";
 import getTransformedItems from "../../../../shared/helper/get-tramsformed-items";
+import getPeriodInMonths from "../../../../shared/helper/getPeriodInMonths";
+import { TimePeriod } from "../../../../shared/types/generic";
 import CustomerAtomicCard from "../../customer/customer-atomic-card";
 import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 import TicketDatesCard from "../update-ticket/general/ticket-dates";
@@ -153,7 +155,10 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
               sx={{ height: "fit-content" }}
             />
             <TicketDatesCard
-              dueDate={createPawnTicketFormData?.dueDate}
+              periodInMonths={getPeriodInMonths(
+                createPawnTicketFormData?.periodType as TimePeriod,
+                createPawnTicketFormData?.periodQuantity
+              )}
               pawnDate={createPawnTicketFormData?.pawnDate}
               sx={{ height: "fit-content" }}
             />

@@ -14,7 +14,7 @@ export interface PostDraftTicketInvoiceRequest {
   >;
   pawnTicket: Pick<
     PawnTicket,
-    | "dueDate"
+    | "periodInMonths"
     | "interestRate"
     | "principalAmount"
     | "serviceCharge"

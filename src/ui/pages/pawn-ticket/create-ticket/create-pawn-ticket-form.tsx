@@ -1,14 +1,26 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers";
 import { FC, useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
-import { CURRENCY_PREFIX } from "../../../../constants/generic-constants";
+import {
+  CURRENCY_PREFIX,
+  DD_MM_YYY_FORMAT,
+} from "../../../../constants/generic-constants";
 import NumberField from "../../../../shared/components/number-field";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
+import { TimePeriod } from "../../../../shared/types/generic";
 import {
   CreateTicketContext,
   TicketFormData,
@@ -136,6 +148,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                     value={field.value}
                     inputRef={field.ref}
                     onChange={field.onChange}
+                    format={DD_MM_YYY_FORMAT}
                   />
                 );
               }}
@@ -144,25 +157,47 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
           <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
-              name="dueDate"
-              rules={{ required: true }}
+              name="periodQuantity"
               render={({ field }) => {
                 return (
-                  <DatePicker
-                    label="Due date"
-                    slotProps={{
-                      textField: {
-                        size: "small",
-                        error: !!getSingleFieldError("dueDate"),
-                        helperText: getSingleFieldError("dueDate")?.message,
-                        required: true,
-                      },
-                    }}
-                    disablePast
-                    value={field.value}
-                    inputRef={field.ref}
-                    onChange={field.onChange}
+                  <NumberField
+                    label="Period"
+                    error={!!getSingleFieldError("periodQuantity")}
+                    helperText={getSingleFieldError("periodQuantity")?.message}
+                    {...field}
                   />
+                );
+              }}
+            />
+          </Grid>
+          <Grid xs={12} sm={6} md={4}>
+            <Controller
+              control={control}
+              name="periodType"
+              render={({ field }) => {
+                return (
+                  <FormControl fullWidth>
+                    <InputLabel>Type</InputLabel>
+                    <Select
+                      label="Type"
+                      {...field}
+                      error={!!getSingleFieldError("periodType")}
+                      required
+                      slotProps={{
+                        input: {
+                          required: true,
+                        },
+                      }}
+                    >
+                      <MenuItem value={TimePeriod.month}>Month</MenuItem>
+                      <MenuItem value={TimePeriod.year}>Year</MenuItem>
+                    </Select>
+                    {getSingleFieldError("periodType") && (
+                      <FormHelperText error>
+                        {getSingleFieldError("periodType")?.message}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
                 );
               }}
             />

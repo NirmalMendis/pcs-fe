@@ -81,7 +81,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
             email={pawnTicketData?.customer.email}
           />
           <TicketDatesCard
-            dueDate={pawnTicketData?.dueDate}
+            periodInMonths={pawnTicketData?.periodInMonths}
             pawnDate={pawnTicketData?.pawnDate}
           />
           <TicketMonetaryValues
