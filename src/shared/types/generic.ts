@@ -92,3 +92,8 @@ export const ItemDetailMeta: Record<
     unit: "",
   },
 };
+
+export enum RoleStatuses {
+  ACTIVE = "Active",
+  INACTIVE = "Inactive",
+}

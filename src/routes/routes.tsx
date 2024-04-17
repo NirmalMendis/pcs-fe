@@ -19,6 +19,8 @@ import SettingUp from "../ui/pages/access-control/setting-up";
 import Unauthorized from "../ui/pages/access-control/unauthorized";
 import Dashboard from "../ui/pages/dashboard/dashboard";
 import IAMLayout from "../ui/pages/iam/iam-layout";
+import CRURole from "../ui/pages/iam/role-management/cru-role";
+import RoleManagement from "../ui/pages/iam/role-management/role-management";
 import UserManagement from "../ui/pages/iam/user-management/user-management";
 import LandingPage from "../ui/pages/landing-page/landing-page";
 import Login from "../ui/pages/login/login";
@@ -95,7 +97,21 @@ const Routes = () => {
       PERMISSIONS.IAM,
       PERMISSION_ACTIONS.VIEW
     ),
-    FeatureEnum.PAWN_TICKET
+    FeatureEnum.IAM
+  );
+
+  const authorizedRoleManagement = withFeatureEnabled(
+    canAccessResource(
+      <RoleManagement />,
+      PERMISSIONS.IAM,
+      PERMISSION_ACTIONS.VIEW
+    ),
+    FeatureEnum.IAM
+  );
+
+  const authorizedCURoleManagement = withFeatureEnabled(
+    canAccessResource(<CRURole />, PERMISSIONS.IAM, PERMISSION_ACTIONS.VIEW),
+    FeatureEnum.IAM
   );
 
   const featureEnabledIAMCategory = withFeatureEnabled(
@@ -109,6 +125,17 @@ const Routes = () => {
         element={authorizedUserManagement}
       >
         <Route path=":id" element={authorizedUserManagement} />
+      </Route>
+      <Route path={ROUTE_PATHS.IAM.ROLE_MANAGEMENT}>
+        <Route index element={authorizedRoleManagement} />
+        <Route
+          path={ROUTE_PATHS.IAM.ADD_ROLE}
+          element={authorizedCURoleManagement}
+        />
+        {/* <Route
+          path={ROUTE_CONFIG.EDIT_ROLE.PATH}
+          element={AuthorizedRoleEdit}
+        /> */}
       </Route>
     </Route>,
     FeatureEnum.IAM

@@ -11,6 +11,7 @@ export const ITEM_ENDPOINT = "item";
 export const INTEREST_ENDPOINT = "interest";
 export const STAT_ENDPOINT = "stat";
 export const ROLE_ENDPOINT = "role";
+export const FUNCTION_ENDPOINT = "function";
 
 export const AUTH_API = {
   LOGIN: `${AUTH_ENDPOINT}/login`,
@@ -73,4 +74,9 @@ export const STATS_API = {
 
 export const ROLE_API = {
   GET_ALL_ROLES: `${ROLE_ENDPOINT}`,
+  POST_CREATE_ROLE: `${ROLE_ENDPOINT}`,
+};
+
+export const FUNCTION_API = {
+  GET_ALL_FUNCTIONS: `${FUNCTION_ENDPOINT}`,
 };

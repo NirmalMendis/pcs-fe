@@ -11,6 +11,8 @@ const ROUTE_PATHS = {
   IAM: {
     BASE: "iam",
     USER_MANAGEMENT: "user-management",
+    ROLE_MANAGEMENT: "role-management",
+    ADD_ROLE: "add",
   },
 };
 export default ROUTE_PATHS;
