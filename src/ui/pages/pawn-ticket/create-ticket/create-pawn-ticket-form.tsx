@@ -177,7 +177,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               render={({ field }) => {
                 return (
                   <FormControl fullWidth>
-                    <InputLabel>Type</InputLabel>
+                    <InputLabel>Period Type</InputLabel>
                     <Select
                       label="Period Type"
                       {...field}

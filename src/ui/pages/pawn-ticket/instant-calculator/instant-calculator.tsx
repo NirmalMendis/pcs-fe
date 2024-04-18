@@ -328,7 +328,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                     render={({ field }) => {
                       return (
                         <FormControl fullWidth>
-                          <InputLabel>Type</InputLabel>
+                          <InputLabel>Period Type</InputLabel>
                           <Select
                             label="Period Type"
                             {...field}
