@@ -142,7 +142,15 @@ const CRUUserForm: FC<CRUUserFormProps> = ({
                       {...field}
                       value={field.value}
                       input={<OutlinedInput label="Tag" />}
-                      renderValue={(selected) => selected.join(", ")}
+                      renderValue={(selected) =>
+                        selected
+                          .map(
+                            (val) =>
+                              allRolesData?.find((role) => role.id === val)
+                                ?.title
+                          )
+                          .join(", ")
+                      }
                       MenuProps={MenuProps}
                     >
                       {allRolesData?.map((role) => (
@@ -172,7 +180,15 @@ const CRUUserForm: FC<CRUUserFormProps> = ({
                       {...field}
                       value={field.value}
                       input={<OutlinedInput label="Tag" />}
-                      renderValue={(selected) => selected.join(", ")}
+                      renderValue={(selected) =>
+                        selected
+                          .map(
+                            (val) =>
+                              allBranchData?.find((role) => role.id === val)
+                                ?.title
+                          )
+                          .join(", ")
+                      }
                       MenuProps={MenuProps}
                     >
                       {allBranchData?.map((branch) => (
