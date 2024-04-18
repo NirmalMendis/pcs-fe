@@ -330,7 +330,7 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                         <FormControl fullWidth>
                           <InputLabel>Type</InputLabel>
                           <Select
-                            label="Type"
+                            label="Period Type"
                             {...field}
                             error={!!getSingleFieldError("periodType")}
                             required
