@@ -175,15 +175,23 @@ const UpdateTicket = () => {
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
-          <Stack direction={"row"}>
+          <Stack
+            direction={"row"}
+            //remove this when feature is complete
+            sx={{ opacity: 0.5, pointerEvents: "none" }}
+          >
             {pawnTicketData?.status ? (
-              <MenuDropDownButton
-                selection={pawnTicketData?.status}
-                options={Object.values(PawnTicketStatusEnum).map((option) => ({
-                  label: option,
-                  disabled: false,
-                }))}
-              />
+              <Box>
+                <MenuDropDownButton
+                  selection={pawnTicketData?.status}
+                  options={Object.values(PawnTicketStatusEnum).map(
+                    (option) => ({
+                      label: option,
+                      disabled: false,
+                    })
+                  )}
+                />
+              </Box>
             ) : null}
             <EllipsisMenu
               options={[
