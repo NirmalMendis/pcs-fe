@@ -411,6 +411,16 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                   </Stack>
                   <Stack direction={"row"} justifyContent={"space-between"}>
                     <Typography fontSize={14} fontWeight={"bold"}>
+                      Principal Amount
+                    </Typography>
+                    <Typography fontSize={14} fontWeight={"bold"}>
+                      {principalAmount
+                        ? formatRs(String(principalAmount))
+                        : "-"}
+                    </Typography>
+                  </Stack>
+                  <Stack direction={"row"} justifyContent={"space-between"}>
+                    <Typography fontSize={14} fontWeight={"bold"}>
                       Monthly Interest
                     </Typography>
                     {!isFetchingMonthlyInterestData ? (
@@ -427,16 +437,6 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
                         sx={{ fontSize: "1rem", width: "50px" }}
                       />
                     )}
-                  </Stack>
-                  <Stack direction={"row"} justifyContent={"space-between"}>
-                    <Typography fontSize={14} fontWeight={"bold"}>
-                      Principal Amount
-                    </Typography>
-                    <Typography fontSize={14} fontWeight={"bold"}>
-                      {principalAmount
-                        ? formatRs(String(principalAmount))
-                        : "-"}
-                    </Typography>
                   </Stack>
                   <Stack direction={"row"} justifyContent={"space-between"}>
                     <Typography fontSize={14}>Service Charge</Typography>
