@@ -157,22 +157,6 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
           <Grid xs={12} sm={6} md={4}>
             <Controller
               control={control}
-              name="periodQuantity"
-              render={({ field }) => {
-                return (
-                  <NumberField
-                    label="Period"
-                    error={!!getSingleFieldError("periodQuantity")}
-                    helperText={getSingleFieldError("periodQuantity")?.message}
-                    {...field}
-                  />
-                );
-              }}
-            />
-          </Grid>
-          <Grid xs={12} sm={6} md={4}>
-            <Controller
-              control={control}
               name="periodType"
               render={({ field }) => {
                 return (
@@ -198,6 +182,22 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                       </FormHelperText>
                     )}
                   </FormControl>
+                );
+              }}
+            />
+          </Grid>
+          <Grid xs={12} sm={6} md={4}>
+            <Controller
+              control={control}
+              name="periodQuantity"
+              render={({ field }) => {
+                return (
+                  <NumberField
+                    label="Period"
+                    error={!!getSingleFieldError("periodQuantity")}
+                    helperText={getSingleFieldError("periodQuantity")?.message}
+                    {...field}
+                  />
                 );
               }}
             />
