@@ -33,7 +33,7 @@ import {
   PawnTicketStatusEnum,
 } from "../../../../shared/types/generic";
 
-const AllPawnTicketsDrid = () => {
+const AllPawnTicketsGrid = () => {
   const [paginationModel, setPaginationModel] = useState({
     pageSize: DEFAULT_PAGE_SIZE,
     page: 0,
@@ -226,6 +226,7 @@ const AllPawnTicketsDrid = () => {
           }}
           disableFuture
           value={filters.startDate}
+          maxDate={filters.endDate}
           onChange={onChangeStartDate}
         />
         <DatePicker
@@ -236,6 +237,7 @@ const AllPawnTicketsDrid = () => {
             },
           }}
           value={filters.endDate}
+          minDate={filters.startDate}
           onChange={onChangeEndDate}
         />
         <FormControl fullWidth>
@@ -277,4 +279,4 @@ const AllPawnTicketsDrid = () => {
   );
 };
 
-export default AllPawnTicketsDrid;
+export default AllPawnTicketsGrid;
