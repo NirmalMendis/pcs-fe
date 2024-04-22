@@ -1,11 +1,14 @@
 import { Box, Slide, Stack } from "@mui/material";
 import { Link } from "@mui/material";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import ROUTE_PATHS from "../../../constants/route-paths";
 import AuthContainer from "./auth-container";
 import LoginForm from "./login-form/login-form";
 
 const Login = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   return (
     <AuthContainer title="Login">
@@ -24,7 +27,7 @@ const Login = () => {
               <Link
                 component="button"
                 variant="body2"
-                //  onClick={() => setUIState(FORGOT_PASSWORD)}
+                onClick={() => navigate(`/${ROUTE_PATHS.FORGOT_PASSWORD}`)}
                 underline="none"
               >
                 Forgot Password?

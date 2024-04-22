@@ -18,6 +18,7 @@ export const AUTH_API = {
   LOGOUT: `${AUTH_ENDPOINT}/logout`,
   REFRESH: `${AUTH_ENDPOINT}/refresh`,
   SET_NEW_PASSWORD: `${AUTH_ENDPOINT}/set-new-password`,
+  FORGOT_PASSWORD: `${AUTH_ENDPOINT}/forgot-password`,
 };
 
 export const USER_API = {

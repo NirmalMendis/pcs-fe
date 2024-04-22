@@ -23,6 +23,7 @@ import CRURole from "../ui/pages/iam/role-management/cru-role";
 import RoleManagement from "../ui/pages/iam/role-management/role-management";
 import UserManagement from "../ui/pages/iam/user-management/user-management";
 import LandingPage from "../ui/pages/landing-page/landing-page";
+import ForgotPassword from "../ui/pages/login/forgot-password/forgot-password";
 import Login from "../ui/pages/login/login";
 import SetNewPassword from "../ui/pages/login/set-new-password/set-new-pwd";
 import AllPawnTickets from "../ui/pages/pawn-ticket/all-tickets/all-pawn-tickets";
@@ -161,6 +162,7 @@ const Routes = () => {
       <Route path={ROUTE_PATHS.LANDING_PAGE} element={<LandingPage />} />
       <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
       <Route path={ROUTE_PATHS.SET_NEW_PASSWORD} element={<SetNewPassword />} />
+      <Route path={ROUTE_PATHS.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route path="*" element={<Navigate to={ROUTE_PATHS.LOGIN} />} />
     </Route>
   );
