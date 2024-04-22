@@ -1,6 +1,7 @@
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const SET_NEW_PASSWORD = "SET_NEW_PASSWORD";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 
 export const GET_USER = "GET_USER";
 export const GET_ALL_USER = "GET_ALL_USER";

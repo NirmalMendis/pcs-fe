@@ -6,6 +6,7 @@ const ROUTE_PATHS = {
   },
   LOGIN: "login",
   SET_NEW_PASSWORD: "set-new-password",
+  FORGOT_PASSWORD: "forgot-password",
   DASHBOARD: "/",
   LANDING_PAGE: "/",
   IAM: {
