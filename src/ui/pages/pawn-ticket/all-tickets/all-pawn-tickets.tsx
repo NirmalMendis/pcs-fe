@@ -22,7 +22,7 @@ import { CRUItemFormValues } from "../create-ticket/add-item/cru-item-form";
 import { CreatePawnTicketFormValues } from "../create-ticket/create-pawn-ticket-form";
 import CreateTicket from "../create-ticket/create-ticket";
 import InstantCalculator from "../instant-calculator/instant-calculator";
-import AllPawnTicketsDrid from "./all-pawn-tickets-grid";
+import AllPawnTicketsGrid from "./all-pawn-tickets-grid";
 
 export interface TicketFormData extends CreatePawnTicketFormValues {
   customerName: string;
@@ -162,7 +162,7 @@ const AllPawnTickets = () => {
                   </Grid>
                 </Grid>
               </PageTitleCard>
-              <AllPawnTicketsDrid />
+              <AllPawnTicketsGrid />
             </Stack>
           </Fade>
         </Grid>
