@@ -78,7 +78,7 @@ const SetNewPassword = () => {
         {
           onSuccess: () => {
             enqueueSnackbar(
-              `New password has been set. Pleas login to continue.`,
+              `New password has been set. Please login to continue.`,
               {
                 variant: "success",
               }
@@ -108,7 +108,7 @@ const SetNewPassword = () => {
             sx={{ pt: 1 }}
           >
             <TextField
-              label="NewPassword"
+              label="New Password"
               type={showNewPassword ? "text" : "password"}
               {...register("newPassword")}
               error={!!getSingleFieldError("newPassword")}
@@ -129,7 +129,7 @@ const SetNewPassword = () => {
               }}
             />
             <TextField
-              label="ConfirmPassword"
+              label="Confirm Password"
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirmPassword")}
               error={!!getSingleFieldError("confirmPassword")}
