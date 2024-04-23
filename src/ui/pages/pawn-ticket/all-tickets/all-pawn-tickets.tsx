@@ -16,7 +16,7 @@ import {
   PERMISSION_ACTIONS,
 } from "../../../../constants/iam-constants";
 import PageTitleCard from "../../../../shared/components/page-title-card";
-import { ItemTypes } from "../../../../shared/types/generic";
+import { ItemTypes, TimePeriod } from "../../../../shared/types/generic";
 import PermissionsWrapper from "../../access-control/permissions-wrapper";
 import { CRUItemFormValues } from "../create-ticket/add-item/cru-item-form";
 import { CreatePawnTicketFormValues } from "../create-ticket/create-pawn-ticket-form";
@@ -31,6 +31,7 @@ export interface TicketFormData extends CreatePawnTicketFormValues {
 export const initialTicketFormData = {
   pawnDate: new Date(),
   dueDate: addMonths(new Date(), 1),
+  periodType: TimePeriod.month,
 };
 
 export const emptyItem: CRUItemFormValues & {
