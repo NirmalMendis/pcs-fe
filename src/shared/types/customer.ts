@@ -1,7 +1,7 @@
 interface Customer {
   id: number;
   nicNo: string;
-  email: string;
+  email?: string;
   firstName: string;
   lastName: string;
   name: string;

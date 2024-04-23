@@ -1,16 +1,20 @@
 import * as yup from "yup";
-import { MOBILE_REGEX, NICNO_REGEX } from "../../../constants/generic-constants";
+import {
+  MOBILE_REGEX,
+  NICNO_REGEX,
+} from "../../../constants/generic-constants";
 
 const cruCustomerSchema = yup.object({
-  nicNo: yup.string().matches(NICNO_REGEX, 'Invalid NIC number').required("Please enter customer NIC number"),
+  nicNo: yup
+    .string()
+    .matches(NICNO_REGEX, "Invalid NIC number")
+    .required("Please enter customer NIC number"),
   firstName: yup.string().required("Please enter first name"),
   lastName: yup.string().required("Please enter last name"),
-  email: yup
+  email: yup.string().email("Invalid email address"),
+  mobileNo: yup
     .string()
-    .email("Invalid email address")
-    .required("Please enter customer's email"),
-  mobileNo: yup.string()
-    .matches(MOBILE_REGEX, 'Invalid Mobile number')
+    .matches(MOBILE_REGEX, "Invalid Mobile number")
     .required("Please enter customer's mobile number"),
   addressLine1: yup.string().required("Please enter customer's address"),
   addressLine2: yup.string(),
