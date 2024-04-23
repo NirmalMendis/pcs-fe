@@ -51,6 +51,10 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
           ...data,
           firstName: data.firstName.replaceAll(MULTIPLE_WHITESPACE_REGEX, " "),
           lastName: data.lastName.replaceAll(MULTIPLE_WHITESPACE_REGEX, " "),
+          email: data.email ? data.email : undefined,
+          addressLine2: data.addressLine2 ? data.addressLine2 : undefined,
+          addressLine3: data.addressLine3 ? data.addressLine3 : undefined,
+          postalCode: data.postalCode ? data.postalCode : undefined,
         },
       },
       {

@@ -64,7 +64,6 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             {...register("email")}
             error={!!getSingleFieldError("email")}
             helperText={getSingleFieldError("email")?.message}
-            required
           />
         </Grid>
         <Grid xs={12} sm={3} md={4}>
