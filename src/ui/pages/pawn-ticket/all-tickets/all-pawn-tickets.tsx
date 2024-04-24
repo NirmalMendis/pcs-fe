@@ -24,9 +24,7 @@ import CreateTicket from "../create-ticket/create-ticket";
 import InstantCalculator from "../instant-calculator/instant-calculator";
 import AllPawnTicketsGrid from "./all-pawn-tickets-grid";
 
-export interface TicketFormData extends CreatePawnTicketFormValues {
-  customerName: string;
-}
+export type TicketFormData = CreatePawnTicketFormValues;
 
 export const initialTicketFormData = {
   pawnDate: new Date(),

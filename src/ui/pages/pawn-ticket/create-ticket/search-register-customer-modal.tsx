@@ -1,6 +1,6 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
-import React, { Dispatch, FC, SetStateAction, useContext } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import { UseFormReset } from "react-hook-form";
 import usePostCreateCustomer from "../../../../api/customer/use-post-create-customer";
 import { MULTIPLE_WHITESPACE_REGEX } from "../../../../constants/generic-constants";
@@ -10,7 +10,6 @@ import CRUCustomerForm, {
   CRUCustomerFormValues,
 } from "../../customer/cru-customer-form";
 import SearchCustomer from "../../customer/search-customer";
-import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 
 export interface SearchRegisterCustomerModalProps {
   openCustomerModal: boolean;
@@ -31,14 +30,7 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   } = usePostCreateCustomer();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { setCreatePawnTicketFormData } = useContext(CreateTicketContext);
-
   const handleSelectCustomer = (customerId: number, name: string) => {
-    setCreatePawnTicketFormData((prev) => ({
-      ...prev,
-      customerId: customerId,
-      customerName: name,
-    }));
     setCustomerId(customerId);
     setCustomerLabel(
       customerId !== undefined ? `${customerId} - ${name}` : undefined
