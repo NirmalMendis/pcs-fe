@@ -29,7 +29,9 @@ import {
 } from "../all-tickets/all-pawn-tickets";
 import AddItems from "./add-item/add-items";
 import ConfirmTicket from "./confirm-ticket";
-import CreatePawnTicketForm from "./create-pawn-ticket-form";
+import CreatePawnTicketForm, {
+  CreatePawnTicketFormValues,
+} from "./create-pawn-ticket-form";
 import TicketCompleted from "./ticket-completed";
 
 interface ActiveStepContextProps {
@@ -139,6 +141,16 @@ const CreateTicket = () => {
       });
   };
 
+  const onSubmit = (data: CreatePawnTicketFormValues) => {
+    if (setCreatePawnTicketFormData)
+      setCreatePawnTicketFormData((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    generateDraftInvoice(data, items);
+    if (handleNext) handleNext();
+  };
+
   const renderStepperContent = () => {
     //need to keep all forms mounted, else forms will reset when moving back
     let displayAddTickets = "none";
@@ -181,7 +193,11 @@ const CreateTicket = () => {
           >
             Enter Pawn Ticket Details
           </Typography>
-          <CreatePawnTicketForm generateDraftInvoice={generateDraftInvoice} />
+          <CreatePawnTicketForm
+            onSubmit={onSubmit}
+            items={items?.map((item) => item.pawningAmount)}
+            createPawnTicketFormData={createPawnTicketFormData}
+          />
         </Stack>
         <Box sx={{ display: displayConfirmTicket }}>
           <ConfirmTicket

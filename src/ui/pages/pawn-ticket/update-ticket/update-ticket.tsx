@@ -175,11 +175,7 @@ const UpdateTicket = () => {
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
-          <Stack
-            direction={"row"}
-            //remove this when feature is complete
-            sx={{ opacity: 0.5, pointerEvents: "none" }}
-          >
+          <Stack direction={"row"}>
             {pawnTicketData?.status ? (
               <Box>
                 <MenuDropDownButton

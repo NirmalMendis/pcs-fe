@@ -16,12 +16,14 @@ export interface SearchRegisterCustomerModalProps {
   openCustomerModal: boolean;
   setOpenCustomerModal: Dispatch<SetStateAction<boolean>>;
   setCustomerId: (customerId: number) => void;
+  setCustomerLabel: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   openCustomerModal,
   setOpenCustomerModal,
   setCustomerId,
+  setCustomerLabel,
 }) => {
   const {
     mutate: mutatePostCreateCustomer,
@@ -38,6 +40,9 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
       customerName: name,
     }));
     setCustomerId(customerId);
+    setCustomerLabel(
+      customerId !== undefined ? `${customerId} - ${name}` : undefined
+    );
     setOpenCustomerModal(false);
   };
 
