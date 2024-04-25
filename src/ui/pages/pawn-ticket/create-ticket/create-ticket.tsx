@@ -32,6 +32,7 @@ import ConfirmTicket from "./confirm-ticket";
 import CreatePawnTicketForm, {
   CreatePawnTicketFormValues,
 } from "./create-pawn-ticket-form";
+import StepperBtns from "./stepper-btns";
 import TicketCompleted from "./ticket-completed";
 
 interface ActiveStepContextProps {
@@ -151,6 +152,17 @@ const CreateTicket = () => {
     if (handleNext) handleNext();
   };
 
+  const getActionButtons = (isValid: boolean) => {
+    return (
+      <StepperBtns
+        actionButtonProps={{
+          disabled: !isValid,
+          type: "submit",
+        }}
+      />
+    );
+  };
+
   const renderStepperContent = () => {
     //need to keep all forms mounted, else forms will reset when moving back
     let displayAddTickets = "none";
@@ -197,6 +209,7 @@ const CreateTicket = () => {
             onSubmit={onSubmit}
             items={items?.map((item) => item.pawningAmount)}
             createPawnTicketFormData={createPawnTicketFormData}
+            getActionButtons={getActionButtons}
           />
         </Stack>
         <Box sx={{ display: displayConfirmTicket }}>

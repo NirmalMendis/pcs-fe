@@ -52,6 +52,8 @@ export const PAWN_TICKET_API = {
   POST_CREATE_REVISION: (id: number) =>
     `${PAWN_TICKET_ENDPOINT}/revision/${id}`,
   PATCH_UPDATE_INVOICE: (id: number) => `${PAWN_TICKET_ENDPOINT}/${id}/invoice`,
+  PATCH_UPDATE_PAWN_TICKET_GENERAL: (id: number) =>
+    `${PAWN_TICKET_ENDPOINT}/${id}/general`,
 };
 
 export const INVOICE_API = {

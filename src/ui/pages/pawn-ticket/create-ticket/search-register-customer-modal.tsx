@@ -14,29 +14,19 @@ import SearchCustomer from "../../customer/search-customer";
 export interface SearchRegisterCustomerModalProps {
   openCustomerModal: boolean;
   setOpenCustomerModal: Dispatch<SetStateAction<boolean>>;
-  setCustomerId: (customerId: number) => void;
-  setCustomerLabel: React.Dispatch<React.SetStateAction<string | undefined>>;
+  handleSelectCustomer: (customerId: number, name: string) => void;
 }
 
 const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   openCustomerModal,
   setOpenCustomerModal,
-  setCustomerId,
-  setCustomerLabel,
+  handleSelectCustomer,
 }) => {
   const {
     mutate: mutatePostCreateCustomer,
     isPending: isPendingPostCreateCustomer,
   } = usePostCreateCustomer();
   const { enqueueSnackbar } = useSnackbar();
-
-  const handleSelectCustomer = (customerId: number, name: string) => {
-    setCustomerId(customerId);
-    setCustomerLabel(
-      customerId !== undefined ? `${customerId} - ${name}` : undefined
-    );
-    setOpenCustomerModal(false);
-  };
 
   const handleRegisterCustomer = (
     data: CRUCustomerFormValues,
@@ -61,7 +51,6 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
           });
           reset();
           handleSelectCustomer(data.id, data.name);
-          setOpenCustomerModal(false);
         },
       }
     );

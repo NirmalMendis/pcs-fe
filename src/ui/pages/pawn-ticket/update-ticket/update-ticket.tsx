@@ -11,11 +11,13 @@ import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constan
 import Backdrop from "../../../../shared/components/backdrop";
 import EllipsisMenu from "../../../../shared/components/ellipsis-menu";
 import MenuDropDownButton from "../../../../shared/components/menu-dropdown-button";
+import ModalDrawer from "../../../../shared/components/modal-drawer";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
 import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 import TicketGeneralTab from "./general/ticket-general-tab";
+import UpdateGeneral from "./general/update-general";
 import TicketInterestsSchedule from "./interests/ticket-interests-schedule";
 import TicketItemsTab from "./items/ticket-items";
 
@@ -44,6 +46,8 @@ const TABS = {
 
 const UpdateTicket = () => {
   const [currentTab, setCurrentTab] = useState(0);
+  const [editModalType, setEditModalType] = useState<string | null>();
+
   const { id: ticketId } = useParams();
   const navigate = useNavigate();
   const { data: revisionIds } = useGetRevisionIds({
@@ -115,6 +119,32 @@ const UpdateTicket = () => {
           },
         }
       );
+  };
+
+  const closeModal = () => {
+    setEditModalType(null);
+  };
+
+  const getEditModal = () => {
+    let modalContent;
+    switch (editModalType) {
+      case TABS.GENERAL.NAME:
+        if (pawnTicketData?.id)
+          modalContent = (
+            <UpdateGeneral id={pawnTicketData?.id} refetch={refetch} />
+          );
+    }
+
+    return (
+      <ModalDrawer
+        open={!!editModalType}
+        handleModalClose={closeModal}
+        anchor="right"
+        PaperProps={{ sx: { width: { xs: "100%", md: "75%", lg: "50%" } } }}
+      >
+        {modalContent}
+      </ModalDrawer>
+    );
   };
 
   useEffect(() => {
@@ -199,7 +229,7 @@ const UpdateTicket = () => {
                 {
                   label: "Edit General Details",
                   onClick: () => {
-                    console.log("first");
+                    setEditModalType(TABS.GENERAL.NAME);
                   },
                 },
                 {
@@ -292,6 +322,7 @@ const UpdateTicket = () => {
           isPendingMutatePatchUpdateInvoice
         }
       />
+      {getEditModal()}
     </Stack>
   );
 };

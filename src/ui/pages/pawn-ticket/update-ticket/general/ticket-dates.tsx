@@ -74,6 +74,7 @@ const TicketDatesCard: FC<CustomerAtomicCardProps> = ({
                 fontSize={15}
                 color={"primary"}
                 //   color={`${revisedChanges.numberOfNights ? "red" : "primary"}`}
+                fontWeight="bold"
               >
                 {periodInMonths}
               </Typography>
