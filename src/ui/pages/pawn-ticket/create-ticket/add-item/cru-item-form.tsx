@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import { CURRENCY_PREFIX } from "../../../../../constants/generic-constants";
@@ -25,7 +25,6 @@ import {
   ItemTypes,
 } from "../../../../../shared/types/generic";
 import PermissionsWrapper from "../../../access-control/permissions-wrapper";
-import { CreateTicketContext } from "../../all-tickets/all-pawn-tickets";
 import cruItemSchema from "./cru-item-schema";
 
 type CRUItemSchemaType = typeof cruItemSchema;
@@ -34,10 +33,9 @@ export type CRUItemFormValues = InferType<CRUItemSchemaType>;
 export interface CRUItemFormProps {
   onSubmit: (data: CRUItemFormValues) => void;
   item?: CRUItemFormValues;
-  uiId: number;
 }
 
-const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
+const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
   const {
     register,
     handleSubmit,
@@ -54,7 +52,6 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
     },
   });
 
-  const { items } = useContext(CreateTicketContext);
   const itemType = watch("itemType");
 
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
@@ -169,15 +166,6 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item, uiId }) => {
   useEffect(() => {
     setAllowEdit(!isSubmitted);
   }, [isSubmitted]);
-
-  useEffect(() => {
-    //set pawning amount from instant calculator
-    if (items && !isSubmitted) {
-      const itemToUpdate = items.find((currItem) => currItem.uiId === uiId);
-      if (itemToUpdate?.pawningAmount)
-        setValue("pawningAmount", itemToUpdate?.pawningAmount);
-    }
-  }, [items, setValue, uiId, isSubmitted]);
 
   return (
     <form onSubmit={handleSubmit(handleIntegratedSubmit)} noValidate>

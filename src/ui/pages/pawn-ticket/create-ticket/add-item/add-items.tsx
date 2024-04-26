@@ -44,6 +44,7 @@ const AddItems = () => {
 
   const handleConfirmContinue = () => {
     setItems((prev) => prev.filter((item) => item.isSubmitted));
+    setOpenConfirmationDialog(false);
     if (handleNext) handleNext();
   };
 
@@ -103,8 +104,7 @@ const AddItems = () => {
               onSubmit={(...props) =>
                 handleSaveItemToState(...props, item.uiId)
               }
-              item={item.isSubmitted ? item : undefined}
-              uiId={item.uiId}
+              item={item}
             />
           </Stack>
         </Card>
