@@ -1,8 +1,9 @@
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
-import { Box, Button, Card, Stack, Typography } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
+import { UseFormReset } from "react-hook-form";
 import ConfirmationDialog from "../../../../../shared/components/confirmation-dialog";
+import ItemCardLayout from "../../../../../shared/components/item-card-layout";
 import {
   CreateTicketContext,
   emptyItem,
@@ -20,7 +21,11 @@ const AddItems = () => {
 
   const atLeastOneIemIsSubmitted = !!items?.find((item) => item.isSubmitted);
 
-  const handleSaveItemToState = (data: CRUItemFormValues, uiId: number) => {
+  const handleSaveItemToState = (
+    data: CRUItemFormValues,
+    uiId: number,
+    reset: UseFormReset<CRUItemFormValues>
+  ) => {
     setItems((prev) => {
       return prev.map((item) => {
         if (item.uiId === uiId) {
@@ -28,6 +33,10 @@ const AddItems = () => {
         }
         return item;
       });
+    });
+    reset(undefined, {
+      keepValues: true,
+      keepSubmitCount: true,
     });
   };
 
@@ -71,43 +80,26 @@ const AddItems = () => {
   return (
     <Stack spacing={2}>
       {items?.map((item) => (
-        <Card
-          variant="outlined"
+        <ItemCardLayout
+          handleRemoveItem={handleRemoveItem}
+          id={items.findIndex((arrayItem) => arrayItem.uiId === item.uiId) + 1}
+          item={item}
           key={`${item.uiId}-item`}
-          sx={{
-            p: 2,
-            borderColor: "secondary.dark",
-          }}
           ref={
             items.findIndex((arrayItem) => arrayItem.uiId === item.uiId) ===
             items.length - 1
               ? newItemRef
               : null
           }
+          disableRemove={items.length === 1}
         >
-          <Stack spacing={2}>
-            <Box display={"flex"} justifyContent={"space-between"}>
-              <Typography fontSize={14} fontWeight={"bold"}>{`Item ${
-                items.findIndex((arrayItem) => arrayItem.uiId === item.uiId) + 1
-              }`}</Typography>
-              <Button
-                onClick={() => handleRemoveItem(item.uiId)}
-                startIcon={<RemoveCircleOutlineRoundedIcon color="secondary" />}
-                sx={{ pl: 2, pr: 2 }}
-                color="error"
-                disabled={items.length === 1}
-              >
-                Remove item
-              </Button>
-            </Box>
-            <CRUItemForm
-              onSubmit={(...props) =>
-                handleSaveItemToState(...props, item.uiId)
-              }
-              item={item}
-            />
-          </Stack>
-        </Card>
+          <CRUItemForm
+            onSubmit={(data, reset) =>
+              handleSaveItemToState(data, item.uiId, reset)
+            }
+            item={item}
+          />
+        </ItemCardLayout>
       ))}
       <Button
         onClick={handleAddItem}

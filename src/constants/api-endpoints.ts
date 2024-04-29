@@ -64,6 +64,9 @@ export const INVOICE_API = {
 export const ITEM_API = {
   GET_ITEMS_BY_PAWN_TICKET_ID: (id: number) =>
     `${ITEM_ENDPOINT}/pawn-ticket/${id}`,
+  DELETE_ITEM: (id: number) => `${ITEM_ENDPOINT}/${id}`,
+  ADD_ITEM: (id: number) => `${ITEM_ENDPOINT}/pawn-ticket/${id}`,
+  PATCH_ITEM: (id: number) => `${ITEM_ENDPOINT}/${id}`,
 };
 
 export const INTEREST_API = {

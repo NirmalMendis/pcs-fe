@@ -20,6 +20,7 @@ import TicketGeneralTab from "./general/ticket-general-tab";
 import UpdateGeneral from "./general/update-general";
 import TicketInterestsSchedule from "./interests/ticket-interests-schedule";
 import TicketItemsTab from "./items/ticket-items";
+import UpdateItems from "./items/update-items";
 
 const TABS = {
   GENERAL: {
@@ -133,6 +134,10 @@ const UpdateTicket = () => {
           modalContent = (
             <UpdateGeneral id={pawnTicketData?.id} refetch={refetch} />
           );
+        break;
+      case TABS.ITEMS.NAME:
+        if (pawnTicketData?.id)
+          modalContent = <UpdateItems pawnTicketId={pawnTicketData?.id} />;
     }
 
     return (
@@ -235,7 +240,7 @@ const UpdateTicket = () => {
                 {
                   label: "Edit Items",
                   onClick: () => {
-                    console.log("first");
+                    setEditModalType(TABS.ITEMS.NAME);
                   },
                 },
                 {

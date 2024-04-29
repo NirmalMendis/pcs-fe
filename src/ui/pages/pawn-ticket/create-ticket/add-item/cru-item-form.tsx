@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { FC, useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, UseFormReset } from "react-hook-form";
 import { InferType } from "yup";
 import { CURRENCY_PREFIX } from "../../../../../constants/generic-constants";
 import NumberField from "../../../../../shared/components/number-field";
@@ -31,7 +31,10 @@ type CRUItemSchemaType = typeof cruItemSchema;
 export type CRUItemFormValues = InferType<CRUItemSchemaType>;
 
 export interface CRUItemFormProps {
-  onSubmit: (data: CRUItemFormValues) => void;
+  onSubmit: (
+    data: CRUItemFormValues,
+    reset: UseFormReset<CRUItemFormValues>
+  ) => void;
   item?: CRUItemFormValues;
 }
 
@@ -81,14 +84,6 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
       }
       setAllowEdit(false);
     }
-  };
-
-  const handleIntegratedSubmit = (data: CRUItemFormValues) => {
-    reset(undefined, {
-      keepValues: true,
-      keepSubmitCount: true,
-    });
-    onSubmit(data);
   };
 
   const resetItemDetails = (itemType: ItemTypes) => {
@@ -168,7 +163,7 @@ const CRUItemForm: FC<CRUItemFormProps> = ({ onSubmit, item }) => {
   }, [isSubmitted]);
 
   return (
-    <form onSubmit={handleSubmit(handleIntegratedSubmit)} noValidate>
+    <form onSubmit={handleSubmit((data) => onSubmit(data, reset))} noValidate>
       <Grid container rowSpacing={3} columnSpacing={2}>
         <Grid xs={12} sm={3}>
           <TextField

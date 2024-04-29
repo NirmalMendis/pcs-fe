@@ -1,3 +1,5 @@
+import { ItemTypes } from "./generic";
+
 export interface ItemDetailType {
   id: number;
   type: string;
@@ -14,6 +16,7 @@ export interface Item {
   appraisedValue: number;
   pawningAmount: number;
   itemDetails?: Array<ItemDetailType>;
+  itemType: ItemTypes;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
