@@ -1,6 +1,6 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
-import React, { Dispatch, FC, SetStateAction, useContext } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import { UseFormReset } from "react-hook-form";
 import usePostCreateCustomer from "../../../../api/customer/use-post-create-customer";
 import { MULTIPLE_WHITESPACE_REGEX } from "../../../../constants/generic-constants";
@@ -10,36 +10,23 @@ import CRUCustomerForm, {
   CRUCustomerFormValues,
 } from "../../customer/cru-customer-form";
 import SearchCustomer from "../../customer/search-customer";
-import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
 
 export interface SearchRegisterCustomerModalProps {
   openCustomerModal: boolean;
   setOpenCustomerModal: Dispatch<SetStateAction<boolean>>;
-  setCustomerId: (customerId: number) => void;
+  handleSelectCustomer: (customerId: number, name: string) => void;
 }
 
 const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
   openCustomerModal,
   setOpenCustomerModal,
-  setCustomerId,
+  handleSelectCustomer,
 }) => {
   const {
     mutate: mutatePostCreateCustomer,
     isPending: isPendingPostCreateCustomer,
   } = usePostCreateCustomer();
   const { enqueueSnackbar } = useSnackbar();
-
-  const { setCreatePawnTicketFormData } = useContext(CreateTicketContext);
-
-  const handleSelectCustomer = (customerId: number, name: string) => {
-    setCreatePawnTicketFormData((prev) => ({
-      ...prev,
-      customerId: customerId,
-      customerName: name,
-    }));
-    setCustomerId(customerId);
-    setOpenCustomerModal(false);
-  };
 
   const handleRegisterCustomer = (
     data: CRUCustomerFormValues,
@@ -64,7 +51,6 @@ const SearchRegisterCustomerModal: FC<SearchRegisterCustomerModalProps> = ({
           });
           reset();
           handleSelectCustomer(data.id, data.name);
-          setOpenCustomerModal(false);
         },
       }
     );

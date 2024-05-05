@@ -150,7 +150,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
             sx={{ pl: 1, pr: 1 }}
           >
             <CustomerAtomicCard
-              name={createPawnTicketFormData?.customerName}
+              name={customerData?.name}
               email={customerData?.email}
               sx={{ height: "fit-content" }}
             />

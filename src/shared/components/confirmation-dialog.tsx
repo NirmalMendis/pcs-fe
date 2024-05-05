@@ -1,3 +1,4 @@
+import { ButtonOwnProps } from "@mui/material";
 import {
   Button,
   Dialog,
@@ -15,6 +16,7 @@ export interface ConfirmationDialogProps {
   content: string | JSX.Element;
   confirmAction: () => void;
   confirmActionTitle?: string;
+  confirmActionColor?: ButtonOwnProps["color"];
   cancelActionTitle?: string;
 }
 
@@ -25,6 +27,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   content,
   confirmAction,
   confirmActionTitle = "Yes",
+  confirmActionColor = "primary",
   cancelActionTitle = "Cancel",
 }) => {
   return (
@@ -39,7 +42,7 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
         <Button onClick={() => handleClose(false)} color="inherit">
           {cancelActionTitle}
         </Button>
-        <Button onClick={confirmAction} autoFocus>
+        <Button onClick={confirmAction} autoFocus color={confirmActionColor}>
           {confirmActionTitle}
         </Button>
       </DialogActions>

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { DatePicker } from "@mui/x-date-pickers";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { InferType } from "yup";
 import {
@@ -18,36 +18,38 @@ import {
   DD_MM_YYY_FORMAT,
 } from "../../../../constants/generic-constants";
 import NumberField from "../../../../shared/components/number-field";
+import getCustomerLabel from "../../../../shared/helper/get-customer-label";
 import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
 import { TimePeriod } from "../../../../shared/types/generic";
-import {
-  CreateTicketContext,
-  TicketFormData,
-  TicketFormItem,
-} from "../all-tickets/all-pawn-tickets";
+import { TicketFormData } from "../all-tickets/all-pawn-tickets";
 import createPawnTicketSchema from "./create-pawn-ticket-schema";
-import { ActiveStepContext } from "./create-ticket";
 import SearchRegisterCustomerModal from "./search-register-customer-modal";
-import StepperBtns from "./stepper-btns";
 
 type CreatePawnTicketSchemaType = typeof createPawnTicketSchema;
 export type CreatePawnTicketFormValues = InferType<CreatePawnTicketSchemaType>;
 
 export interface CreatePawnTicketFormProps {
-  generateDraftInvoice: (
-    createPawnTicketFormData: Partial<TicketFormData>,
-    items: TicketFormItem[] | undefined
-  ) => void;
+  items?: Array<number>;
+  createPawnTicketFormData?: Partial<TicketFormData>;
+  onSubmit: (data: CreatePawnTicketFormValues) => void;
+  md?: number;
+  currentCustomerLabel?: string;
+  getActionButtons: (isValid: boolean) => JSX.Element;
 }
 // eslint-disable-next-line react/display-name
 const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
-  generateDraftInvoice,
+  items,
+  onSubmit,
+  createPawnTicketFormData,
+  md = 4,
+  currentCustomerLabel,
+  getActionButtons,
 }) => {
-  const { createPawnTicketFormData, setCreatePawnTicketFormData, items } =
-    useContext(CreateTicketContext);
   const [openCustomerModal, setOpenCustomerModal] = useState(false);
-  const { handleNext } = useContext(ActiveStepContext);
+  const [customerLabel, setCustomerLabel] = useState<string | undefined>(
+    currentCustomerLabel
+  );
 
   const {
     control,
@@ -59,37 +61,25 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
   });
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
-  const onSubmit = (data: CreatePawnTicketFormValues) => {
-    if (setCreatePawnTicketFormData)
-      setCreatePawnTicketFormData((prev) => ({
-        ...prev,
-        ...data,
-      }));
-    generateDraftInvoice(data, items);
-    if (handleNext) handleNext();
-  };
-
   const handleOpenGuestSearch = () => {
     setOpenCustomerModal(true);
   };
 
-  const setCustomerId = (customerId: number) => {
+  const handleSelectCustomer = (customerId: number, name: string) => {
     setValue("customerId", customerId, {
       shouldDirty: true,
       shouldTouch: true,
       shouldValidate: true,
     });
+    setCustomerLabel(getCustomerLabel(customerId, name));
+    setOpenCustomerModal(false);
   };
 
-  const customerLabel =
-    createPawnTicketFormData?.customerId !== undefined
-      ? `${createPawnTicketFormData?.customerId} - ${createPawnTicketFormData?.customerName}`
-      : undefined;
-
   useEffect(() => {
-    const calculatedPrincipalAmount = items
-      ?.map((item) => item.pawningAmount)
-      ?.reduce((acc, curr) => acc + curr, 0);
+    const calculatedPrincipalAmount = items?.reduce(
+      (acc, curr) => acc + curr,
+      0
+    );
     setValue("principalAmount", calculatedPrincipalAmount, {
       shouldDirty: true,
       shouldTouch: true,
@@ -101,7 +91,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Grid container rowSpacing={3} columnSpacing={2}>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <TextField
               label="Customer"
               placeholder="Customer"
@@ -127,7 +117,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="pawnDate"
@@ -154,7 +144,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="periodType"
@@ -186,7 +176,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="periodQuantity"
@@ -202,7 +192,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="principalAmount"
@@ -220,7 +210,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="serviceCharge"
@@ -237,7 +227,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={md}>
             <Controller
               control={control}
               name="interestRate"
@@ -256,21 +246,14 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
               }}
             />
           </Grid>
-          <Grid xs={12}>
-            <StepperBtns
-              actionButtonProps={{
-                disabled: !isValid,
-                type: "submit",
-              }}
-            />
-          </Grid>
+          <Grid xs={12}>{getActionButtons(isValid)}</Grid>
         </Grid>
       </form>
       {/* Keep this Modal out of the form to prevent above form submission when inner form submits */}
       <SearchRegisterCustomerModal
         openCustomerModal={openCustomerModal}
         setOpenCustomerModal={setOpenCustomerModal}
-        setCustomerId={setCustomerId}
+        handleSelectCustomer={handleSelectCustomer}
       />
     </>
   );

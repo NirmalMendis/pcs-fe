@@ -24,9 +24,7 @@ import CreateTicket from "../create-ticket/create-ticket";
 import InstantCalculator from "../instant-calculator/instant-calculator";
 import AllPawnTicketsGrid from "./all-pawn-tickets-grid";
 
-export interface TicketFormData extends CreatePawnTicketFormValues {
-  customerName: string;
-}
+export type TicketFormData = CreatePawnTicketFormValues;
 
 export const initialTicketFormData = {
   pawnDate: new Date(),
@@ -34,22 +32,16 @@ export const initialTicketFormData = {
   periodType: TimePeriod.month,
 };
 
-export const emptyItem: CRUItemFormValues & {
-  isSubmitted: boolean;
-  uiId: number;
-} = {
-  appraisedValue: 0,
-  description: "",
-  pawningAmount: 0,
-  isSubmitted: false,
-  uiId: 0,
-  itemType: ItemTypes.GOLD,
-};
-
 export interface TicketFormItem extends CRUItemFormValues {
   isSubmitted: boolean;
   uiId: number;
 }
+
+export const emptyItem: TicketFormItem = {
+  isSubmitted: false,
+  itemType: ItemTypes.GOLD,
+  uiId: 0,
+} as TicketFormItem;
 
 interface CreateTicketContextType {
   createPawnTicketFormData?: Partial<TicketFormData>;

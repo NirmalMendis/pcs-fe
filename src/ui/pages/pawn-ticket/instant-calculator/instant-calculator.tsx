@@ -43,7 +43,10 @@ import { useCustomHookForm } from "../../../../shared/hooks/use-custom-form";
 import useSingleFieldError from "../../../../shared/hooks/use-single-field-error";
 import useTextFormatter from "../../../../shared/hooks/use-text-formatter";
 import { TimePeriod } from "../../../../shared/types/generic";
-import { CreateTicketContext } from "../all-tickets/all-pawn-tickets";
+import {
+  CreateTicketContext,
+  TicketFormItem,
+} from "../all-tickets/all-pawn-tickets";
 import instantCalculatorSchema from "./instant-calculator-schema";
 
 type InstantcalculatorSchemaType = typeof instantCalculatorSchema;
@@ -138,15 +141,14 @@ const InstantCalculator: FC<InstantCalculatorProps> = ({
       setItems(
         items
           ?.filter((item) => item.pawningAmount !== undefined)
-          ?.map((item, index) => ({
-            uiId: index,
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            pawningAmount: item.pawningAmount!,
-            appraisedValue: 0,
-            description: "",
-            isSubmitted: false,
-            itemType: "",
-          }))
+          ?.map(
+            (item, index) =>
+              ({
+                uiId: index,
+                pawningAmount: item.pawningAmount,
+                isSubmitted: false,
+              }) as TicketFormItem
+          )
       );
     setOpenCustomerModal(false);
     setShowCreateTicket(true);

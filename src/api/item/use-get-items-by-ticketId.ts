@@ -8,19 +8,24 @@ import { PawnTicket } from "../../shared/types/pawn-ticket";
 import { apiService } from "../api-service";
 
 export interface GetItemsByPawnTicketRequest
-  extends OrderPaginatedRequest,
+  extends Partial<OrderPaginatedRequest>,
     Pick<PawnTicket, "id"> {}
 
 export type GetItemsByPawnTicketResponse = PaginatedData<Item>;
 
-const useGetItemsByPawnTicketId = (
+const useGetItemsByPawnTicketId = <T = GetItemsByPawnTicketResponse>(
   { id, page, pageSize, orderBy, orderDirection }: GetItemsByPawnTicketRequest,
   enabled?: boolean
-): UseQueryResult<GetItemsByPawnTicketResponse, Error> => {
+): UseQueryResult<T, Error> => {
   return useQuery({
-    queryKey: [GET_ITEMS_BY_PAWN_TICKET, id],
+    queryKey: [
+      GET_ITEMS_BY_PAWN_TICKET,
+      id,
+      ...(page && pageSize ? [page, pageSize] : []),
+      ...(orderBy && orderDirection ? [orderBy, orderDirection] : []),
+    ],
     queryFn: ({ signal }) =>
-      apiService.getRequest<GetItemsByPawnTicketResponse>({
+      apiService.getRequest<T>({
         path: ITEM_API.GET_ITEMS_BY_PAWN_TICKET_ID(id),
         queryParams: { page, pageSize, orderBy, orderDirection },
         signal,

@@ -11,13 +11,16 @@ import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constan
 import Backdrop from "../../../../shared/components/backdrop";
 import EllipsisMenu from "../../../../shared/components/ellipsis-menu";
 import MenuDropDownButton from "../../../../shared/components/menu-dropdown-button";
+import ModalDrawer from "../../../../shared/components/modal-drawer";
 import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
 import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
 import TicketGeneralTab from "./general/ticket-general-tab";
+import UpdateGeneral from "./general/update-general";
 import TicketInterestsSchedule from "./interests/ticket-interests-schedule";
 import TicketItemsTab from "./items/ticket-items";
+import UpdateItems from "./items/update-items";
 
 const TABS = {
   GENERAL: {
@@ -44,6 +47,8 @@ const TABS = {
 
 const UpdateTicket = () => {
   const [currentTab, setCurrentTab] = useState(0);
+  const [editModalType, setEditModalType] = useState<string | null>();
+
   const { id: ticketId } = useParams();
   const navigate = useNavigate();
   const { data: revisionIds } = useGetRevisionIds({
@@ -117,6 +122,36 @@ const UpdateTicket = () => {
       );
   };
 
+  const closeModal = () => {
+    setEditModalType(null);
+  };
+
+  const getEditModal = () => {
+    let modalContent;
+    switch (editModalType) {
+      case TABS.GENERAL.NAME:
+        if (pawnTicketData?.id)
+          modalContent = (
+            <UpdateGeneral id={pawnTicketData?.id} refetch={refetch} />
+          );
+        break;
+      case TABS.ITEMS.NAME:
+        if (pawnTicketData?.id)
+          modalContent = <UpdateItems pawnTicketId={pawnTicketData?.id} />;
+    }
+
+    return (
+      <ModalDrawer
+        open={!!editModalType}
+        handleModalClose={closeModal}
+        anchor="right"
+        PaperProps={{ sx: { width: { xs: "100%", md: "75%", lg: "50%" } } }}
+      >
+        {modalContent}
+      </ModalDrawer>
+    );
+  };
+
   useEffect(() => {
     const debouncedApiCall = debounce(() => {
       refetch();
@@ -175,11 +210,7 @@ const UpdateTicket = () => {
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
-          <Stack
-            direction={"row"}
-            //remove this when feature is complete
-            sx={{ opacity: 0.5, pointerEvents: "none" }}
-          >
+          <Stack direction={"row"}>
             {pawnTicketData?.status ? (
               <Box>
                 <MenuDropDownButton
@@ -203,13 +234,13 @@ const UpdateTicket = () => {
                 {
                   label: "Edit General Details",
                   onClick: () => {
-                    console.log("first");
+                    setEditModalType(TABS.GENERAL.NAME);
                   },
                 },
                 {
                   label: "Edit Items",
                   onClick: () => {
-                    console.log("first");
+                    setEditModalType(TABS.ITEMS.NAME);
                   },
                 },
                 {
@@ -296,6 +327,7 @@ const UpdateTicket = () => {
           isPendingMutatePatchUpdateInvoice
         }
       />
+      {getEditModal()}
     </Stack>
   );
 };

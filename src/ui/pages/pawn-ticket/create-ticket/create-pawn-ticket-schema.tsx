@@ -13,6 +13,7 @@ const createPawnTicketSchema = yup.object({
       MAXIMUM_PERIOD_VALUE,
       `Number must be less than or equal to ${MAXIMUM_PERIOD_VALUE}`
     )
+    .required("Please enter a value")
     .typeError("Please enter a number value"),
   periodType: yup.string().required("Please select a value"),
   serviceCharge: yup
