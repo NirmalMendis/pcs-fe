@@ -1,11 +1,14 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link, Stack, Typography, Zoom } from "@mui/material";
+import { isAfter, isBefore } from "date-fns";
 import { debounce } from "lodash";
+import { useSnackbar } from "notistack";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetPawnTicketById from "../../../../api/pawn-ticket/use-get-pawn-ticket-by-id";
 import useGetRevisionIds from "../../../../api/pawn-ticket/use-get-revision-ids";
 import usePatchUpdateInvoice from "../../../../api/pawn-ticket/use-patch-update-invoice";
+import usePatchUpdatePawnTicketGeneral from "../../../../api/pawn-ticket/use-patch-update-pawn-ticket-general";
 import usePostCreateRevision from "../../../../api/pawn-ticket/use-post-create-revision";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
@@ -63,6 +66,10 @@ const UpdateTicket = () => {
     mutate: mutatePatchUpdateInvoice,
     isPending: isPendingMutatePatchUpdateInvoice,
   } = usePatchUpdateInvoice();
+  const {
+    mutate: mutateUpdatePawnTicketGeneralDetails,
+    isPending: isPendingMutateUpdateGeneral,
+  } = usePatchUpdatePawnTicketGeneral();
 
   const {
     data: pawnTicketData,
@@ -76,6 +83,9 @@ const UpdateTicket = () => {
     false
   );
 
+  const { enqueueSnackbar } = useSnackbar();
+
+  const disableEdit = !!pawnTicketData?.revision || !!pawnTicketData?.invoiceId;
   const changeTab = (value: number) => {
     setCurrentTab(value);
   };
@@ -152,6 +162,29 @@ const UpdateTicket = () => {
     );
   };
 
+  const updateTicketStatus = (label: string) => {
+    if (pawnTicketData?.id !== undefined)
+      mutateUpdatePawnTicketGeneralDetails(
+        {
+          payload: {
+            id: pawnTicketData?.id,
+            status: label,
+          },
+        },
+        {
+          onSuccess: (data) => {
+            enqueueSnackbar(
+              `Pawn ticket status for ticket id ${data.id} has been updated to ${data.status}.`,
+              {
+                variant: "success",
+              }
+            );
+            refetch();
+          },
+        }
+      );
+  };
+
   useEffect(() => {
     const debouncedApiCall = debounce(() => {
       refetch();
@@ -215,12 +248,29 @@ const UpdateTicket = () => {
               <Box>
                 <MenuDropDownButton
                   selection={pawnTicketData?.status}
-                  options={Object.values(PawnTicketStatusEnum).map(
-                    (option) => ({
+                  options={Object.values(PawnTicketStatusEnum).map((option) => {
+                    let disabled;
+                    switch (option) {
+                      case PawnTicketStatusEnum.REVISED:
+                        disabled = true;
+                        break;
+                      case PawnTicketStatusEnum.DUE:
+                        disabled = !!isAfter(
+                          pawnTicketData.dueDate,
+                          new Date()
+                        );
+                        break;
+                    }
+                    return {
                       label: option,
-                      disabled: false,
-                    })
-                  )}
+                      disabled:
+                        pawnTicketData?.status ===
+                          PawnTicketStatusEnum.REVISED ||
+                        disabled ||
+                        pawnTicketData.status === option,
+                      onClick: () => updateTicketStatus(option),
+                    };
+                  })}
                 />
               </Box>
             ) : null}
@@ -229,31 +279,34 @@ const UpdateTicket = () => {
                 {
                   label: "Create revision",
                   onClick: createRevision,
-                  disabled: !!pawnTicketData?.revision,
+                  disabled:
+                    !!pawnTicketData?.revision || !pawnTicketData?.invoiceId,
                 },
                 {
                   label: "Edit General Details",
                   onClick: () => {
                     setEditModalType(TABS.GENERAL.NAME);
                   },
+                  disabled: disableEdit,
                 },
                 {
                   label: "Edit Items",
                   onClick: () => {
                     setEditModalType(TABS.ITEMS.NAME);
                   },
+                  disabled: disableEdit,
                 },
                 {
                   label: "Edit Interests",
                   onClick: () => {
                     console.log("first");
                   },
+                  disabled: disableEdit,
                 },
                 {
                   label: "Generate Invoice",
                   onClick: updateInvoiceForLatestRevision,
-                  disabled:
-                    !!pawnTicketData?.revision || !!pawnTicketData?.invoiceId,
+                  disabled: disableEdit,
                 },
               ]}
             />
@@ -285,7 +338,10 @@ const UpdateTicket = () => {
             timeout={500}
           >
             <Box>
-              <TicketGeneralTab pawnTicketData={pawnTicketData} />
+              <TicketGeneralTab
+                pawnTicketData={pawnTicketData}
+                updateInvoiceForLatestRevision={updateInvoiceForLatestRevision}
+              />
             </Box>
           </Zoom>
         </Box>

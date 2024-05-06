@@ -13,6 +13,7 @@ export interface MenuDropDownButtonProps {
   options: Array<{
     label: string;
     disabled?: boolean;
+    onClick?: () => void;
   }>;
 }
 
@@ -62,6 +63,12 @@ const MenuDropDownButton: FC<MenuDropDownButtonProps> = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleMenuItemClick = (onClick?: () => void) => {
+    if (onClick) onClick();
+    handleClose();
+  };
+
   return (
     <Box sx={{ height: "100%", display: "flex", width: "100%" }}>
       <ButtonGroup
@@ -109,10 +116,11 @@ const MenuDropDownButton: FC<MenuDropDownButtonProps> = ({
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {options.map((option) => (
           <MenuItem
-            onClick={handleClose}
+            onClick={handleMenuItemClick.bind(this, option.onClick)}
             disableRipple
             key={option.label}
             sx={{ gap: 2 }}
+            disabled={option.disabled}
           >
             Switch to <KeyboardDoubleArrowRightIcon color="primary" />
             <Typography
