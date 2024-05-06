@@ -18,9 +18,13 @@ import TicketMonetaryValues from "./ticket-monetary-values";
 
 export interface TicketGeneralTabProps {
   pawnTicketData?: PawnTicket;
+  updateInvoiceForLatestRevision: () => void;
 }
 
-const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
+const TicketGeneralTab: FC<TicketGeneralTabProps> = ({
+  pawnTicketData,
+  updateInvoiceForLatestRevision,
+}) => {
   const largeScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up("md")
   );
@@ -113,9 +117,21 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({ pawnTicketData }) => {
         ) : (
           <Stack height={"100%"}>
             {pawnTicketData ? (
-              <Alert severity="info">
-                Perform updates and generate invoice from menu to finalize and
-                lock this ticket
+              <Alert
+                severity="info"
+                action={
+                  <Button
+                    color="primary"
+                    size="small"
+                    variant="outlined"
+                    onClick={updateInvoiceForLatestRevision}
+                  >
+                    Generate Invoice
+                  </Button>
+                }
+              >
+                Perform updates and generate invoice to finalize and lock this
+                ticket
               </Alert>
             ) : null}
             <Box
