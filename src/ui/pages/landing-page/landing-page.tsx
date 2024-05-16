@@ -12,9 +12,10 @@ const LandingPage = () => {
       container
       component={Box}
       sx={{
-        mt: { xs: "30%", sm: "20%", md: "10%" },
+        height: "calc(100vh - 5px)", //footer height
         justifyContent: "center",
       }}
+      alignItems={"center"}
     >
       <Grid xs={11} sm={8} md={6} lg={5}>
         <Stack
