@@ -17,6 +17,7 @@ export enum FeatureEnum {
   MULTIPLE_BRANCHES = "MULTIPLE_BRANCHES",
   MULTIPLE_ITEM_TYPES = "MULTIPLE_ITEM_TYPES",
   IAM = "IAM",
+  CUSTOMER = "CUSTOMER",
 }
 
 export type PermissionAtom = {

@@ -1,5 +1,6 @@
 import DiamondIcon from "@mui/icons-material/Diamond";
 import HomeIcon from "@mui/icons-material/Home";
+import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import { Divider, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
@@ -89,6 +90,19 @@ const NavigationDrawer = () => {
     FeatureEnum.IAM
   );
 
+  const authorizedCustomerDrawerItem = withFeatureEnabled(
+    canAccessResource(
+      <DrawerListItem
+        to={ROUTE_PATHS.CUSTOMER.BASE}
+        text="Customer"
+        icon={<SensorOccupiedIcon color="icon" />}
+      />,
+      PERMISSIONS.CUSTOMER,
+      PERMISSION_ACTIONS.VIEW
+    ),
+    FeatureEnum.CUSTOMER
+  );
+
   return (
     <Drawer
       variant="permanent"
@@ -112,6 +126,7 @@ const NavigationDrawer = () => {
           />
           {authorizedPawnTicketDrawerItem}
           {authorizedIAMDrawerItem}
+          {authorizedCustomerDrawerItem}
         </List>
       </nav>
     </Drawer>

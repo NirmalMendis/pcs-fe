@@ -16,6 +16,7 @@ import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import useGetSearchCustomers from "../../../api/customer/use-get-search-customers";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../constants/generic-constants";
 import ProfileAvatar from "../../../shared/components/profile-avatar";
+import Customer from "../../../shared/types/customer";
 
 export interface SearchCustomerProps {
   handleSelectCustomer: (customerId: number, name: string) => void;
@@ -29,7 +30,7 @@ const SearchCustomer: FC<SearchCustomerProps> = ({ handleSelectCustomer }) => {
     data,
     refetch,
     isFetching: isFetchingCustomerSearchData,
-  } = useGetSearchCustomers(
+  } = useGetSearchCustomers<Array<Customer>>(
     {
       value: searchQuery,
     },
