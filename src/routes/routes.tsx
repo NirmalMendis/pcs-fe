@@ -35,6 +35,7 @@ const Routes = () => {
   const featureEnabledIAMCategory = useIAMRoutes();
   const featureEnabledCustomerCategory = useCustomerRoutes();
 
+  //fallback
   const getFallBackRouteElement = () => {
     if (isFetchingAppFeatures || isFetchingUserPermissions) {
       return <SettingUp />;
