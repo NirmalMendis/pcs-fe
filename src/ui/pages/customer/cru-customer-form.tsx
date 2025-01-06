@@ -1,4 +1,5 @@
-import { Button, TextField } from "@mui/material";
+import { Box, BoxProps, Button, TextField } from "@mui/material";
+import { InputAdornment } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { FC } from "react";
 import { UseFormReset } from "react-hook-form";
@@ -10,14 +11,14 @@ import cruCustomerSchema from "./cru-customer-schema";
 type CRUCustomerSchemaType = typeof cruCustomerSchema;
 export type CRUCustomerFormValues = InferType<CRUCustomerSchemaType>;
 
-export interface CRUCustomerFormProps {
+export interface CRUCustomerFormProps extends Omit<BoxProps, "onSubmit"> {
   onSubmit: (
     data: CRUCustomerFormValues,
     reset: UseFormReset<CRUCustomerFormValues>
   ) => void;
 }
 
-const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
+const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit, ...props }) => {
   const {
     register,
     handleSubmit,
@@ -28,7 +29,11 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data, reset))}>
+    <Box
+      component={"form"}
+      onSubmit={handleSubmit((data) => onSubmit(data, reset))}
+      {...props}
+    >
       <Grid container rowSpacing={3} columnSpacing={2}>
         <Grid xs={12} sm={3} md={4}>
           <TextField
@@ -73,6 +78,11 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
             error={!!getSingleFieldError("mobileNo")}
             helperText={getSingleFieldError("mobileNo")?.message}
             required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">+94</InputAdornment>
+              ),
+            }}
           />
         </Grid>
         <Grid xs={12} sm={3} md={4}>
@@ -123,7 +133,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit }) => {
           </Button>
         </Grid>
       </Grid>
-    </form>
+    </Box>
   );
 };
 

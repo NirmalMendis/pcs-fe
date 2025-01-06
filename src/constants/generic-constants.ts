@@ -25,3 +25,4 @@ export const MULTIPLE_WHITESPACE_REGEX = /\s+/g;
 
 export const NICNO_REGEX = /^([0-9]{9})(X|V)$|^([0-9]{12})$/gis;
 export const MOBILE_REGEX = /^(?:0|94|\+94)[0-9]{9,10}$/;
+export const MOBILE_REGEX_WITHOUT_COUNTRY_CODE = /^[0-9]{9}$/;

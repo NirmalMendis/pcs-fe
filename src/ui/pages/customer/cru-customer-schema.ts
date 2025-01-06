@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import {
-  MOBILE_REGEX,
+  MOBILE_REGEX_WITHOUT_COUNTRY_CODE,
   NICNO_REGEX,
 } from "../../../constants/generic-constants";
 
@@ -14,7 +14,7 @@ const cruCustomerSchema = yup.object({
   email: yup.string().email("Invalid email address"),
   mobileNo: yup
     .string()
-    .matches(MOBILE_REGEX, "Invalid Mobile number")
+    .matches(MOBILE_REGEX_WITHOUT_COUNTRY_CODE, "Invalid Mobile number")
     .required("Please enter customer's mobile number"),
   addressLine1: yup.string().required("Please enter customer's address"),
   addressLine2: yup.string(),

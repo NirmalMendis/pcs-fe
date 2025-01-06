@@ -7,6 +7,7 @@ import {
 } from "../../../../constants/generic-constants";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
+import useTextFormatter from "../../../../shared/hooks/use-text-formatter";
 import Customer from "../../../../shared/types/customer";
 
 export interface CustomersTableProps {
@@ -32,6 +33,8 @@ const AllCustomersTable: FC<CustomersTableProps> = ({
   setPaginationModel,
   totalItems,
 }) => {
+  const { formatPhoneNumber } = useTextFormatter();
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -58,6 +61,9 @@ const AllCustomersTable: FC<CustomersTableProps> = ({
       headerName: "Mobile No",
       width: 150,
       flex: 1,
+      valueGetter: (params) => {
+        return formatPhoneNumber ? formatPhoneNumber(params.value) : "-";
+      },
     },
     {
       field: "city",
