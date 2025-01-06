@@ -45,7 +45,7 @@ const instantCalculatorSchema = yup.object({
       `Number must be less than or equal to ${MAXIMUM_PRICE_VALUE}`
     )
     .typeError("Please enter a number value")
-    .nullable()
+    .required("Please enter the service charge.")
     .transform((_, val) => (val ? Number(val) : null))
     .test(
       "serviceCharge",
