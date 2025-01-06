@@ -33,7 +33,11 @@ const CreateCustomer: FC<CreateCustomerProps> = ({
       <DialogTitle>Create Customer</DialogTitle>
       {isPendingMutation && <LinearProgress />}
       <DialogContent>
-        <CRUCustomerForm onSubmit={onSubmit} sx={{ mt: 1 }} />
+        <CRUCustomerForm
+          onSubmit={onSubmit}
+          sx={{ mt: 1 }}
+          handleClose={handleClose}
+        />
       </DialogContent>
     </Dialog>
   );

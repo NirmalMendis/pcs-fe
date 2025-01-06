@@ -16,9 +16,14 @@ export interface CRUCustomerFormProps extends Omit<BoxProps, "onSubmit"> {
     data: CRUCustomerFormValues,
     reset: UseFormReset<CRUCustomerFormValues>
   ) => void;
+  handleClose?: () => void;
 }
 
-const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit, ...props }) => {
+const CRUCustomerForm: FC<CRUCustomerFormProps> = ({
+  onSubmit,
+  handleClose,
+  ...props
+}) => {
   const {
     register,
     handleSubmit,
@@ -127,7 +132,8 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({ onSubmit, ...props }) => {
             helperText={getSingleFieldError("postalCode")?.message}
           />
         </Grid>
-        <Grid xs={12} display={"flex"} justifyContent={"end"}>
+        <Grid xs={12} display={"flex"} justifyContent={"end"} gap={1}>
+          {handleClose ? <Button onClick={handleClose}>Cancel</Button> : null}
           <Button type="submit" disabled={!isValid}>
             Register
           </Button>
