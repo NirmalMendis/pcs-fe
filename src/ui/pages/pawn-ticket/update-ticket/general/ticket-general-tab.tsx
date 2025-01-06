@@ -18,12 +18,14 @@ import TicketMonetaryValues from "./ticket-monetary-values";
 
 export interface TicketGeneralTabProps {
   pawnTicketData?: PawnTicket;
-  updateInvoiceForLatestRevision: () => void;
+  setOpenSaveRevisionConfirmationDialog: (
+    value: React.SetStateAction<boolean>
+  ) => void;
 }
 
 const TicketGeneralTab: FC<TicketGeneralTabProps> = ({
   pawnTicketData,
-  updateInvoiceForLatestRevision,
+  setOpenSaveRevisionConfirmationDialog,
 }) => {
   const largeScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up("md")
@@ -124,7 +126,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({
                     color="primary"
                     size="small"
                     variant="outlined"
-                    onClick={updateInvoiceForLatestRevision}
+                    onClick={() => setOpenSaveRevisionConfirmationDialog(true)}
                   >
                     Generate Invoice
                   </Button>

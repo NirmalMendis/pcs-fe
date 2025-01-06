@@ -1,4 +1,4 @@
-import { useNumericFormat } from "react-number-format";
+import { useNumericFormat, usePatternFormat } from "react-number-format";
 import { CURRENCY_PREFIX } from "../../constants/generic-constants";
 
 const useTextFormatter = () => {
@@ -18,11 +18,19 @@ const useTextFormatter = () => {
     suffix: " %",
     thousandSeparator: true,
   });
+
+  const { format: formatPhoneNumber } = usePatternFormat({
+    format: "+94 (##) ###-####",
+    type: "tel",
+    mask: "_",
+  });
+
   return {
     formatCaratage,
     formatRs,
     formatWeight,
     formatPercentage,
+    formatPhoneNumber,
   };
 };
 
