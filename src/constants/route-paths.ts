@@ -15,5 +15,10 @@ const ROUTE_PATHS = {
     ROLE_MANAGEMENT: "role-management",
     ADD_ROLE: "add",
   },
+  CUSTOMER: {
+    BASE: "customer",
+    ALL: "all",
+    UPDATE: "update",
+  },
 };
 export default ROUTE_PATHS;

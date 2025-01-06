@@ -8,23 +8,23 @@ import ROUTE_PATHS from "../../../constants/route-paths";
 import TabLayout from "../../../shared/components/tab-layout";
 import useUserPermissions from "../../../utils/auth/use-user-permissions";
 
-const PawnTicketLayout = () => {
+const CustomerLayout = () => {
   const { canAccessResource } = useUserPermissions();
 
-  const authorizedAllPawnTicketTab = canAccessResource(
+  const authorizedAllCustomersTab = canAccessResource(
     {
-      title: "Pawn Ticket",
+      title: "Customer",
       icon: <ViewCompactIcon color="inherit" />,
-      to: `/${ROUTE_PATHS.PAWN_TICKET.BASE}/${ROUTE_PATHS.PAWN_TICKET.ALL}`,
+      to: `/${ROUTE_PATHS.CUSTOMER.BASE}/${ROUTE_PATHS.CUSTOMER.ALL}`,
     },
     PERMISSIONS.PAWN_TICKET,
     PERMISSION_ACTIONS.VIEW
   );
-  const authorizedPawnTicketView = canAccessResource(
+  const authorizedCustomerView = canAccessResource(
     {
-      title: "Update Ticket",
+      title: "Update Customer",
       icon: <UpdateIcon color="inherit" />,
-      to: `/${ROUTE_PATHS.PAWN_TICKET.BASE}/${ROUTE_PATHS.PAWN_TICKET.UPDATE}`,
+      to: `/${ROUTE_PATHS.CUSTOMER.BASE}/${ROUTE_PATHS.CUSTOMER.UPDATE}`,
     },
     PERMISSIONS.PAWN_TICKET,
     PERMISSION_ACTIONS.VIEW
@@ -32,13 +32,13 @@ const PawnTicketLayout = () => {
 
   const tabs = [];
 
-  if (authorizedAllPawnTicketTab) {
-    tabs.push(authorizedAllPawnTicketTab);
+  if (authorizedAllCustomersTab) {
+    tabs.push(authorizedAllCustomersTab);
   }
-  if (authorizedPawnTicketView) {
-    tabs.push(authorizedPawnTicketView);
+  if (authorizedCustomerView) {
+    tabs.push(authorizedCustomerView);
   }
   return <TabLayout tabs={tabs} />;
 };
 
-export default PawnTicketLayout;
+export default CustomerLayout;
