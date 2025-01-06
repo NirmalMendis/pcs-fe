@@ -1,6 +1,6 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link, Stack, Typography, Zoom } from "@mui/material";
-import { isAfter, isBefore } from "date-fns";
+import { isAfter } from "date-fns";
 import { debounce } from "lodash";
 import { useSnackbar } from "notistack";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import usePatchUpdatePawnTicketGeneral from "../../../../api/pawn-ticket/use-pat
 import usePostCreateRevision from "../../../../api/pawn-ticket/use-post-create-revision";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
 import Backdrop from "../../../../shared/components/backdrop";
+import ConfirmationDialog from "../../../../shared/components/confirmation-dialog";
 import EllipsisMenu from "../../../../shared/components/ellipsis-menu";
 import MenuDropDownButton from "../../../../shared/components/menu-dropdown-button";
 import ModalDrawer from "../../../../shared/components/modal-drawer";
@@ -51,6 +52,15 @@ const TABS = {
 const UpdateTicket = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [editModalType, setEditModalType] = useState<string | null>();
+  const [
+    openCreateRevisionConfirmationDialog,
+    setOpenCreateRevisionConfirmationDialog,
+  ] = useState(false);
+
+  const [
+    openSaveRevisionConfirmationDialog,
+    setOpenSaveRevisionConfirmationDialog,
+  ] = useState(false);
 
   const { id: ticketId } = useParams();
   const navigate = useNavigate();
@@ -111,6 +121,7 @@ const UpdateTicket = () => {
         {
           onSuccess: (data) => {
             navigate(String(data.id));
+            setOpenCreateRevisionConfirmationDialog(false);
           },
         }
       );
@@ -127,6 +138,7 @@ const UpdateTicket = () => {
         {
           onSuccess: () => {
             refetch();
+            setOpenSaveRevisionConfirmationDialog(false);
           },
         }
       );
@@ -278,7 +290,7 @@ const UpdateTicket = () => {
               options={[
                 {
                   label: "Create revision",
-                  onClick: createRevision,
+                  onClick: () => setOpenCreateRevisionConfirmationDialog(true),
                   disabled:
                     !!pawnTicketData?.revision || !pawnTicketData?.invoiceId,
                 },
@@ -305,7 +317,7 @@ const UpdateTicket = () => {
                 },
                 {
                   label: "Generate Invoice",
-                  onClick: updateInvoiceForLatestRevision,
+                  onClick: () => setOpenSaveRevisionConfirmationDialog(true),
                   disabled: disableEdit,
                 },
               ]}
@@ -340,7 +352,9 @@ const UpdateTicket = () => {
             <Box>
               <TicketGeneralTab
                 pawnTicketData={pawnTicketData}
-                updateInvoiceForLatestRevision={updateInvoiceForLatestRevision}
+                setOpenSaveRevisionConfirmationDialog={
+                  setOpenSaveRevisionConfirmationDialog
+                }
               />
             </Box>
           </Zoom>
@@ -380,8 +394,31 @@ const UpdateTicket = () => {
         open={
           isFetchingPawnTicketData ||
           isPendingMutatePostCreateRevision ||
-          isPendingMutatePatchUpdateInvoice
+          isPendingMutatePatchUpdateInvoice ||
+          isPendingMutateUpdateGeneral
         }
+      />
+      <ConfirmationDialog
+        open={openCreateRevisionConfirmationDialog}
+        title="Do you wish to continue?"
+        content={
+          "A new ticket will be created with a new ticket ID. You will be able to edit the details of the new ticket. Are you sure to continue?"
+        }
+        cancelActionTitle="Cancel"
+        confirmActionTitle="Continue"
+        handleClose={setOpenCreateRevisionConfirmationDialog}
+        confirmAction={createRevision}
+      />
+      <ConfirmationDialog
+        open={openSaveRevisionConfirmationDialog}
+        title="Do you wish to continue?"
+        content={
+          "After saving this revision, you will not be able to edit this ticket. Are you sure to continue?"
+        }
+        cancelActionTitle="Cancel"
+        confirmActionTitle="Continue"
+        handleClose={setOpenSaveRevisionConfirmationDialog}
+        confirmAction={updateInvoiceForLatestRevision}
       />
       {getEditModal()}
     </Stack>

@@ -43,7 +43,9 @@ const AllPawnTicketsGrid = () => {
     startDate?: Date;
     endDate?: Date;
     status?: PawnTicketStatusEnum;
-  }>({});
+  }>({
+    status: PawnTicketStatusEnum.ACTIVE,
+  });
 
   const {
     data,
@@ -242,7 +244,11 @@ const AllPawnTicketsGrid = () => {
         />
         <FormControl fullWidth>
           <InputLabel>Status</InputLabel>
-          <Select label="Status" onChange={onChangeStatus}>
+          <Select
+            label="Status"
+            onChange={onChangeStatus}
+            value={filters.status}
+          >
             {Object.values(PawnTicketStatusEnum).map((value) => (
               <MenuItem value={value} key={value}>
                 {value}
