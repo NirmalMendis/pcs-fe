@@ -219,6 +219,7 @@ const CreatePawnTicketForm: FC<CreatePawnTicketFormProps> = ({
                   <NumberField
                     label="Service Charge"
                     customPrefix={CURRENCY_PREFIX}
+                    required
                     error={!!getSingleFieldError("serviceCharge")}
                     helperText={getSingleFieldError("serviceCharge")?.message}
                     {...field}
