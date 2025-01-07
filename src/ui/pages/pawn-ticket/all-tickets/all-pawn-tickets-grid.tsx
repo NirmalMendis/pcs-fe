@@ -42,9 +42,9 @@ const AllPawnTicketsGrid = () => {
   const [filters, setFilters] = useState<{
     startDate?: Date;
     endDate?: Date;
-    status?: PawnTicketStatusEnum;
+    statuses?: PawnTicketStatusEnum[];
   }>({
-    status: PawnTicketStatusEnum.ACTIVE,
+    statuses: [PawnTicketStatusEnum.ACTIVE, PawnTicketStatusEnum.DUE],
   });
 
   const {
@@ -82,7 +82,7 @@ const AllPawnTicketsGrid = () => {
     if (event.target.value)
       setFilters((prev) => ({
         ...prev,
-        status: event.target.value as PawnTicketStatusEnum,
+        statuses: event.target.value as PawnTicketStatusEnum[],
       }));
   };
 
@@ -205,8 +205,8 @@ const AllPawnTicketsGrid = () => {
   }, [refetch, filters.endDate, filters.startDate]);
 
   useEffect(() => {
-    if (filters.status) refetch();
-  }, [refetch, filters.status]);
+    if (filters.statuses) refetch();
+  }, [refetch, filters.statuses]);
 
   return (
     <Stack
@@ -245,9 +245,10 @@ const AllPawnTicketsGrid = () => {
         <FormControl fullWidth>
           <InputLabel>Status</InputLabel>
           <Select
-            label="Status"
+            label="Statuses"
             onChange={onChangeStatus}
-            value={filters.status}
+            multiple
+            value={filters.statuses}
           >
             {Object.values(PawnTicketStatusEnum).map((value) => (
               <MenuItem value={value} key={value}>

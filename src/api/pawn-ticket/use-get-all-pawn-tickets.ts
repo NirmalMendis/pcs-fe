@@ -12,7 +12,7 @@ import { apiService } from "../api-service";
 export interface GetAllPawnTicketsRequest extends OrderPaginatedRequest {
   startDate?: Date;
   endDate?: Date;
-  status?: PawnTicketStatusEnum;
+  statuses?: PawnTicketStatusEnum[];
 }
 
 export type GetAllPawnTicketsResponse = PaginatedData<PawnTicket>;
@@ -21,7 +21,7 @@ const useGetAllPawnTickets = (
   {
     endDate,
     startDate,
-    status,
+    statuses,
     page,
     pageSize,
     orderBy,
@@ -42,7 +42,7 @@ const useGetAllPawnTickets = (
         queryParams: {
           endDate,
           startDate,
-          status,
+          statuses,
           page,
           pageSize,
           orderBy,
