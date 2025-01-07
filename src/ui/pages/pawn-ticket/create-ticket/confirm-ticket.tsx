@@ -150,8 +150,7 @@ const ConfirmTicket: FC<ConfirmTicketProps> = ({
             sx={{ pl: 1, pr: 1 }}
           >
             <CustomerAtomicCard
-              name={customerData?.name}
-              email={customerData?.email}
+              customer={customerData}
               sx={{ height: "fit-content" }}
             />
             <TicketDatesCard

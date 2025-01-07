@@ -42,6 +42,7 @@ export const CUSTOMER_API = {
   GET_SEARCH_CUSTOMER: `${CUSTOMER_ENPOINT}/search`,
   POST_CREATE_CUSTOMER: `${CUSTOMER_ENPOINT}`,
   GET_CUSTOMER_BY_ID: (id: number) => `${CUSTOMER_ENPOINT}/${id}`,
+  PATCH_CUSTOMER: (id: number) => `${CUSTOMER_ENPOINT}/${id}`,
 };
 
 export const PAWN_TICKET_API = {

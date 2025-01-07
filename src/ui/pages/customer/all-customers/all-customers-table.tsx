@@ -1,10 +1,12 @@
-import { LinearProgress } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   DEFAULT_PAGE_SIZE,
   MUI_DATAGRID_DEFAULT_ROW_HEIGHT,
 } from "../../../../constants/generic-constants";
+import ROUTE_PATHS from "../../../../constants/route-paths";
 import GridToolBar from "../../../../shared/components/grid-tool-bar";
 import NoDataGrid from "../../../../shared/components/no-data-grid";
 import useTextFormatter from "../../../../shared/hooks/use-text-formatter";
@@ -34,12 +36,28 @@ const AllCustomersTable: FC<CustomersTableProps> = ({
   totalItems,
 }) => {
   const { formatPhoneNumber } = useTextFormatter();
+  const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "Customer ID",
       width: 150,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() =>
+              navigate(`../${ROUTE_PATHS.CUSTOMER.UPDATE}/${params.value}`, {
+                relative: "path",
+              })
+            }
+          >
+            {params.value}
+          </Button>
+        );
+      },
     },
     {
       field: "name",

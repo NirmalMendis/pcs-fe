@@ -1,16 +1,16 @@
 interface Customer {
   id: number;
   nicNo: string;
-  email?: string;
+  email?: string | null;
   firstName: string;
   lastName: string;
   name: string;
   mobileNo: string;
   addressLine1: string;
-  addressLine2?: string;
-  addressLine3?: string;
+  addressLine2?: string | null;
+  addressLine3?: string | null;
   city: string;
-  postalCode?: string;
+  postalCode?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

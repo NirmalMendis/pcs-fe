@@ -82,10 +82,7 @@ const TicketGeneralTab: FC<TicketGeneralTabProps> = ({
         display={{ xs: isInvoiceVisible ? "none" : "block", md: "block" }}
       >
         <Stack width={"100%"} spacing={3} sx={{ pl: 1, pr: 1 }}>
-          <CustomerAtomicCard
-            name={pawnTicketData?.customer.name}
-            email={pawnTicketData?.customer.email}
-          />
+          <CustomerAtomicCard customer={pawnTicketData?.customer} />
           <TicketDatesCard
             periodInMonths={pawnTicketData?.periodInMonths}
             pawnDate={pawnTicketData?.pawnDate}

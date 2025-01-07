@@ -120,7 +120,7 @@ const AllPawnTickets = () => {
                   spacing={{ xs: 2 }}
                 >
                   <Grid xs={12} sm={4}>
-                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                       Pawn Tickets
                     </Typography>
                   </Grid>

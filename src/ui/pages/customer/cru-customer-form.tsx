@@ -17,19 +17,25 @@ export interface CRUCustomerFormProps extends Omit<BoxProps, "onSubmit"> {
     reset: UseFormReset<CRUCustomerFormValues>
   ) => void;
   handleClose?: () => void;
+  defaultValues?: Partial<CRUCustomerFormValues>;
+  actionTitle?: string;
 }
 
 const CRUCustomerForm: FC<CRUCustomerFormProps> = ({
   onSubmit,
   handleClose,
+  defaultValues,
+  actionTitle = "Register",
   ...props
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors, touchedFields },
+    formState: { errors, touchedFields },
     reset,
-  } = useCustomHookForm<CRUCustomerSchemaType>(cruCustomerSchema);
+  } = useCustomHookForm<CRUCustomerSchemaType>(cruCustomerSchema, {
+    defaultValues,
+  });
 
   const { getSingleFieldError } = useSingleFieldError(touchedFields, errors);
 
@@ -134,9 +140,7 @@ const CRUCustomerForm: FC<CRUCustomerFormProps> = ({
         </Grid>
         <Grid xs={12} display={"flex"} justifyContent={"end"} gap={1}>
           {handleClose ? <Button onClick={handleClose}>Cancel</Button> : null}
-          <Button type="submit" disabled={!isValid}>
-            Register
-          </Button>
+          <Button type="submit">{actionTitle}</Button>
         </Grid>
       </Grid>
     </Box>

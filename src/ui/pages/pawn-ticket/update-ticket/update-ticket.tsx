@@ -210,7 +210,7 @@ const UpdateTicket = () => {
   }, [ticketId, refetch]);
 
   return (
-    <Stack sx={{ pb: 1, pl: 3, pr: 3 }} spacing={1}>
+    <Stack sx={{ p: 1 }} spacing={1}>
       <PageTitleCard
         justifyContent="space-between"
         display="flex"
