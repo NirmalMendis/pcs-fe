@@ -81,7 +81,7 @@ const Dashboard = () => {
             <DashboardStatCard
               icon={SafetyCheckIcon}
               color="#e8b846"
-              dataTitle="Receivable Interests"
+              dataTitle="Receivable Interest"
               values={[
                 {
                   label: PawnTicketStatusEnum.DUE,
