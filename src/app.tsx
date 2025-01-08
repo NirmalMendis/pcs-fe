@@ -29,6 +29,7 @@ const App = () => {
     defaultOptions: {
       queries: {
         retry: 2,
+        refetchOnWindowFocus: false,
       },
     },
     mutationCache: new MutationCache({

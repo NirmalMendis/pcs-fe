@@ -1,16 +1,33 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Box, Breadcrumbs, Link, Stack, Typography, Zoom } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  IconButton,
+  Link,
+  Stack,
+  Typography,
+  Zoom,
+} from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import { isAfter } from "date-fns";
 import { debounce } from "lodash";
 import { useSnackbar } from "notistack";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useDeletePawnTicket from "../../../../api/pawn-ticket/use-delete-pawn-ticket";
 import useGetPawnTicketById from "../../../../api/pawn-ticket/use-get-pawn-ticket-by-id";
 import useGetRevisionIds from "../../../../api/pawn-ticket/use-get-revision-ids";
 import usePatchUpdateInvoice from "../../../../api/pawn-ticket/use-patch-update-invoice";
 import usePatchUpdatePawnTicketGeneral from "../../../../api/pawn-ticket/use-patch-update-pawn-ticket-general";
 import usePostCreateRevision from "../../../../api/pawn-ticket/use-post-create-revision";
 import { TYPING_TIMEOUT_FOR_SEARCH } from "../../../../constants/generic-constants";
+import {
+  PERMISSIONS,
+  PERMISSION_ACTIONS,
+} from "../../../../constants/iam-constants";
+import { GET_PAWN_TICKET_BY_ID } from "../../../../constants/query-leys";
+import ROUTE_PATHS from "../../../../constants/route-paths";
 import Backdrop from "../../../../shared/components/backdrop";
 import ConfirmationDialog from "../../../../shared/components/confirmation-dialog";
 import EllipsisMenu from "../../../../shared/components/ellipsis-menu";
@@ -20,6 +37,7 @@ import PageTitleCard from "../../../../shared/components/page-title-card";
 import SearchInput from "../../../../shared/components/search-input";
 import Tabs from "../../../../shared/components/tabs";
 import { PawnTicketStatusEnum } from "../../../../shared/types/generic";
+import PermissionsWrapper from "../../access-control/permissions-wrapper";
 import TicketGeneralTab from "./general/ticket-general-tab";
 import UpdateGeneral from "./general/update-general";
 import TicketInterestsSchedule from "./interests/ticket-interests-schedule";
@@ -56,18 +74,25 @@ const UpdateTicket = () => {
     openCreateRevisionConfirmationDialog,
     setOpenCreateRevisionConfirmationDialog,
   ] = useState(false);
+  const queryClient = useQueryClient();
 
   const [
     openSaveRevisionConfirmationDialog,
     setOpenSaveRevisionConfirmationDialog,
   ] = useState(false);
 
+  const [openDeleteConfirmationDialog, setOpenDeleteConfirmationDialog] =
+    useState(false);
+
   const { id: ticketId } = useParams();
   const navigate = useNavigate();
-  const { data: revisionIds } = useGetRevisionIds({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    id: +ticketId!,
-  });
+  const { data: revisionIds } = useGetRevisionIds(
+    {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: +ticketId!,
+    },
+    ticketId != null
+  );
   const {
     mutate: mutatePostCreateRevision,
     isPending: isPendingMutatePostCreateRevision,
@@ -80,6 +105,7 @@ const UpdateTicket = () => {
     mutate: mutateUpdatePawnTicketGeneralDetails,
     isPending: isPendingMutateUpdateGeneral,
   } = usePatchUpdatePawnTicketGeneral();
+  const deletePawnTicketMutation = useDeletePawnTicket();
 
   const {
     data: pawnTicketData,
@@ -144,6 +170,31 @@ const UpdateTicket = () => {
       );
   };
 
+  const deleteTicket = () => {
+    if (pawnTicketData?.id)
+      deletePawnTicketMutation.mutate(
+        {
+          payload: {
+            id: pawnTicketData?.id,
+          },
+        },
+        {
+          onSuccess: () => {
+            enqueueSnackbar(
+              `Pawn ticket ${pawnTicketData.id} has been deleted.`,
+              {
+                variant: "success",
+              }
+            );
+            queryClient.resetQueries({
+              queryKey: [GET_PAWN_TICKET_BY_ID, pawnTicketData.id],
+            });
+            setOpenDeleteConfirmationDialog(false);
+            navigate(`../${ROUTE_PATHS.PAWN_TICKET.ALL}`);
+          },
+        }
+      );
+  };
   const closeModal = () => {
     setEditModalType(null);
   };
@@ -255,7 +306,7 @@ const UpdateTicket = () => {
             onChange={onChangeSearch}
             placeholder="Search pawn ticket..."
           />
-          <Stack direction={"row"}>
+          <Stack direction={"row"} spacing={2}>
             {pawnTicketData?.status ? (
               <Box>
                 <MenuDropDownButton
@@ -286,6 +337,33 @@ const UpdateTicket = () => {
                 />
               </Box>
             ) : null}
+            <PermissionsWrapper
+              permission={{
+                action: PERMISSION_ACTIONS.DELETE,
+                permissionType: PERMISSIONS.PAWN_TICKET,
+              }}
+            >
+              <IconButton
+                color="error"
+                onClick={() => setOpenDeleteConfirmationDialog(true)}
+                sx={{
+                  border: "1px solid",
+                  borderRadius: "5px",
+                }}
+                disabled={
+                  pawnTicketData?.status !== PawnTicketStatusEnum.ACTIVE
+                }
+              >
+                <DeleteIcon
+                  color={
+                    pawnTicketData?.status === PawnTicketStatusEnum.ACTIVE
+                      ? "error"
+                      : "disabled"
+                  }
+                  fontSize="inherit"
+                />
+              </IconButton>
+            </PermissionsWrapper>
             <EllipsisMenu
               options={[
                 {
@@ -419,6 +497,18 @@ const UpdateTicket = () => {
         confirmActionTitle="Continue"
         handleClose={setOpenSaveRevisionConfirmationDialog}
         confirmAction={updateInvoiceForLatestRevision}
+      />
+      <ConfirmationDialog
+        open={openDeleteConfirmationDialog}
+        title="Are you sure to delete?"
+        content={
+          "This ticket and all its revisions and associated data will be deleted. Are you sure to delete?"
+        }
+        cancelActionTitle="Cancel"
+        confirmActionTitle="Delete"
+        handleClose={setOpenDeleteConfirmationDialog}
+        confirmAction={deleteTicket}
+        confirmActionColor="error"
       />
       {getEditModal()}
     </Stack>
