@@ -351,14 +351,14 @@ const UpdateTicket = () => {
                   borderRadius: "5px",
                 }}
                 disabled={
-                  pawnTicketData?.status !== PawnTicketStatusEnum.ACTIVE
+                  pawnTicketData?.status === PawnTicketStatusEnum.REVISED
                 }
               >
                 <DeleteIcon
                   color={
-                    pawnTicketData?.status === PawnTicketStatusEnum.ACTIVE
-                      ? "error"
-                      : "disabled"
+                    pawnTicketData?.status === PawnTicketStatusEnum.REVISED
+                      ? "disabled"
+                      : "error"
                   }
                   fontSize="inherit"
                 />
